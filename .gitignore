@@ -48,3 +48,4 @@ Temporary Items
 
 # Node stuff
 node_modules/
+npm_debug.log
