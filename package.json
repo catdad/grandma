@@ -1,11 +1,19 @@
 {
-  "name": "bench-test",
+  "name": "grandma",
   "version": "0.0.1",
-  "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "fixtures": "bench"
   },
   "author": "Kiril Vatev <vatev.1@gmail.com>",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "yargs": "^4.3.1"
+  },
+  "bin": {
+    "bench": "./lib/cli.js"
+  },
+  "devDependencies": {},
+  "description": ""
 }
