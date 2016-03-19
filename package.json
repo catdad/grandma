@@ -9,6 +9,7 @@
   "author": "Kiril Vatev <vatev.1@gmail.com>",
   "license": "ISC",
   "dependencies": {
+    "async": "^2.0.0-rc.1",
     "glob": "^7.0.3",
     "lodash": "^4.6.1",
     "yargs": "^4.3.1"
