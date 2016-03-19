@@ -39,12 +39,9 @@ function grandma(options, callback) {
     
     var testsToRun = options.tests.map(function(opts) {
         return function runSingleTest(done) {
-            forkmaster({
-                threads: options.threads,
-                duration: options.duration,
-                rate: options.rate,
+            forkmaster(_.merge({
                 filepath: opts.path
-            }, done);
+            }, options), done);
         };
     });
     
