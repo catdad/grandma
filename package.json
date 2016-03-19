@@ -17,5 +17,13 @@
     "bench": "./lib/cli.js"
   },
   "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/catdad/grandma.git"
+  },
+  "bugs": {
+    "url": "https://github.com/catdad/grandma/issues"
+  },
+  "homepage": "https://github.com/catdad/grandma#readme",
   "description": ""
 }
