@@ -1,14 +1,48 @@
 /* jshint node: true */
 
+var _ = require('lodash');
 var async = require('async');
+var Duration = require('duration-js');
+
 var forkmaster = require('./lib/forkmaster');
 
-function grandma(options) {
+function validateOpts(options) {
+    // really, this should be using garry,
+    // but it is not written yet
+    
+    var durationIsValidString = _.isString(options.duration) && /\d+(ms|[smhdw])$/.test(options.duration);
+    var durationIsNumber = _.isNumber(options.duration);
+    if (durationIsValidString || durationIsNumber) {
+        options.duration = (new Duration(options.duration)).milliseconds();
+    } else {
+        return new Error(options.duration === undefined ?
+            'duration is not defined' :
+            'duration is invalid');
+    }
+    
+    if (!_.isNumber(options.rate) || options.rate === 0) {
+        return new Error(options.rate === undefined ?
+            'rate is not defined' :
+            'rate is invalid');
+    }
+    
+    return options;
+}
+
+function grandma(options, callback) {
+    
+    options = validateOpts(options);
+    
+    if (options instanceof Error) {
+        return async.setImmediate(callback.bind(undefined, options));
+    }
     
     var testsToRun = options.tests.map(function(opts) {
         return function runSingleTest(done) {
             forkmaster({
                 threads: options.threads,
+                duration: options.duration,
+                rate: options.rate,
                 filepath: opts.path
             }, done);
         };
@@ -16,7 +50,7 @@ function grandma(options) {
     
     async.series(testsToRun, function() {
         console.log('all tests are done');
-        process.exit(0);
+        callback();
     });
 }
 

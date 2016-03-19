@@ -4,12 +4,13 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "fixtures": "node lib/cli.js --directory fixtures"
+    "fixtures": "node lib/cli.js --directory fixtures --duration=1s --rate=10"
   },
   "author": "Kiril Vatev <vatev.1@gmail.com>",
   "license": "ISC",
   "dependencies": {
     "async": "^2.0.0-rc.1",
+    "duration-js": "^3.5.1",
     "glob": "^7.0.3",
     "lodash": "^4.6.1",
     "yargs": "^4.3.1"
