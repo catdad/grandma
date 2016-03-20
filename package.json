@@ -29,5 +29,8 @@
     "url": "https://github.com/catdad/grandma/issues"
   },
   "homepage": "https://github.com/catdad/grandma#readme",
-  "description": ""
+  "description": "",
+  "engines": {
+    "node": ">=0.12.0"
+  }
 }
