@@ -4,7 +4,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "fixtures": "node lib/cli.js --directory fixtures --duration=1s --rate=10"
+    "fixtures": "node lib/cli.js run --directory fixtures"
   },
   "author": "Kiril Vatev <vatev.1@gmail.com>",
   "license": "ISC",
