@@ -49,3 +49,4 @@ Temporary Items
 # Node stuff
 node_modules/
 npm-debug.log
+.grandmarc
