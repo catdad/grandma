@@ -12,6 +12,7 @@
   "dependencies": {
     "async": "^2.0.0-rc.1",
     "byline": "^4.2.1",
+    "compute-quantile": "^1.0.1",
     "duration-js": "^3.5.1",
     "glob": "^7.0.3",
     "lodash": "^4.6.1",
