@@ -1,0 +1,8 @@
+# From gitignore
+node_modules/
+npm-debug.log
+.grandmarc
+*.cmd
+
+# Specific to NPM
+fixtures/

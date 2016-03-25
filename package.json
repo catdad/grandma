@@ -4,7 +4,6 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "fixtures": "node lib/cli.js run --directory fixtures",
     "grandma": "node lib/cli.js"
   },
   "author": "Kiril Vatev <vatev.1@gmail.com>",
