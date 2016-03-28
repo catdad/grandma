@@ -34,7 +34,7 @@
     "url": "https://github.com/catdad/grandma/issues"
   },
   "homepage": "https://github.com/catdad/grandma#readme",
-  "description": "",
+  "description": "Load testing CLI tool",
   "engines": {
     "node": ">=0.12.0"
   }
