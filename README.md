@@ -29,10 +29,14 @@ All CLI flags are available through the RC file, and they can all be overwritten
 
 ## CLI
 
+To see the most up-to-date CLI, type:
+
+    grandma help
+
 The following commands are available.
 
 ```
-grandma run --duration=<duration> --rate=<rate> [options]
+grandma run <testname> --duration=<duration> --rate=<rate> [options]
 grandma report <glob> [options]
 grandma list [options]
 ```
