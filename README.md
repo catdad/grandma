@@ -13,7 +13,7 @@ This is a load testing library ad CLI tool. It is inspired by the good parts of 
 You can install `grandma` as a global CLI tool:
 
     npm install -i grandma
-    
+
 ## `.grandmarc` file
 
 You can set up an RC file to help with managing some of the setting, such as the directory of test files. Here is the content a sample file.
@@ -54,6 +54,44 @@ The following options are available as flags (some are only relevant for the `ru
 - `directory` - (run and list) The folder that contains tests. All subfolders will be parsed as well, assuming all `.js` files are tests.
 - `threads` - (run only, defaults to 1) The number of threads to use to run the tests. Note that this can be any integer, although there is not much benefit to running more threads than CPU cores available.
 - `out` - (run only) The name of an output file to write the results to. Defaults to writing to standard output. You can also specify `stdout` if you wish to write to standard output explicitly.
+
+## Test files
+
+Test files are written in JavaScript, and should be placed inside the folder defined by the `directory` CLI flag or `.grandmarc` file. All JavaScript files in the folder and all subfolders will be considered test files.
+
+A test will export a single object, consisting of the following methods (in order): `beforeAll`, `beforeEach`, `test`, `afterEach`, and `afterAll`. Npte that all methods other than `test` are optional and can be left out.
+
+All methods will be called with a single parameter -- `done` -- which is a function to call when that method is complete. They will also be triggered with an object as the context -- the `this` keyword of the function.
+
+`beforeEach`, `test`, and `afterEach` will all run in a worker thread, and are considered a full test run (as defined by the `rate` flag). However, only the `test` function is times and used for statistics.
+
+`beforeAll` and `afterAll` will be executed in the parent thread. Though they will get a context object defined, some JavaScript values cannot be shared across threads (not to mention, changes in one thread will not be reflected in another thread). Therefore, only strings and numbers set in the `beforeAll` will be passed into thread workers to be used for the remaining functions. Also note that this means modifying values on the context object will not guarantee that any further tests will get those same values. The same goes for attempting to store state in objects in the test files, as there is no guarantee that they will execute in the same thread.
+
+It is possible to run the tests using a single worker thread, in which case, state objects created during `beforeEach` will be available to `test` and `afterEach`. However, `beforeAll` and `afterAll` will still execute in the parent thread and cannot share state other than numbers and strings.
+
+If you have a valid use case that is limited by the above, I would love to hear it. Please submit a [new issue](https://github.com/catdad/grandma/issues/new).
+
+This is an example of a full test file:
+
+```javascript
+module.exports = {
+    beforeAll: function(done) {
+        process.nextTick(done);
+    },
+    beforeEach: function(done) {
+        process.nextTick(done);
+    },
+    test: function(done) {
+        process.nextTick(done);
+    },
+    afterEach: function(done) {
+        process.nextTick(done);
+    },
+    afterAll: function(done) {
+        process.nextTick(done);
+    }
+};
+```
 
 ## API
 
