@@ -12,7 +12,7 @@ This is a load testing library ad CLI tool. It is inspired by the good parts of 
 
 You can install `grandma` as a global CLI tool:
 
-    npm install -i grandma
+    npm install grandma
 
 ## `.grandmarc` file
 
@@ -53,7 +53,11 @@ The following options are available as flags (some are only relevant for the `ru
 - `rate` - (run only, requires) The rate at which the tests will run. Written as a number, representing number of tests per second.
 - `directory` - (run and list) The folder that contains tests. All subfolders will be parsed as well, assuming all `.js` files are tests.
 - `threads` - (run only, defaults to 1) The number of threads to use to run the tests. Note that this can be any integer, although there is not much benefit to running more threads than CPU cores available.
-- `out` - (run only) The name of an output file to write the results to. Defaults to writing to standard output. You can also specify `stdout` if you wish to write to standard output explicitly.
+- `out` - (run and list) The name of an output file to write the results to. Defaults to writing to standard output. You can also specify `stdout` if you wish to write to standard output explicitly.
+- `type` - (report only) The type of report to create. Available values are:
+    - `text` - human readable text summary of the results
+    - `json` - summary of the results in json format
+    - `plot` - an HTML page containing a plot of the results
 
 ## Test files
 
