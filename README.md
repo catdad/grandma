@@ -1,5 +1,11 @@
 # grandma
 
+[![Downloads][7]][8] [![Version][9]][8]
+
+[7]: https://img.shields.io/npm/dm/grandma.svg
+[8]: https://www.npmjs.com/package/grandma
+[9]: https://img.shields.io/npm/v/grandma.svg
+
 This is a load testing library ad CLI tool. It is inspired by the good parts of [Vegeta](https://github.com/tsenart/vegeta) and [JMeter](http://jmeter.apache.org/), but hopefully leaves out the bad parts of both.
 
 ## Alpha notice
