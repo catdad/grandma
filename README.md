@@ -47,6 +47,11 @@ grandma report <glob> [options]
 grandma list [options]
 ```
 
+To see help on these commands, you can type one of:
+
+    grandma run -h
+    grandma report -h
+
 The following options are available as flags (some are only relevant for the `run` command):
 
 - `duration` - (run only, required) The duration for which the tests should run. Written as a number, followed by one of the following:
