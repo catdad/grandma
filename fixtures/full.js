@@ -15,9 +15,7 @@ function delay(callback) {
 var VAL = 'puma';
 
 function log(val) {
-    if (false) {
-        console.log(val);
-    }
+//    console.log(val);
 }
 
 module.exports = {
