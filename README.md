@@ -106,6 +106,39 @@ module.exports = {
 };
 ```
 
+### Custom metrics
+
+During the `test` function, you can report custom metrics using `this.start(name)` and `this.end(name)`. In cases where you may have multiple asynchronous tasks that you would like to report on, you can use custom metrics to time only portions of your tests. Here is an example:
+
+```javascript
+module.exports = {
+    test: function(done) {
+        var that = this;
+
+        async.parallel([
+            function (next) {
+                that.start('one');
+
+                setTimeout(function() {
+                    that.end('one');
+                    next();
+                }, 10);
+            },
+            function (next) {
+                that.start('two');
+
+                setTimeout(function() {
+                    that.end('two');
+                    next();
+                }, 20);
+            }
+        ], function() {
+            setTimeout(done, 5);
+        });
+    }
+};
+```
+
 ## API
 
 TODO. Don't try to use this for now.
