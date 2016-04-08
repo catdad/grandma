@@ -3,11 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <title>Grandma Plot</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/buttons.css">
     <script src="http://cdnjs.cloudflare.com/ajax/libs/dygraph/1.1.1/dygraph-combined.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.5.0-beta4/html2canvas.js"></script>
+    
     <style>
         html, body {
             font-family: sans-serif;
+            margin: 5px;
         }
         
         #plot {
@@ -24,14 +27,20 @@
         #buttons p {
             margin: 0;
             padding: 0.5em 0;
-        }
-        
-        button.on {
             font-weight: bold;
         }
         
         #download {
             display: none;
+        }
+        
+        .button-active {
+            background: #1CB841;
+            color: white;
+        }
+        
+        .right {
+            float: right;
         }
         
 /*
@@ -86,18 +95,19 @@
         labels.shift();
         
         labels.forEach(function(label, i) {
-
+            var active = 'button-active';
+            
             var b = document.createElement('button');
-            b.className = 'on';
+            b.className = 'pure-button ' + active;
             b.innerHTML = label;
             
             b.onclick = function() {
-                if (b.className === 'on') {
+                if (b.classList.contains(active)) {
                     plot.setVisibility(i, false);
-                    b.className = '';
+                    b.classList.remove(active);
                 } else {
                     plot.setVisibility(i, true);
-                    b.className = 'on';
+                    b.classList.add(active);
                 }
             };
             
@@ -106,6 +116,7 @@
         
         (function(download) {
             download.innerHTML = 'Download PNG';
+            download.className = 'pure-button pure-button-primary right';
             
             download.onclick = function() {
                 html2canvas(div).then(function(canvas) {
@@ -115,7 +126,7 @@
                 });
             };
             
-            document.body.appendChild(download);
+            buttons.appendChild(download);
         })(document.createElement('button'));
     </script>
 </body>
