@@ -1,6 +1,9 @@
 # grandma
 
-[![Downloads][7]][8] [![Version][9]][8]
+[![Code Climate][5]][6] [![Downloads][7]][8] [![Version][9]][8]
+
+[5]: https://codeclimate.com/github/catdad/grandma/badges/gpa.svg
+[6]: https://codeclimate.com/github/catdad/grandma
 
 [7]: https://img.shields.io/npm/dm/grandma.svg
 [8]: https://www.npmjs.com/package/grandma
