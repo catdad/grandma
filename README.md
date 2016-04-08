@@ -42,7 +42,7 @@ To see the most up-to-date CLI, type:
 The following commands are available.
 
     grandma run <testname> --duration=<duration> --rate=<rate> [options]
-    grandma report <glob> [options]
+    grandma report [glob=stdin] [options]
     grandma list [options]
 
 To see help on these commands, you can type one of:
