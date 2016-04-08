@@ -13,12 +13,31 @@
             width: 100%;
             height: 600px;
         }
+        
+        #buttons button {
+            margin: 3px;
+            box-sizing: border-box;
+        }
+        
+        #buttons p {
+            margin: 0;
+            padding: 0.5em 0;
+        }
+        
+        button.on {
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
     <div id="plot"></div>
+    <div id="buttons">
+        <p>Toggle Series</p>
+    </div>
     <script>
         var div = document.querySelector('#plot');
+        var buttons = document.querySelector('#buttons');
+        
         var plot = new Dygraph(
             div,
             '{{data}}',
@@ -29,6 +48,30 @@
                 ylabel: 'milliseconds'
             }
         );
+
+        // get all of the labels
+        var labels = plot.getLabels();
+        // remove the first label, which is the x axis
+        labels.shift();
+        
+        labels.forEach(function(label, i) {
+
+            var b = document.createElement('button');
+            b.className = 'on';
+            b.innerHTML = label;
+            
+            b.onclick = function() {
+                if (b.className === 'on') {
+                    plot.setVisibility(i, false);
+                    b.className = '';
+                } else {
+                    plot.setVisibility(i, true);
+                    b.className = 'on';
+                }
+            };
+            
+            buttons.appendChild(b);
+        });
     </script>
 </body>
 </html>
