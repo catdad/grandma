@@ -27,6 +27,27 @@
         button.on {
             font-weight: bold;
         }
+        
+/*
+        .dygraph-title {
+            text-align: left !important;
+            margin-left: 32px;
+        }
+*/
+        
+        .dygraph-legend {
+            width: 50% !important;
+            text-align: right !important;
+            left: auto !important;
+            right: 0px;
+            background: none !important;
+            top: 10px !important;
+            z-index: 9 !important;
+        }
+        
+        .dygraph-legend > * {
+            background: white;
+        }
     </style>
 </head>
 <body>
@@ -45,7 +66,9 @@
                 title: 'Test',
                 showRoller: true,
                 rollPeriod: 1,
-                ylabel: 'milliseconds'
+                ylabel: 'milliseconds',
+                xlabel: 'seconds from start',
+                legend: 'always'
             }
         );
 
