@@ -3,7 +3,7 @@
   "version": "0.0.7",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "mocha -R spec",
     "grandma": "node lib/cli.js"
   },
   "author": "Kiril Vatev <vatev.1@gmail.com>",
@@ -23,7 +23,11 @@
     "through2": "^2.0.1",
     "yargs": "^4.3.1"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "istanbul": "^0.4.3",
+    "mocha": "^2.4.5"
+  },
   "bin": {
     "grandma": "./lib/cli.js"
   },
