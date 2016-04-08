@@ -13,10 +13,20 @@
             margin: 5px;
         }
         
-        #plot {
+        #plot-container {
             width: 100%;
             height: 600px;
             background: white;
+        }
+        
+        #plot-container, #buttons {
+            padding: 8px;
+            box-sizing: border-box;
+        }
+        
+        #plot {
+            width: 100%;
+            height: 100%;
         }
         
         #buttons button {
@@ -54,7 +64,7 @@
             width: 50% !important;
             text-align: right !important;
             left: auto !important;
-            right: 0px;
+            right: 8px;
             background: none !important;
             top: 10px !important;
             z-index: 9 !important;
@@ -66,18 +76,21 @@
     </style>
 </head>
 <body>
-    <div id="plot"></div>
+    <div id="plot-container">
+        <div id="plot"></div>
+    </div>
     <div id="buttons">
         <p>Toggle Series</p>
     </div>
     <a href="" id="download"></a>
     <script>
-        var div = document.querySelector('#plot');
+        var container = document.querySelector('#plot-container');
+        var plotDiv = document.querySelector('#plot');
         var buttons = document.querySelector('#buttons');
         var link = document.querySelector('#download');
         
         var plot = new Dygraph(
-            div,
+            plotDiv,
             '{{data}}',
             {
                 title: 'Test',
@@ -119,7 +132,7 @@
             download.className = 'pure-button pure-button-primary right';
             
             download.onclick = function() {
-                html2canvas(div).then(function(canvas) {
+                html2canvas(container).then(function(canvas) {
                     link.href = canvas.toDataURL();
                     link.download = 'test.png';
                     link.click();
