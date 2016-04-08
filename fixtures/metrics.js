@@ -7,7 +7,7 @@ function rnd(min, max) {
 }
 
 function rndTime() {
-    return rnd(5, 30);
+    return rnd(5, 6);
 }
 
 function delay(callback) {
@@ -21,6 +21,7 @@ module.exports = {
     },
     test: function(done) {
         var that = this;
+        
         async.parallel([
             function (next) {
                 that.start('one');
@@ -28,7 +29,7 @@ module.exports = {
                 setTimeout(function() {
                     that.end('one');
                     next();
-                }, that.timeout);
+                }, that.timeout / 2);
             },
             function (next) {
                 that.start('two');
@@ -36,8 +37,10 @@ module.exports = {
                 setTimeout(function() {
                     that.end('two');
                     next();
-                }, that.timeout * 2);
+                }, that.timeout);
             }
-        ], done);
+        ], function() {
+            setTimeout(done, that.timeout * 2);
+        });
     }
 };
