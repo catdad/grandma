@@ -51,3 +51,4 @@ node_modules/
 npm-debug.log
 .grandmarc
 *.cmd
+coverage/

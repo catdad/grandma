@@ -6,3 +6,4 @@ npm-debug.log
 
 # Specific to NPM
 fixtures/
+coverage/
