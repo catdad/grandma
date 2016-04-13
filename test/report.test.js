@@ -128,8 +128,7 @@ describe('[report]', function() {
     describe('#text', function() {
         it('provides pretty text data', function(done) {
             function tableRegex() {
-                var args = [].slice.call(arguments);
-                var str = args.join('\\s+?');
+                var str = [].slice.call(arguments).join('\\s+?');
                 return new RegExp(str);
             }
             
