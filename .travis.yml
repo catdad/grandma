@@ -4,3 +4,9 @@ node_js:
   - "4.4"
   - "4.2"
   - "0.12"
+addons:
+  code_climate:
+    repo_token: 08120a5f6442a389a93094fd9f5f25099e912f4807936ff46f85234037ca9585
+after_script:
+  - npm run coverage
+  - codeclimate-test-reporter < coverage/lcov.info
