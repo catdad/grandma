@@ -15,7 +15,7 @@ describe('[stats]', function() {
             {},
             function() {}
         ].forEach(function(val) {
-            it('throws if given invalid data value "' + (JSON.stringify(val) || val.toString()) + '"', function() {
+            it('throws if given invalid data value: ' + (JSON.stringify(val) || val.toString()), function() {
                 function guilty() {
                     func(val);
                 }
@@ -69,13 +69,23 @@ describe('[stats]', function() {
             stats.percentile(val, 50);
         });
         
-        [-1, 101].forEach(function(n) {
-            it('throws for invalid n value ' + n, function() {
-                function guilty() {
+        function validateInvalidN(n, error) {
+            function guilty() {
                     stats.percentile(data, n);
                 }
 
-                expect(guilty).to.throw('n must be between 0 and 100');
+                expect(guilty).to.throw(error);
+        }
+        
+        [-1, 101].forEach(function(n) {
+            it('throws for out-of-range n value: ' + n, function() {
+                validateInvalidN(n, 'n must be between 0 and 100');
+            });
+        });
+        
+        [null, '5', {}, [], function() {}].forEach(function(n) {
+            it('throws for invalid n value: ' + (JSON.stringify(n) || n.toString()), function() {
+                validateInvalidN(n, 'n is not a number');
             });
         });
     });
