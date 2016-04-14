@@ -41,7 +41,20 @@ describe('[stats]', function() {
         validationTests(stats.mean);
     });
     
-    describe('#median', function() {});
+    describe('#median', function() {
+        it('returns a number', function() {
+            expect(stats.median([2])).to.be.a('number');
+        });
+        
+        it('calculates the median of an even number of items', function() {
+            expect(stats.median([0,2,3,4])).to.equal(2.5);
+        });
+        it('calculates the median of an odd number of items', function() {
+            expect(stats.median([1,8,12])).to.equal(8);
+        });
+        
+        validationTests(stats.median);
+    });
     
     describe('#percentile', function() {
         var data = [1,3,4,5,7,9,11,13,14,15,17,22,25,26,27,29,30];
