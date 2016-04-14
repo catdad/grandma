@@ -68,5 +68,15 @@ describe('[stats]', function() {
         validationTests(function(val) {
             stats.percentile(val, 50);
         });
+        
+        [-1, 101].forEach(function(n) {
+            it('throws for invalid n value ' + n, function() {
+                function guilty() {
+                    stats.percentile(data, n);
+                }
+
+                expect(guilty).to.throw('n must be between 0 and 100');
+            });
+        });
     });
 });
