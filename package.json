@@ -45,5 +45,14 @@
   "description": "Load testing CLI tool",
   "engines": {
     "node": ">=0.12.0"
-  }
+  },
+  "directories": {
+    "test": "test"
+  },
+  "keywords": [
+    "load test",
+    "stress test",
+    "test",
+    "meter"
+  ]
 }
