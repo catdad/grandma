@@ -18,7 +18,7 @@ var fixtures = {
 };
 
 describe('[run]', function() {
-    it('runs tests, outputting to a stream', function(done) {
+    it('runs tests in rate mode, outputting to a stream', function(done) {
         this.timeout(1000 * 5);
         
         var output = through();
@@ -27,6 +27,42 @@ describe('[run]', function() {
             // we expect this to execute exactly twice
             duration: '10ms',
             rate: 1000 / 10 * 2
+        }, fixtures);
+        
+        async.parallel([
+            function(next) {
+                run(opts, function(err) {
+                    expect(err).to.not.be.ok;
+                    next();
+                });
+            },
+            function(next) {
+                output.pipe(es.wait(function(err, data) {
+                    expect(err).to.not.be.ok;
+                    
+                    var lines = data.toString().trim().split('\n').map(JSON.parse);
+                    
+                    expect(lines).to.be.an('array').and.to.have.length(3);
+                    
+                    var header = lines.shift();
+                    
+                    expect(header).to.have.property('type').and.to.equal('header');
+
+                    next();
+                }));        
+            }
+        ], done);
+    });
+    
+    it('runs tests in concurrency mode, outputting to a stream', function(done) {
+        this.timeout(1000 * 5);
+        
+        var output = through();
+        var opts = _.defaultsDeep({
+            output: output,
+            // we expect this to execute exactly twice
+            duration: 0,
+            concurrent: 2
         }, fixtures);
         
         async.parallel([
