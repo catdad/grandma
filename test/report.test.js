@@ -19,7 +19,8 @@ var TESTRESULTS = {
     "count": 3,
     "targetCount": 600,
     "duration": 30000,
-    "rate": 20
+    "rate": 20,
+    "concurrent": null
   },
   "latencies": {
     "fullTest": {
@@ -142,8 +143,8 @@ describe('[report]', function() {
                 
                 // regular expressions to match the ground-truthed results
                 // not sure how fragile this test actually is
-                expect(str).to.match(tableRegex('Summary:', 'duration', 'rate', 'total'));
-                expect(str).to.match(tableRegex('30s', '20', '3'));
+                expect(str).to.match(tableRegex('Summary:', 'duration', 'rate', 'concurrent', 'total'));
+                expect(str).to.match(tableRegex('30s', '20', 'null', '3'));
                 
                 expect(str).to.match(tableRegex('Latencies:', 'mean', '50', '95', '99', 'max'));
                 expect(str).to.match(tableRegex('fullTest', '16.298ms', '14.692ms', '19.802ms', '19.802ms', '19.802ms'));

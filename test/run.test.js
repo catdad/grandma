@@ -87,13 +87,6 @@ describe('[run]', function() {
         });
     });
     
-    it('errors if rate is not defined in options', function(done) {
-        testError(_.defaultsDeep({
-            output: through(),
-            duration: '1s'
-        }, fixtures), 'rate is not defined', done);
-    });
-    
     [null, '1', 'junk', [], {}, function() {}].forEach(function(val) {
         it('errors for invalid rate value: ' + (JSON.stringify(val) || val.toString()), function(done) {
             testError(_.defaultsDeep({
@@ -102,5 +95,22 @@ describe('[run]', function() {
                 rate: val
             }, fixtures), 'rate is invalid', done);
         });
+    });
+    
+    [null, '1', 'junk', [], {}, function() {}].forEach(function(val) {
+        it('errors for invalid concurrent value: ' + (JSON.stringify(val) || val.toString()), function(done) {
+            testError(_.defaultsDeep({
+                output: through(),
+                duration: '1s',
+                concurrent: val
+            }, fixtures), 'concurrent is invalid', done);
+        });
+    });
+    
+    it('errors if neither rate nor concurrent are defined in options', function(done) {
+        testError(_.defaultsDeep({
+            output: through(),
+            duration: '1s'
+        }, fixtures), 'either options.rate or options.concurrent is required', done);
     });
 });
