@@ -20,6 +20,7 @@
     "is-gzip-stream": "^0.1.0",
     "lodash": "^4.6.1",
     "rc": "^1.1.6",
+    "resolve": "^1.1.7",
     "text-table": "^0.2.0",
     "through2": "^2.0.1",
     "yargs": "^4.3.1"
