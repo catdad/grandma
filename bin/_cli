@@ -30,9 +30,9 @@ function requireLocal(done) {
 }
 
 // This is requiring the package at the current root (cwd), assuming
-// that the user is me actually developing grandma. This seems like
-// a bad idea, but it is currently helpful... I think.
+// that the user is me actually developing grandma.
 function requireDev(done) {
+    // If we are not in this super-special env, move on.
     if (process.env.NODE_ENV !== 'dev-test') {
         return setImmediate(done);
     }
