@@ -12,8 +12,8 @@ var glob = require('glob');
 var rc = require('rc');
 var globfile = require('glob-filestream');
 
-var argv = require('./argv.js');
-var bench = require('../index');
+var argv = require('../lib/argv.js');
+var grandma = require('../index');
 
 console.log(argv);
 
@@ -21,7 +21,6 @@ var OPTS_PATH = argv.opts ?
     path.resolve(argv.opts) :
     path.resolve('test', 'grandma.opts');
 
-var grandma = require('../index');
 
 function exitWithError(msg) {
     process.stderr.write(msg + '\n\n');
