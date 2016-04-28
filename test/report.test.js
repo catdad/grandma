@@ -108,6 +108,138 @@ describe('[report]', function() {
     });
     it('writes results to the output stream');
     
+    describe('merges header data', function() {
+        
+        var DURATION = 200;
+        var RATE = 10;
+        var TARGET_COUNT = 2000;
+        
+        var validHeader = {
+            type: 'header',
+            epoch: 1460127721611,
+            duration: DURATION,
+            rate: RATE,
+            targetCount: TARGET_COUNT
+        };
+    
+        function getMergedHeaders(one, two) {
+            var input = through();
+            
+            one = _.defaults(one, validHeader);
+            two = _.defaults(two, validHeader);
+            
+            return report._mergeHeaderJson(one, two);
+        }
+        
+        it('when given a smaller epoch first', function() {
+            var header = getMergedHeaders({
+                epoch: 2,
+            }, {
+                epoch: 5
+            });
+            
+            expect(header.epoch).to.equal(2);
+            expect(header.duration).to.equal(DURATION + 3);
+        });
+        it('when given a larger epoch first', function() {
+            var header = getMergedHeaders({
+                epoch: 10,
+            }, {
+                epoch: 6
+            });
+            
+            expect(header.epoch).to.equal(6);
+            expect(header.duration).to.equal(DURATION + 4);
+        });
+        
+        it('when the two test runs overlap', function() {
+            var header = getMergedHeaders({
+                epoch: 2,
+                duration: 100
+            }, {
+                epoch: 62,
+                duration: 50
+            });
+            
+            expect(header.epoch).to.equal(2);
+            expect(header.duration).to.equal(110);
+        });
+        it('when the second test occurs entirely outside of the first', function() {
+            var header = getMergedHeaders({
+                epoch: 2,
+                duration: 10
+            }, {
+                epoch: 20,
+                duration: 20
+            });
+            
+            expect(header.epoch).to.equal(2);
+            expect(header.duration).to.equal(38);
+        });
+
+        it('returns all rate values in an array', function() {
+            var header = getMergedHeaders({
+                rate: 4
+            }, {
+                rate: 8
+            });
+            
+            expect(header.rate).to.deep.equal([4,8]);
+        });
+        
+        it('adds all target counts', function() {
+            var header = getMergedHeaders({
+                targetCount: 100
+            }, {
+                targetCount: 42
+            });
+            
+            expect(header.targetCount).to.equal(142);
+        });
+        
+        // have one test that actually goes through the proper system
+        it('when read from the input stream', function(done) {
+            var input = through();
+            
+            getReport({
+                input: input,
+                type: 'json'
+            }, function(err, content) {
+                expect(err).to.not.be.ok;
+                expect(content).to.be.ok;
+                
+                var jsonData = JSON.parse(content.toString());
+                
+                expect(jsonData).to.have.property('info').and.to.be.an('object');
+                
+                var header = jsonData.info;
+                
+                expect(header.targetCount).to.equal(90);
+                expect(header.duration).to.equal(35);
+                expect(header.rate).to.equal(1.5);
+                
+                done();
+            });
+            
+            input.write(JSON.stringify({
+                type: 'header',
+                epoch: 10,
+                duration: 30,
+                rate: 1,
+                targetCount: 30
+            }) + '\n');
+            input.write(JSON.stringify({
+                type: 'header',
+                epoch: 15,
+                duration: 30,
+                rate: 2,
+                targetCount: 60
+            }) + '\n');
+            input.write(TESTDATA.slice(1).map(JSON.stringify).join('\n'));
+            input.end();
+        });
+    });
+    
     describe('#json', function() {
         it('provides readable json data', function(done) {
             getReport({
