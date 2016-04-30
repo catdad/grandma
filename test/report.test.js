@@ -306,9 +306,37 @@ describe('[report]', function() {
     });
     
     describe('errors when the reporter', function() {
-        it('does not receive an input stream');
-        it('does not receive an output stream');
-        it('encounters a read error on the input stream');
+        function getError(opts, errString, done) {
+            report(opts, function(err) {
+                expect(err).to.be.instanceof(Error);
+                expect(err).to.have.property('message').and.to.equal(errString);
+                done();
+            });
+        }
+        
+        it('does not receive an input stream', function(done) {
+            getError({
+                output: through()
+            }, 'no input stream defined', done);
+        });
+        it('does not receive an output stream', function(done) {
+            getError({
+                input: through()
+            }, 'no output stream defined', done);
+        });
+        it('encounters a read error on the input stream', function(done) {
+            var input = through();
+            var ERROR = new Error('flapjacks');
+            report({
+                input: input,
+                output: through()
+            }, function(err) {
+                expect(err).to.equal(ERROR);
+                done();
+            });
+            
+            input.emit('error', ERROR);
+        });
         
     });
 });
