@@ -15,8 +15,6 @@ var globfile = require('glob-filestream');
 var argv = require('../lib/argv.js');
 var grandma = require('../index');
 
-console.log(argv);
-
 var OPTS_PATH = argv.opts ? 
     path.resolve(argv.opts) :
     path.resolve('test', 'grandma.opts');
@@ -147,8 +145,6 @@ var commands = {
                 'grandma run <testname>'
             ));
         }
-        
-        console.log(argv.rate, argv.concurrent);
         
         if (!argv.rate && !argv.concurrent) {
             return exitWithError(util.format(
