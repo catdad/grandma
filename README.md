@@ -65,7 +65,12 @@ The following options are available as flags (some are only relevant for the `ru
   - `h` - hour
   - `d` - day
   - `w` - week
-- `rate` - (run only, requires) The rate at which the tests will run. Written as a number, representing number of tests per second.
+- `rate` - (run only) The rate at which the tests will run. Written as a number, representing number of tests per second.
+  - Cannot be used with `concurrent`.
+  - Either `rate` or `concurrent` is required.
+- `concurrent` - (run only) The amount of concurrent tests to use at the same time.
+  - Cannot be used with `rate`.
+  - Either `rate` or `concurrent` is required.
 - `directory` - (run and list) The folder that contains tests. All subfolders will be parsed as well, assuming all `.js` files are tests.
 - `threads` - (run only, defaults to 1) The number of threads to use to run the tests. Note that this can be any integer, although there is not much benefit to running more threads than CPU cores available.
 - `out` - (run and list) The name of an output file to write the results to. Defaults to writing to standard output. You can also specify `stdout` if you wish to write to standard output explicitly.
