@@ -241,7 +241,7 @@ describe('[report]', function() {
     });
     
     describe('#json', function() {
-        it('provides readable json data', function(done) {
+        it('provides readable json data for rate mode', function(done) {
             getReport({
                 type: 'json'
             }, function(err, content) {
@@ -257,9 +257,11 @@ describe('[report]', function() {
                 done();
             });
         });
+        
+        it('provides readable json data for concurrent mode');
     });
     describe('#text', function() {
-        it('provides pretty text data', function(done) {
+        it('provides pretty text data for rate mode', function(done) {
             function tableRegex() {
                 var str = [].slice.call(arguments).join('\\s+?');
                 return new RegExp(str);
@@ -286,6 +288,8 @@ describe('[report]', function() {
                 done();
             });
         });
+        
+        it('provides pretty text data for rate mode');
     });
     describe('#plot', function() {
         it('provides an html page', function(done) {
