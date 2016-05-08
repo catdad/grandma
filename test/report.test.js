@@ -189,12 +189,12 @@ describe('[report]', function() {
         
         it('returns all concurrent values in an array', function() {
             var header = getMergedHeaders({
-                concurrent: 4
+                concurrent: 5
             }, {
                 concurrent: 12
             });
             
-            expect(header.concurrent).to.deep.equal([4,12]);
+            expect(header.concurrent).to.deep.equal([5,12]);
         });
         
         it('adds all target counts', function() {
