@@ -57,11 +57,18 @@ describe('[run]', function() {
     it('runs tests in concurrency mode, outputting to a stream', function(done) {
         this.timeout(1000 * 5);
         
+        var fixtures = {
+            tests: [{
+                path: path.resolve(__dirname, '../fixtures/test.concurrent.js'),
+                name: 'test.concurrent'
+            }]
+        };
+        
         var output = through();
         var opts = _.defaultsDeep({
             output: output,
             // we expect this to execute exactly twice
-            duration: 0,
+            duration: 50,
             concurrent: 2
         }, fixtures);
         
@@ -78,7 +85,7 @@ describe('[run]', function() {
                     
                     var lines = data.toString().trim().split('\n').map(JSON.parse);
                     
-                    expect(lines).to.be.an('array').and.to.have.length(3);
+                    expect(lines).to.be.an('array').and.to.have.length(5);
                     
                     var header = lines.shift();
                     
