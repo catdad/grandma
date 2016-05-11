@@ -19,6 +19,7 @@ var OPTS_PATH = argv.opts ?
     path.resolve(argv.opts) :
     path.resolve('test', 'grandma.opts');
 
+process.title = NAME;
 
 function exitWithError(msg) {
     process.stderr.write(msg + '\n\n');
