@@ -12,12 +12,8 @@ var glob = require('glob');
 var rc = require('rc');
 var globfile = require('glob-filestream');
 
-var argv = require('../lib/argv.js');
 var grandma = require('../index');
-
-var OPTS_PATH = argv.opts ? 
-    path.resolve(argv.opts) :
-    path.resolve('test', 'grandma.opts');
+var argv = {};
 
 process.title = NAME;
 
@@ -26,20 +22,20 @@ function exitWithError(msg) {
     process.exit(1);            
 }
 
-function getOptions() {
-    var opts = rc('grandma', {
-        directory: argv.directory,
-        rate: argv.rate,
-        concurrent: argv.concurrent,
-        duration: argv.duration,
-        threads: argv.threads || 1,
-        out: argv.out,
-        type: 'text'
-//        zip: argv.nozip ? false : true
-    });
-    
-    return opts;
-}
+//function getOptions() {
+//    var opts = rc('grandma', {
+//        directory: argv.directory,
+//        rate: argv.rate,
+//        concurrent: argv.concurrent,
+//        duration: argv.duration,
+//        threads: argv.threads || 1,
+//        out: argv.out,
+//        type: 'text'
+////        zip: argv.nozip ? false : true
+//    });
+//    
+//    return opts;
+//}
 
 function noTestsFoundErr(directory) {
     return exitWithError(util.format(
@@ -106,7 +102,7 @@ function getInputStream(glob) {
 }
 
 function init(callback) {
-    var opts = getOptions();
+    var opts = _.clone(argv);
     
     loadTests(opts, function(err) {
         callback(err, opts);
@@ -195,7 +191,7 @@ var commands = {
             glob = 'stdin';
         }
 
-        var opts = getOptions();
+        var opts = _.clone(argv);
 
         opts.input = getInputStream(glob);
         opts.output = getDestinationStream(opts);
@@ -207,6 +203,12 @@ var commands = {
         onDone(undefined, '');
     }
 };
+
+function loadConfig() {
+    var opts = rc('grandma');
+    argv = require('../lib/argv.js')(opts);
+    return argv;
+}
 
 function runCommand() {
     var command = argv._[0] || 'help';
@@ -225,4 +227,5 @@ function runCommand() {
     }
 }
 
+loadConfig();
 runCommand();
