@@ -127,7 +127,6 @@
         
         function yAxisFormatter(number, granularity, opts, graph) {
             var r = number / getDivisor(graph);
-            console.log(arguments, r, yUnits, yDivisor);
             return r.toFixed(2);
         }
         
