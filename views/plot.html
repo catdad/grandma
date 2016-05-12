@@ -40,7 +40,7 @@
             font-weight: bold;
         }
         
-        #download {
+        #download, .btn-no-show {
             display: none;
         }
         
@@ -82,12 +82,16 @@
     <div id="buttons">
         <p>Toggle Series</p>
     </div>
+
     <a href="" id="download"></a>
+    <img id="copy-img">
+    
     <script>
         var container = document.querySelector('#plot-container');
         var plotDiv = document.querySelector('#plot');
         var buttons = document.querySelector('#buttons');
         var link = document.querySelector('#download');
+        var img = document.querySelector('#copy-img');
         
         var yUnits;
         var yDivisor;
@@ -187,6 +191,65 @@
             
             buttons.appendChild(download);
         })(document.createElement('button'));
+        
+        (function(copy, prep) {
+            var noShowClass = 'btn-no-show';
+            prep.innerHTML = 'Prepare to copy';
+            
+            copy.innerHTML = 'Copy PNG';
+            copy.className = prep.className = 'pure-button pure-button-primary right';
+            
+            copy.classList.add(noShowClass);
+            
+            // If copy is not supported, don't show the button
+            if (!document.queryCommandSupported('copy')) {
+                prep.classList.add(noShowClass);
+            }
+            
+            var dataUri;
+            
+            // Since this is async, we cannot use a one-click copy. Use the first
+            // click to prepare the image data, and the second to copy it.
+            prep.onclick = function() {
+                html2canvas(container, {
+                    onrendered: function(canvas) {
+                        dataUri = canvas.toDataURL();
+                     
+                        prep.classList.toggle(noShowClass);
+                        copy.classList.toggle(noShowClass);
+                    },
+                    timeout: 0
+                });
+            };
+            
+            // Use this click to copy the image data, and reset the UI.
+            copy.onclick = function() {
+                img.src = dataUri;
+
+                var range = document.createRange();
+                range.selectNode(img);
+                window.getSelection().addRange(range);
+
+                try {
+                    // Now that we've selected the anchor text, execute the copy command
+                    var successful = document.execCommand('copy');
+                    var msg = successful ? 'successful' : 'unsuccessful';
+                } catch(err) {
+                    // TODO: do I need to tell the user that it failed
+                }
+
+                // Remove the selections
+                window.getSelection().removeAllRanges();
+                
+                img.src = '';
+                
+                prep.classList.toggle(noShowClass);
+                copy.classList.toggle(noShowClass);
+            };
+            
+            buttons.appendChild(copy);
+            buttons.appendChild(prep);
+        })(document.createElement('button'), document.createElement('button'));
     </script>
 </body>
 </html>
