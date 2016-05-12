@@ -131,7 +131,13 @@
         
         function yAxisFormatter(number, granularity, opts, graph) {
             var r = number / getDivisor(graph);
-            return r.toFixed(2);
+            
+            // Apply fixed decimals if the number is not an integer
+            if (parseInt(r) === r) {
+                return r;
+            } else {
+                return r.toFixed(2);
+            }
         }
         
         var plot = new Dygraph(
