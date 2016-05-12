@@ -89,6 +89,48 @@
         var buttons = document.querySelector('#buttons');
         var link = document.querySelector('#download');
         
+        var yUnits;
+        var yDivisor;
+        
+        function getMax(graph) {
+            return graph.yAxisRange()[1];
+        }
+        
+        function setYLabel(graph) {
+            graph.updateOptions({
+                ylabel: yUnits
+            }, true);
+        }
+        
+        function getDivisor(graph) {
+            if (yDivisor !== undefined) {
+                return yDivisor;
+            }
+            
+            var max = parseInt(getMax(graph));
+            
+            if (max > 1000 * 60) {
+                yUnits = 'minutes';
+                yDivisor = 1000 * 60;
+            } else if (max > 1000) {
+                yUnits = 'seconds';
+                yDivisor = 1000;
+            } else {
+                yUnits = 'milliseconds';
+                yDivisor = 1;
+            }
+            
+            setYLabel(graph);
+            
+            return yDivisor;
+        }
+        
+        function yAxisFormatter(number, granularity, opts, graph) {
+            var r = number / getDivisor(graph);
+            console.log(arguments, r, yUnits, yDivisor);
+            return r.toFixed(2);
+        }
+        
         var plot = new Dygraph(
             plotDiv,
             '{{data}}',
@@ -98,7 +140,12 @@
                 rollPeriod: 1,
                 ylabel: 'milliseconds',
                 xlabel: 'seconds from start',
-                legend: 'always'
+                legend: 'always',
+                axes: {
+                    y: {
+                        axisLabelFormatter: yAxisFormatter
+                    }
+                }
             }
         );
 
