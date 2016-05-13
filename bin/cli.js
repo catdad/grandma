@@ -22,21 +22,6 @@ function exitWithError(msg) {
     process.exit(1);            
 }
 
-//function getOptions() {
-//    var opts = rc('grandma', {
-//        directory: argv.directory,
-//        rate: argv.rate,
-//        concurrent: argv.concurrent,
-//        duration: argv.duration,
-//        threads: argv.threads || 1,
-//        out: argv.out,
-//        type: 'text'
-////        zip: argv.nozip ? false : true
-//    });
-//    
-//    return opts;
-//}
-
 function noTestsFoundErr(directory) {
     return exitWithError(util.format(
         '\n%s\n%s',
