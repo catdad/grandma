@@ -56,11 +56,7 @@ var done = false;
     // to always install locally.
     continueWithCurrent
 ].forEach(function(func) {
-    if (done) {
-        return;
-    }
-    
-    done = !!func();
+    done = done || !!func();
 });
 
 if (!done) {
