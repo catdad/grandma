@@ -2,67 +2,73 @@
 /* jshint node: true */
 
 var path = require('path');
-var async = require('async');
-var base = process.cwd();
 
-// Note: yup, I am purposefully using async wrong. In these functions,
-// we will pass in `true` for the error parameter to signify that the
-// require was SUCCESSFUL, and therefore stop the async.series list
-// of functions being executed. This means that the first function in
-// the series that finds the correct module stops the series and exits
-// this cli helper. Yay!
+var BASE = process.cwd();
+var NAME = 'grandma';
+var CLI = path.posix.join('bin', 'cli.js');
 
-function tryRequire(route, done) {
+function tryRequire(route) {
     try {
+        // Resolve will throw if the module does not exist.
         route = require.resolve(route);
     } catch(e) {
-        return setImmediate(done);
+        return false;
     }
 
+    // Do not try/catch the actual require. If the module itself actually
+    // throws, we still want to see that error.
     require(route);
-    return setImmediate(done, true);
+    return true;
 }
 
 // Require the local version of grandma
-function requireLocal(done) {
-    var resolvedUri = path.posix.join(base, 'node_modules', 'grandma', 'bin', 'cli.js');
-    tryRequire(resolvedUri, done);
+function requireLocal() {
+    var resolvedUri = path.posix.join(BASE, 'node_modules', NAME, CLI);
+    return tryRequire(resolvedUri);
 }
 
 // This is requiring the package at the current root (cwd), assuming
 // that the user is me actually developing grandma.
-function requireDev(done) {
+function requireDev() {
     // If we are not in this super-special env, move on.
     if (process.env.NODE_ENV !== 'dev-test') {
-        return setImmediate(done);
+        return;
     }
 
-    var resolvedUri = path.posix.join(base, 'bin', 'cli.js');
-    tryRequire(resolvedUri, done);
+    var resolvedUri = path.posix.join(BASE, CLI);
+    return tryRequire(resolvedUri);
 }
 
 // We did not find grandma installed locally, nor are we
 // executing in the grandma folder itself (which might happen
 // during development), so we will use the global one instead.
-function continueWithCurrent(done) {
+function continueWithCurrent() {
     var resolvedUri = './cli.js';
-    tryRequire(resolvedUri, done);
+    return tryRequire(resolvedUri);
 }
 
-async.series([
+var done = false;
+
+[
     requireLocal,
     requireDev,
     // TODO: consider not doing this at all, forcing the user
     // to always install locally.
     continueWithCurrent
-], function(success) {
-    if (success !== true) {
-        console.error(
-            '%s\n%s',
-            'FATAL: grandma module was not found.',
-            'Run "npm install grandma" to install the module locally'
-        );
-
-        process.exit(1);
+].forEach(function(func) {
+    if (done) {
+        return;
     }
+    
+    done = !!func();
 });
+
+if (!done) {
+    console.error(
+        '%s\n%s',
+        'FATAL: grandma module was not found.',
+        'Run "npm install grandma" to install the module locally'
+    );
+
+    process.exit(1);
+}
