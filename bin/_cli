@@ -32,7 +32,7 @@ function requireLocal() {
 function requireDev() {
     // If we are not in this super-special env, move on.
     if (process.env.NODE_ENV !== 'dev-test') {
-        return;
+        return false;
     }
 
     var resolvedUri = path.posix.join(BASE, CLI);
@@ -61,8 +61,8 @@ var done = false;
 
 if (!done) {
     console.error(
-        '%s\n%s',
-        'FATAL: grandma module was not found.',
+        'FATAL: %s %s\n%s',
+        NAME, 'module was not found.',
         'Run "npm install grandma" to install the module locally'
     );
 
