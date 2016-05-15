@@ -157,6 +157,12 @@
                 }
             }
         );
+        
+        // the first series is always "full Err", which should be red
+        var colors = ['rgb(191,0,0)'].concat(plot.colors_);
+        plot.updateOptions({
+            colors: colors
+        });
 
         // get all of the labels
         var labels = plot.getLabels();
