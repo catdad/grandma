@@ -102,40 +102,85 @@ describe('[now:Timer]', function() {
             var timer = now.Timer();
             expect(timer.end(NAME)).to.equal(timer);
         });
-        
-        it('takes a status as the second parameter', function() {
-            var STATUS = 'elephant';
+    });
+    
+    describe('#report', function() {
+        it('returns the "times" property of the Timer', function() {
             var timer = now.Timer();
-            timer.start(NAME);
-            timer.end(NAME, STATUS);
-            
-            expect(timer.report())
-                .to.have.property(NAME)
-                .and.to.be.an('object')
-                .and.to.have.property('status')
-                .and.to.equal(STATUS);
+            var val = timer.report();
+            expect(val).to.equal(timer.times);
         });
-        
-        it('calls toString of the status object', function() {
-            var STATUS = 'grasshopper';
-            var called = false;
-            
+        it('reports all tests as succesful by default', function() {
+            var TEST1 = 'grasshopper';
+            var TEST2 = 'lemon';
             var timer = now.Timer();
-            timer.start(NAME);
-            timer.end(NAME, {
-                toString: function() { 
-                    called = true;
-                    return STATUS;
-                }
-            });
+            timer.start(TEST1);
+            timer.end(TEST1);
+            timer.start(TEST2);
+            timer.end(TEST2);
             
-            expect(timer.report())
-                .to.have.property(NAME)
-                .and.to.be.an('object')
+            var val = timer.report();
+            
+            expect(val).to.have.property(TEST1)
                 .and.to.have.property('status')
-                .and.to.equal(STATUS);
+                .and.to.equal('success');
             
-            expect(called).to.equal(true);
+            expect(val).to.have.property(TEST2)
+                .and.to.have.property('status')
+                .and.to.equal('success');
+        });
+        it('reports a failure status for any test in the list of errors', function() {
+            var TEST = 'grasshopper';
+            var timer = now.Timer();
+            timer.start(TEST);
+            timer.end(TEST);
+            
+            var statuses = {};
+            statuses[TEST] = {};
+            
+            var val = timer.report(statuses);
+            
+            expect(val).to.have.property(TEST)
+                .and.to.have.property('status')
+                .and.to.equal('failure');
+        });
+        it('sets a error code if one is provided in the status list', function() {
+            var TEST = 'grasshopper';
+            var CODE = 'lemon';
+            var timer = now.Timer();
+            timer.start(TEST);
+            timer.end(TEST);
+            
+            var statuses = {};
+            statuses[TEST] = { errorCode: CODE };
+            
+            var val = timer.report(statuses);
+            
+            expect(val).to.have.property(TEST)
+                .and.to.have.property('status')
+                .and.to.equal('failure');
+            
+            expect(val).to.have.property(TEST)
+                .and.to.have.property('errorCode')
+                .and.to.equal(CODE);
+        });
+        it('ignores bogus names in the list of failures', function() {
+            var TEST = 'grasshopper';
+            var NOT_TEST = 'lemon';
+            var timer = now.Timer();
+            timer.start(TEST);
+            timer.end(TEST);
+            
+            var statuses = {};
+            statuses[NOT_TEST] = {};
+            
+            var val = timer.report(statuses);
+            
+            expect(val).to.have.property(TEST)
+                .and.to.have.property('status')
+                .and.to.equal('success');
+
+            expect(val).to.not.have.property(NOT_TEST);
         });
     });
 });
