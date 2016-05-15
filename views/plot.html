@@ -214,7 +214,10 @@
             copy.classList.add(noShowClass);
             
             // If copy is not supported, don't show the button
-            if (!document.queryCommandSupported('copy')) {
+            // TODO: copying images has terrible support in terms of
+            // where they can be pasted, so I am disabling this until
+            // I can figure out something that works well.
+            if (!document.queryCommandSupported('copy') || true) {
                 prep.classList.add(noShowClass);
             }
             
