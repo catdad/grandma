@@ -76,7 +76,7 @@ describe('[now:Timer]', function() {
         
         var named = report[NAME];
         
-        expect(named).to.have.all.keys(['start', 'end', 'duration', 'status']);
+        expect(named).to.have.all.keys(['start', 'end', 'duration']);
         expect(named).to.have.property('duration').and.to.be.above(0);
     });
     
@@ -103,39 +103,5 @@ describe('[now:Timer]', function() {
             expect(timer.end(NAME)).to.equal(timer);
         });
         
-        it('takes a status as the second parameter', function() {
-            var STATUS = 'elephant';
-            var timer = now.Timer();
-            timer.start(NAME);
-            timer.end(NAME, STATUS);
-            
-            expect(timer.report())
-                .to.have.property(NAME)
-                .and.to.be.an('object')
-                .and.to.have.property('status')
-                .and.to.equal(STATUS);
-        });
-        
-        it('calls toString of the status object', function() {
-            var STATUS = 'grasshopper';
-            var called = false;
-            
-            var timer = now.Timer();
-            timer.start(NAME);
-            timer.end(NAME, {
-                toString: function() { 
-                    called = true;
-                    return STATUS;
-                }
-            });
-            
-            expect(timer.report())
-                .to.have.property(NAME)
-                .and.to.be.an('object')
-                .and.to.have.property('status')
-                .and.to.equal(STATUS);
-            
-            expect(called).to.equal(true);
-        });
     });
 });
