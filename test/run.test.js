@@ -120,6 +120,14 @@ describe('[run]', function() {
         }, fixtures), 'duration is not defined', done);
     });
     
+    it('errors if duration is too low', function(done) {
+        testError(_.defaultsDeep({
+            output: through(),
+            rate: 1,
+            duration: '2ms'
+        }, fixtures), 'duration is too low', done);
+    });
+    
     [null, 'junk', [], {}, function() {}].forEach(function(val) {
         it('errors for invalid duration value: ' + (JSON.stringify(val) || val.toString()), function(done) {
             testError(_.defaultsDeep({
