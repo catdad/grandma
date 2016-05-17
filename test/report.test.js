@@ -22,6 +22,9 @@ var TESTRESULTS = {
     "rate": 20,
     "concurrent": null
   },
+  "breakdown": {
+    "successes": 3
+  },
   "latencies": {
     "fullTest": {
       "50": 14.691873000000001,
@@ -269,6 +272,8 @@ describe('[report]', function() {
         });
         
         it('provides readable json data for concurrent mode');
+        
+        it('aggregates error codes');
     });
     describe('#text', function() {
         it('provides pretty text data for rate mode', function(done) {
@@ -299,7 +304,30 @@ describe('[report]', function() {
             });
         });
         
-        it('provides pretty text data for rate mode');
+        it('provides pretty text data for concurrent mode');
+        
+        it('prints test status breakdowns', function(done) {
+            function tableRegex() {
+                var str = [].slice.call(arguments).join('\\s+?');
+                return new RegExp(str);
+            }
+            
+            getReport({
+                type: 'text'
+            }, function(err, content) {
+                expect(err).to.not.be.ok;
+                expect(content).to.be.ok;
+                
+                var str = content.toString();
+                
+                expect(str).to.match(tableRegex('Successes:', '3'));
+                expect(str).to.match(tableRegex('Failures:', '0'));
+                
+                done();
+            });
+        });
+        
+        it('lists individual failure error codes when present');
     });
     describe('#plot', function() {
         it('provides an html page', function(done) {
