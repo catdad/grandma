@@ -7,11 +7,24 @@ var _ = require('lodash');
 
 var report = require('../lib/report.js');
 
+// Test data using rate mode
 var TESTDATA = [
     {"type":"header","epoch":1460127721611,"duration":30000,"rate":20,"targetCount":600},
     {"type":"report","report":{"fullTest":{"start":0,"end":19.801774,"duration":19.801774,"status":"success"},"one":{"start":0.14821399999999585,"end":2.897864999999996,"duration":2.749651,"status":"success"},"two":{"start":0.45399899999999604,"end":6.853753000000005,"duration":6.399754000000009,"status":"success"}},"id":0},
     {"type":"report","report":{"fullTest":{"start":47.191123999999995,"end":61.882996999999996,"duration":14.691873000000001,"status":"success"},"one":{"start":47.213159999999995,"end":49.951642,"duration":2.7384820000000047,"status":"success"},"two":{"start":47.56996,"end":51.722057,"duration":4.152096999999998,"status":"success"}},"id":0},
     {"type":"report","report":{"fullTest":{"start":97.46002200000001,"end":111.861504,"duration":14.401481999999987,"status":"success"},"one":{"start":97.46877600000002,"end":99.933471,"duration":2.4646949999999777,"status":"success"},"two":{"start":97.493529,"end":101.74916300000001,"duration":4.255634000000015,"status":"success"}},"id":0},
+];
+
+// Test data using concurrent mode with errors
+var TESTERRDATA = [
+    {"type":"header","epoch":1463604033635,"duration":120,"rate":null,"concurrent":3,"targetCount":null},
+    {"type":"report","report":{"fullTest":{"start":0,"end":1.6533409999999993,"duration":1.6533409999999993,"status":"failure","errorCode":123}},"id":0},
+    {"type":"report","report":{"fullTest":{"start":0.3569969999999998,"end":3.7886290000000002,"duration":3.4316320000000005,"status":"failure","errorCode":123}},"id":0},
+    {"type":"report","report":{"fullTest":{"start":0.5265699999999995,"end":4.111711,"duration":3.585141,"status":"failure","errorCode":456}},"id":0},
+    {"type":"report","report":{"fullTest":{"start":8.090886999999999,"end":9.512626999999998,"duration":1.4217399999999998,"status":"failure","errorCode":456}},"id":0},
+    {"type":"report","report":{"fullTest":{"start":8.472428,"end":9.606784999999999,"duration":1.1343569999999978,"status":"failure","errorCode":789}},"id":0},
+    {"type":"report","report":{"fullTest":{"start":8.656281,"end":9.667475,"duration":1.0111939999999997,"status":"failure","errorCode":123}},"id":0},
+    {"type":"report","report":{"fullTest":{"start":10.741143000000001,"end":10.833962,"duration":0.09281899999999865,"status":"success"}},"id":0}
 ];
 
 var TESTRESULTS = {
@@ -53,7 +66,35 @@ var TESTRESULTS = {
   }
 };
 
-function getReport(options, callback) {
+var TESTERRRESULTS = {
+    "info": {
+        "count": 7,
+        "targetCount": 0,
+        "duration": 120,
+        "rate": null,
+        "concurrent": 3
+    },
+    "breakdown": {
+        "successes": 1,
+        "failures": {
+            "123": 3,
+            "456": 2,
+            "789": 1
+        }
+    },
+    "latencies": {
+        "fullTest": {
+            "50": 1.4217399999999998,
+            "95": 3.585141,
+            "99": 3.585141,
+            "mean": 1.761460571428571,
+            "min": 0.09281899999999865,
+            "max": 3.585141
+        }
+    }
+};
+
+function getReport(options, data, callback) {
     var cb = _.once(callback);
     
     var input = through();
@@ -75,16 +116,16 @@ function getReport(options, callback) {
 
     // write to original input, in case the user has decided
     // to overwrite the opt with their own
-    input.end(TESTDATA.map(JSON.stringify).join('\n'));
+    input.end(data.map(JSON.stringify).join('\n'));
 }
 
-describe('[report]', function() {
+describe.only('[report]', function() {
     it('takes an input and output stream', function(done) {
         var input = through();
         
         getReport({
             input: input
-        }, function(err, content) {
+        }, TESTDATA, function(err, content) {
             expect(err).to.be.instanceof(Error);
             expect(err).to.have.property('message').and.to.equal('no data provided');
             
@@ -98,7 +139,7 @@ describe('[report]', function() {
         
         getReport({
             input: input
-        }, function(err, content) {
+        }, TESTDATA, function(err, content) {
             expect(err).to.not.be.ok;
             
             expect(content).to.be.ok;
@@ -217,7 +258,7 @@ describe('[report]', function() {
             getReport({
                 input: input,
                 type: 'json'
-            }, function(err, content) {
+            }, TESTDATA, function(err, content) {
                 expect(err).to.not.be.ok;
                 expect(content).to.be.ok;
                 
@@ -257,7 +298,7 @@ describe('[report]', function() {
         it('provides readable json data for rate mode', function(done) {
             getReport({
                 type: 'json'
-            }, function(err, content) {
+            }, TESTDATA, function(err, content) {
                 expect(err).to.not.be.ok;
                 expect(content).to.be.ok;
                 
@@ -271,20 +312,35 @@ describe('[report]', function() {
             });
         });
         
-        it('provides readable json data for concurrent mode');
+        it('provides readable json data for concurrent mode', function(done) {
+            getReport({
+                type: 'json'
+            }, TESTERRDATA, function(err, content) {
+                expect(err).to.not.be.ok;
+                expect(content).to.be.ok;
+                
+                var jsonData = JSON.parse(content.toString());
+                
+                // match the ground-truthed json
+                // not sure how fragile this test actually is
+                expect(jsonData).to.deep.equal(TESTERRRESULTS);
+                
+                done();
+            });
+        });
         
-        it('aggregates error codes');
     });
+    
     describe('#text', function() {
+        function tableRegex() {
+            var str = [].slice.call(arguments).join('\\s+?');
+            return new RegExp(str);
+        }
+
         it('provides pretty text data for rate mode', function(done) {
-            function tableRegex() {
-                var str = [].slice.call(arguments).join('\\s+?');
-                return new RegExp(str);
-            }
-            
             getReport({
                 type: 'text'
-            }, function(err, content) {
+            }, TESTDATA, function(err, content) {
                 expect(err).to.not.be.ok;
                 expect(content).to.be.ok;
                 
@@ -304,7 +360,31 @@ describe('[report]', function() {
             });
         });
         
-        it('provides pretty text data for concurrent mode');
+        it('provides pretty text data for concurrent mode', function(done) {
+            getReport({
+                type: 'text'
+            }, TESTERRDATA, function(err, content) {
+                expect(err).to.not.be.ok;
+                expect(content).to.be.ok;
+                
+                var str = content.toString();
+               
+                // regular expressions to match the ground-truthed results
+                // not sure how fragile this test actually is
+
+                // We will only test the info that is different from TESTDATA
+                // data set
+                expect(str).to.match(tableRegex('Summary:', 'duration', 'rate', 'concurrent', 'total'));
+                expect(str).to.match(tableRegex('120ms', 'null', '3', '7'));
+                
+                expect(str).to.match(tableRegex('Successes:', '1'));
+                expect(str).to.match(tableRegex('Failure code 123:', '3'));
+                expect(str).to.match(tableRegex('Failure code 456:', '2'));
+                expect(str).to.match(tableRegex('Failure code 789:', '1'));
+                
+                done();
+            });
+        });
         
         it('prints test status breakdowns', function(done) {
             function tableRegex() {
@@ -314,7 +394,7 @@ describe('[report]', function() {
             
             getReport({
                 type: 'text'
-            }, function(err, content) {
+            }, TESTDATA, function(err, content) {
                 expect(err).to.not.be.ok;
                 expect(content).to.be.ok;
                 
@@ -327,13 +407,13 @@ describe('[report]', function() {
             });
         });
         
-        it('lists individual failure error codes when present');
     });
+
     describe('#plot', function() {
         it('provides an html page', function(done) {
             getReport({
                 type: 'plot'
-            }, function(err, content) {
+            }, TESTDATA, function(err, content) {
                 expect(err).to.not.be.ok;
                 expect(content).to.be.ok;
                 
