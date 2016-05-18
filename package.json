@@ -5,7 +5,7 @@
   "scripts": {
     "test": "mocha -R spec",
     "coverage": "istanbul cover --dir coverage node_modules/mocha/bin/_mocha",
-    "grandma": "node lib/cli.js"
+    "grandma": "node bin/_cli"
   },
   "author": "Kiril Vatev <vatev.1@gmail.com>",
   "license": "ISC",
