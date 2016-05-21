@@ -117,6 +117,29 @@ module.exports = {
 };
 ```
 
+### Failing a test
+
+In the `test` function, you can pass an error (or any truthy value) to the `done` callback to fail the test. Further, if the value you pass in has an `errorCode` property, that property will be used in order to group different failures together.
+
+_Note: if you do not provide an error code, `0` will be used when binning and reporting errors, so avoid using `0` as the provided error code._
+
+```javascript
+module.exports = {
+    test: function(done) {
+        if (someTest) {
+            // successfully complete the test
+            done();
+        } else if (someError) {
+            // fail the test with specific errorCode
+            done({ errorCode: 'someError' });
+        } else {
+            // fail the test for an unknow reason
+            done(new Error('stuff happened'));
+        }
+    }
+};
+```
+
 ### Custom metrics
 
 During the `test` function, you can report custom metrics using `this.start(name)` and `this.end(name)`. In cases where you may have multiple asynchronous tasks that you would like to report on, you can use custom metrics to time only portions of your tests. Here is an example:
