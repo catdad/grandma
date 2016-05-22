@@ -18,83 +18,172 @@ var fixtures = {
 };
 
 describe('[run]', function() {
-    it('runs tests in rate mode, outputting to a stream', function(done) {
-        this.timeout(1000 * 5);
-        
+    function increaseTimeout(that) {
+        that.timeout(1000 * 5);
+    }
+    
+    function runRealTest(opts, runCallback, outputCallback, done) {
         var output = through();
-        var opts = _.defaultsDeep({
-            output: output,
-            // we expect this to execute exactly twice
-            duration: '10ms',
-            rate: 1000 / 10 * 2
+        opts = _.defaultsDeep(opts, {
+            output: output
         }, fixtures);
         
         async.parallel([
             function(next) {
                 run(opts, function(err) {
-                    expect(err).to.not.be.ok;
+                    runCallback(err);
                     next();
                 });
             },
             function(next) {
                 output.pipe(es.wait(function(err, data) {
-                    expect(err).to.not.be.ok;
-                    
-                    var lines = data.toString().trim().split('\n').map(JSON.parse);
-                    
-                    expect(lines).to.be.an('array').and.to.have.length(3);
-                    
-                    var header = lines.shift();
-                    
-                    expect(header).to.have.property('type').and.to.equal('header');
-
+                    outputCallback(err, data);
                     next();
                 }));        
             }
         ], done);
+    }
+    
+    
+    it('runs tests in rate mode, outputting to a stream', function(done) {
+        increaseTimeout(this);
+        
+        runRealTest({
+            // we expect this to execute exactly twice
+            duration: '10ms',
+            rate: 1000 / 10 * 2
+        }, function onRun(err) {
+            expect(err).to.not.be.ok;
+        }, function onOutput(err, data) {
+            expect(err).to.not.be.ok;
+                    
+            var lines = data.toString().trim().split('\n').map(JSON.parse);
+
+            expect(lines).to.be.an('array').and.to.have.length(3);
+
+            var header = lines.shift();
+
+            expect(header).to.have.property('type').and.to.equal('header');
+        }, done);
     });
     
     it('runs tests in concurrency mode, outputting to a stream', function(done) {
-        this.timeout(1000 * 5);
+        increaseTimeout(this);
         
-        var fixtures = {
+        var opts = {
+            duration: 50,
+            concurrent: 2,
             tests: [{
                 path: path.resolve(__dirname, '../fixtures/test.concurrent.js'),
                 name: 'test.concurrent'
             }]
         };
         
-        var output = through();
-        var opts = _.defaultsDeep({
-            output: output,
-            // we expect this to execute exactly twice
-            duration: 50,
-            concurrent: 2
-        }, fixtures);
-        
-        async.parallel([
-            function(next) {
-                run(opts, function(err) {
-                    expect(err).to.not.be.ok;
-                    next();
-                });
-            },
-            function(next) {
-                output.pipe(es.wait(function(err, data) {
-                    expect(err).to.not.be.ok;
-                    
-                    var lines = data.toString().trim().split('\n').map(JSON.parse);
-                    
-                    expect(lines).to.be.an('array').and.to.have.length(5);
-                    
-                    var header = lines.shift();
-                    
-                    expect(header).to.have.property('type').and.to.equal('header');
+        runRealTest(opts, function onRun(err) {
+            expect(err).to.not.be.ok;
+        }, function onOutput(err, data) {
+            expect(err).to.not.be.ok;
 
-                    next();
-                }));        
-            }
-        ], done);
+            var lines = data.toString().trim().split('\n').map(JSON.parse);
+
+            expect(lines).to.be.an('array').and.to.have.length(5);
+
+            var header = lines.shift();
+
+            expect(header).to.have.property('type').and.to.equal('header');
+        }, done);
+    });
+    
+    it('does not stop for errors in beforeAll', function(done) {
+        increaseTimeout(this);
+        
+        var opts = {
+            duration: 10,
+            concurrent: 2,
+            tests: [{
+                path: path.resolve(__dirname, '../fixtures/errInBeforeAll.js'),
+                name: 'errInBeforeAll'
+            }]
+        };
+        
+        runRealTest(opts, function onRun(err) {
+            expect(err).to.not.be.ok;
+        }, function onOutput(err, data) {
+            expect(err).to.not.be.ok;
+
+            var lines = data.toString().trim().split('\n').map(JSON.parse);
+
+            expect(lines).to.be.an('array').and.to.have.length.of.at.least(2);
+        }, done);
+    });
+
+    it('does not stop for errors in beforeEach', function(done) {
+        increaseTimeout(this);
+        
+        var opts = {
+            duration: 10,
+            concurrent: 2,
+            tests: [{
+                path: path.resolve(__dirname, '../fixtures/errInBeforeEach.js'),
+                name: 'errInBeforeEach'
+            }]
+        };
+        
+        runRealTest(opts, function onRun(err) {
+            expect(err).to.not.be.ok;
+        }, function onOutput(err, data) {
+            expect(err).to.not.be.ok;
+
+            var lines = data.toString().trim().split('\n').map(JSON.parse);
+
+            expect(lines).to.be.an('array').and.to.have.length.of.at.least(2);
+        }, done);
+    });
+    
+    it('does not stop for errors in afterEach', function(done) {
+        increaseTimeout(this);
+        
+        var opts = {
+            duration: 10,
+            concurrent: 2,
+            tests: [{
+                path: path.resolve(__dirname, '../fixtures/errInAfterEach.js'),
+                name: 'errInAfterEach'
+            }]
+        };
+        
+        runRealTest(opts, function onRun(err) {
+            expect(err).to.not.be.ok;
+        }, function onOutput(err, data) {
+            expect(err).to.not.be.ok;
+
+            var lines = data.toString().trim().split('\n').map(JSON.parse);
+
+            expect(lines).to.be.an('array').and.to.have.length.of.at.least(2);
+        }, done);
+    });
+    
+    it('does not stop for errors in afterAll', function(done) {
+        increaseTimeout(this);
+        
+        var opts = {
+            duration: 10,
+            concurrent: 2,
+            tests: [{
+                path: path.resolve(__dirname, '../fixtures/errInAfterAll.js'),
+                name: 'errInAfterEach'
+            }]
+        };
+        
+        runRealTest(opts, function onRun(err) {
+            expect(err).to.not.be.ok;
+        }, function onOutput(err, data) {
+            expect(err).to.not.be.ok;
+
+            var lines = data.toString().trim().split('\n').map(JSON.parse);
+
+            expect(lines).to.be.an('array').and.to.have.length.of.at.least(2);
+        }, done);
     });
     
     function testError(opts, errorStr, done) {
