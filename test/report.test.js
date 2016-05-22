@@ -119,7 +119,7 @@ function getReport(options, data, callback) {
     input.end(data.map(JSON.stringify).join('\n'));
 }
 
-describe.only('[report]', function() {
+describe('[report]', function() {
     it('takes an input and output stream', function(done) {
         var input = through();
         
