@@ -1,6 +1,6 @@
 {
   "name": "grandma",
-  "version": "0.0.20",
+  "version": "0.0.21",
   "main": "index.js",
   "scripts": {
     "test": "mocha -R spec",
