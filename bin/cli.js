@@ -139,10 +139,20 @@ var commands = {
         initWithErrors(function(opts) {
             opts.output = getDestinationStream(opts);
 
-            opts.tests = _.filter(opts.tests, function(test) {
+            var test = _.find(opts.tests, function(test) {
                 return test.name === testFilter;
             });
+            
+            if (!test) {
+                return exitWithError(util.format(
+                    '\n"%s" %s\n%s',
+                    testFilter, 'is not a known test. To see a list of tests, run:',
+                    'grandma list'
+                ));
+            }
 
+            opts.test = test;
+            
             grandma.run(opts, onDone);
         });
     },
