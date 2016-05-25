@@ -186,6 +186,65 @@ describe('[run]', function() {
         }, done);
     });
     
+    it('errors if the test file does not exist', function(done) {
+        var FILE = 'non-existent-test-file-' + Math.random().toString().replace(/\./g, '') + '.js';
+        
+        var opts = {
+            duration: 10,
+            concurrent: 2,
+            tests: [{
+                path: path.resolve(__dirname, '../fixtures', FILE),
+                name: 'nonexistent'
+            }]
+        };
+        
+        runRealTest(opts, function onRun(err) {
+            expect(err).to.have.property('message')
+                .and.to.match(/Cannot find module/);
+        }, function onOutput(err, data) {
+            expect(err).to.not.be.ok;
+            expect(data.toString()).to.equal('');
+        }, done);
+    });
+    
+    it('errors if the test file throws immediately', function(done) {
+        var opts = {
+            duration: 10,
+            concurrent: 2,
+            tests: [{
+                path: path.resolve(__dirname, '../fixtures/throwsOnRequire.js'),
+                name: 'throwsOnRequire'
+            }]
+        };
+        
+        runRealTest(opts, function onRun(err) {
+            expect(err).to.have.property('message')
+                .and.to.equal('throws on require');
+        }, function onOutput(err, data) {
+            expect(err).to.not.be.ok;
+            expect(data.toString()).to.equal('');
+        }, done);
+    });
+    
+    it('errors if the test file does not have a "test" method', function(done) {
+        var opts = {
+            duration: 10,
+            concurrent: 2,
+            tests: [{
+                path: path.resolve(__dirname, '../fixtures/noTestMethod.js'),
+                name: 'noTestMethod'
+            }]
+        };
+        
+        runRealTest(opts, function onRun(err) {
+            expect(err).to.have.property('message')
+                .and.to.match(/no test method was found in/);
+        }, function onOutput(err, data) {
+            expect(err).to.not.be.ok;
+            expect(data.toString()).to.equal('');
+        }, done);
+    });
+    
     function testError(opts, errorStr, done) {
         // all errors must be returned asynchronously
         var isAsync = false;
