@@ -12,7 +12,8 @@ This document is currently meant for me to record the current or desired API, an
 
 ```javascript
 var grandma = require('grandma');
-grandma.run();
+
+grandma.run(/* TODO */);
 ```
 
 ## Report
@@ -50,6 +51,7 @@ var input = fs.createReadStream('/path/to/a/grandma.log');
 var output = fs.createWriteStream('/path/to/a/report.html');
 
 var grandma = require('grandma');
+
 grandma.report({
     input: input,
     output: output,
@@ -65,5 +67,6 @@ _Note: it really seems like this should not be an API. All it does is take an ar
 
 ```javascript
 var grandma = require('grandma');
+
 grandma.list(/* TODO */);
 ```
