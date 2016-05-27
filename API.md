@@ -31,6 +31,7 @@ var input = fs.createReadStream('/path/to/a/grandma.log');
 var output = process.stdout; // print to the console
 
 var grandma = require('grandma');
+
 grandma.report({
     input: input,
     output: output
