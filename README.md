@@ -75,9 +75,9 @@ The following options are available as flags (some are only relevant for the `ru
 - `threads` - (run only, defaults to 1) The number of threads to use to run the tests. Note that this can be any integer, although there is not much benefit to running more threads than CPU cores available.
 - `out` - (run and list) The name of an output file to write the results to. Defaults to writing to standard output. You can also specify `stdout` if you wish to write to standard output explicitly.
 - `type` - (report only) The type of report to create. Available values are:
-    - `text` - human readable text summary of the results
-    - `json` - summary of the results in json format
-    - `plot` - an HTML page containing a plot of the results
+  - `text` - human readable text summary of the results
+  - `json` - summary of the results in json format
+  - `plot` - an HTML page containing a plot of the results
 
 ## Test files
 
