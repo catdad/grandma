@@ -93,6 +93,41 @@ describe('[run]', function() {
         }, done);
     });
     
+    it('runs tests in multiple threads', function(done) {
+        increaseTimeout(this);
+        
+        var opts = {
+            duration: '10ms',
+            rate: 1000 / 10 * 4,
+            test: {
+                path: path.resolve(__dirname, '../fixtures/test.small.js'),
+                name: 'test.small'
+            },
+            threads: 2
+        };
+        
+        runRealTest(opts, function onRun(err) {
+            expect(err).to.not.be.ok;
+        }, function onOutput(err, data) {
+            expect(err).to.not.be.ok;
+                    
+            var lines = data.toString().trim().split('\n').map(JSON.parse);
+
+            var header = lines.shift();
+            expect(header).to.have.property('type').and.to.equal('header');
+
+            var threadCounts = lines.reduce(function(a, b) {
+                a[b.id] += 1;
+                return a;
+            }, { '0': 0, '1': 0 });
+            
+            expect(threadCounts).to.have.all.keys(['0', '1']);
+            expect(threadCounts).to.have.property('0').and.to.equal(2);
+            expect(threadCounts).to.have.property('1').and.to.equal(2);
+            
+        }, done);
+    });
+    
     it('does not stop for errors in beforeAll', function(done) {
         increaseTimeout(this);
         
