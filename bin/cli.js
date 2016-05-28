@@ -163,20 +163,19 @@ var commands = {
         }
 
         initWithErrors(function(opts) {
-            grandma.list(opts, function(err, list) {
-                if (err) {
-                    return onDone(err.message);
-                }
-
-                var str = util.format(
-                    '\n%s\n\n%s\n\n%s\n',
-                    'The following tests are available:',
-                    list.map(leftPad).join('\n'),
-                    'Run as: grandma run <testname> [options]'
-                );
-
-                onDone(undefined, str);
+            
+            var list = opts.tests.map(function(test) {
+                return leftPad(test.name);
             });
+            
+            var str = util.format(
+                '\n%s\n\n%s\n\n%s\n',
+                'The following tests are available:',
+                list.join('\n'),
+                'Run as: grandma run <testname> [options]'
+            );
+
+            onDone(undefined, str);
         });
     },
     report: function report() {
