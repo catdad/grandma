@@ -51,13 +51,13 @@ var grandma = require('grandma');
 var output = path.resolve('path/to/report.log');
 
 var options = {
-  duration: '1d',
-  concurrent: 10
-  output: output,
-  test: {
-    path: path.resolve('path/to/mytest.js'),
-    name: 'mytest'
-  }
+    duration: '1d',
+    concurrent: 10
+    output: output,
+    test: {
+        path: path.resolve('path/to/mytest.js'),
+        name: 'mytest'
+    }
 };
 
 grandma.run(options, callback);
