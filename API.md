@@ -29,13 +29,13 @@ var grandma = require('grandma');
 var output = path.resolve('path/to/report.log');
 
 var options = {
-  duration: '5m',
-  rate: 20,
-  output: output,
-  test: {
-    path: path.resolve('path/to/mytest.js'),
-    name: 'mytest'
-  }
+    duration: '5m',
+    rate: 20,
+    output: output,
+    test: {
+        path: path.resolve('path/to/mytest.js'),
+        name: 'mytest'
+    }
 };
 
 grandma.run(options, callback);
@@ -107,14 +107,4 @@ grandma.report({
 }, function(err) {
     // ...
 });
-```
-
-## List
-
-_Note: it really seems like this should not be an API. All it does is take an array of objects and returns an array of the `name` property of those objects. That's stupid. It really needs to just be a CLI command._
-
-```javascript
-var grandma = require('grandma');
-
-grandma.list(/* TODO */);
 ```
