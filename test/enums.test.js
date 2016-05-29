@@ -27,7 +27,7 @@ describe('[enums]', function() {
         });
     });
     
-    describe('#fromValue', function() {
+    describe.only('#fromValue', function() {
         it('is a non-enumerable method', function() {
             var e = Enum(ENUM);
             
@@ -47,6 +47,17 @@ describe('[enums]', function() {
             var e = Enum(ENUM);
             
             expect(e.fromValue('apple' + Math.random())).to.equal(void 0);
+        });
+        
+        it('returns undefined if more than one key have the same value', function() {
+            var clone = _.merge({
+                peach: 'fruit'
+            }, ENUM);
+            
+            var e = Enum(clone);
+            
+            expect(e.fromValue('fruit')).to.equal(void 0);
+            
         });
     });
 });
