@@ -4,7 +4,7 @@
   "main": "index.js",
   "scripts": {
     "test": "mocha -R spec",
-    "coverage": "istanbul cover --dir coverage node_modules/mocha/bin/_mocha",
+    "coverage": "istanbul cover --dir coverage node_modules/mocha/bin/_mocha -x fixtures/**",
     "grandma": "node bin/_cli"
   },
   "author": "Kiril Vatev <vatev.1@gmail.com>",
