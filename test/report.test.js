@@ -446,6 +446,14 @@ describe('[report]', function() {
                 input: through()
             }, 'no output stream defined', done);
         });
+        it('receives an invalid report type', function(done) {
+            var type = Math.random().toString(36);
+            getError({
+                input: through(),
+                output: through(),
+                type: type
+            }, type + ' is not a valid report type', done);
+        });
         it('encounters a read error on the input stream', function(done) {
             var input = through();
             var ERROR = new Error('flapjacks');
