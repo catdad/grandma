@@ -27,7 +27,7 @@ describe('[enums]', function() {
         });
     });
     
-    describe.only('#fromValue', function() {
+    describe('#fromValue', function() {
         it('is a non-enumerable method', function() {
             var e = Enum(ENUM);
             
