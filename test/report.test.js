@@ -7,12 +7,14 @@ var _ = require('lodash');
 
 var report = require('../lib/report.js');
 
+/* eslint-disable quotes, key-spacing, comma-spacing */
+
 // Test data using rate mode
 var TESTDATA = [
     {"type":"header","epoch":1460127721611,"duration":30000,"rate":20,"targetCount":600},
     {"type":"report","report":{"fullTest":{"start":0,"end":19.801774,"duration":19.801774,"status":"success"},"one":{"start":0.14821399999999585,"end":2.897864999999996,"duration":2.749651,"status":"success"},"two":{"start":0.45399899999999604,"end":6.853753000000005,"duration":6.399754000000009,"status":"success"}},"id":0},
     {"type":"report","report":{"fullTest":{"start":47.191123999999995,"end":61.882996999999996,"duration":14.691873000000001,"status":"success"},"one":{"start":47.213159999999995,"end":49.951642,"duration":2.7384820000000047,"status":"success"},"two":{"start":47.56996,"end":51.722057,"duration":4.152096999999998,"status":"success"}},"id":0},
-    {"type":"report","report":{"fullTest":{"start":97.46002200000001,"end":111.861504,"duration":14.401481999999987,"status":"success"},"one":{"start":97.46877600000002,"end":99.933471,"duration":2.4646949999999777,"status":"success"},"two":{"start":97.493529,"end":101.74916300000001,"duration":4.255634000000015,"status":"success"}},"id":0},
+    {"type":"report","report":{"fullTest":{"start":97.46002200000001,"end":111.861504,"duration":14.401481999999987,"status":"success"},"one":{"start":97.46877600000002,"end":99.933471,"duration":2.4646949999999777,"status":"success"},"two":{"start":97.493529,"end":101.74916300000001,"duration":4.255634000000015,"status":"success"}},"id":0}
 ];
 
 // Test data using concurrent mode with errors
@@ -28,42 +30,42 @@ var TESTERRDATA = [
 ];
 
 var TESTRESULTS = {
-  "info": {
-    "count": 3,
-    "targetCount": 600,
-    "duration": 30000,
-    "rate": 20,
-    "concurrent": null
-  },
-  "breakdown": {
-    "successes": 3
-  },
-  "latencies": {
-    "fullTest": {
-      "50": 14.691873000000001,
-      "95": 19.801774,
-      "99": 19.801774,
-      "mean": 16.29837633333333,
-      "min": 14.401481999999987,
-      "max": 19.801774
+    "info": {
+        "count": 3,
+        "targetCount": 600,
+        "duration": 30000,
+        "rate": 20,
+        "concurrent": null
     },
-    "one": {
-      "50": 2.7384820000000047,
-      "95": 2.749651,
-      "99": 2.749651,
-      "mean": 2.6509426666666607,
-      "min": 2.4646949999999777,
-      "max": 2.749651
+    "breakdown": {
+        "successes": 3
     },
-    "two": {
-      "50": 4.255634000000015,
-      "95": 6.399754000000009,
-      "99": 6.399754000000009,
-      "mean": 4.93582833333334,
-      "min": 4.152096999999998,
-      "max": 6.399754000000009
+    "latencies": {
+        "fullTest": {
+            "50": 14.691873000000001,
+            "95": 19.801774,
+            "99": 19.801774,
+            "mean": 16.29837633333333,
+            "min": 14.401481999999987,
+            "max": 19.801774
+        },
+        "one": {
+            "50": 2.7384820000000047,
+            "95": 2.749651,
+            "99": 2.749651,
+            "mean": 2.6509426666666607,
+            "min": 2.4646949999999777,
+            "max": 2.749651
+        },
+        "two": {
+            "50": 4.255634000000015,
+            "95": 6.399754000000009,
+            "99": 6.399754000000009,
+            "mean": 4.93582833333334,
+            "min": 4.152096999999998,
+            "max": 6.399754000000009
+        }
     }
-  }
 };
 
 var TESTERRRESULTS = {
@@ -93,6 +95,8 @@ var TESTERRRESULTS = {
         }
     }
 };
+
+/* eslint-enable quotes, key-spacing, comma-spacing */
 
 function getReport(options, data, callback) {
     var cb = _.once(callback);
@@ -168,8 +172,6 @@ describe('[report]', function() {
         };
     
         function getMergedHeaders(one, two) {
-            var input = through();
-            
             one = _.defaults(one, validHeader);
             two = _.defaults(two, validHeader);
             
@@ -178,7 +180,7 @@ describe('[report]', function() {
         
         it('when given a smaller epoch first', function() {
             var header = getMergedHeaders({
-                epoch: 2,
+                epoch: 2
             }, {
                 epoch: 5
             });
@@ -188,7 +190,7 @@ describe('[report]', function() {
         });
         it('when given a larger epoch first', function() {
             var header = getMergedHeaders({
-                epoch: 10,
+                epoch: 10
             }, {
                 epoch: 6
             });
@@ -229,7 +231,7 @@ describe('[report]', function() {
                 rate: 8
             });
             
-            expect(header.rate).to.deep.equal([4,8]);
+            expect(header.rate).to.deep.equal([4, 8]);
         });
         
         it('returns all concurrent values in an array', function() {
@@ -239,7 +241,7 @@ describe('[report]', function() {
                 concurrent: 12
             });
             
-            expect(header.concurrent).to.deep.equal([5,12]);
+            expect(header.concurrent).to.deep.equal([5, 12]);
         });
         
         it('adds all target counts', function() {
@@ -308,7 +310,7 @@ describe('[report]', function() {
                 expect(jsonData).to.deep.equal(TESTRESULTS);
                 
                 done();
-            });    
+            });
         });
         
         it('provides readable json data for rate mode', function(done) {

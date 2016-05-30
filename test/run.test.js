@@ -353,7 +353,7 @@ describe('[run]', function() {
                 output: through(),
                 duration: '1s'
             }, fixtures), 'either options.rate or options.concurrent is required', done);
-        });    
+        });
     }());
     
 });

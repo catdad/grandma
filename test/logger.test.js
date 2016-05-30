@@ -1,7 +1,5 @@
 /* eslint-env mocha */
 
-var util = require('util');
-
 var expect = require('chai').expect;
 var _ = require('lodash');
 
