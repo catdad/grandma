@@ -1,4 +1,4 @@
-/* jshint node: true, mocha: true, expr: true */
+/* eslint-env mocha */
 
 var util = require('util');
 

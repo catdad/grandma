@@ -1,4 +1,4 @@
-/* jshint node: true, mocha: true, expr: true */
+/* eslint-env mocha */
 
 var _ = require('lodash');
 var Enum = require('../lib/enums.js');
