@@ -1,4 +1,4 @@
-/* jshint node: true, mocha: true, expr: true */
+/* eslint-env mocha */
 
 var expect = require('chai').expect;
 var stats = require('../lib/stats.js');
@@ -47,17 +47,17 @@ describe('[stats]', function() {
         });
         
         it('calculates the median of an even number of items', function() {
-            expect(stats.median([0,2,3,4])).to.equal(2.5);
+            expect(stats.median([0, 2, 3, 4])).to.equal(2.5);
         });
         it('calculates the median of an odd number of items', function() {
-            expect(stats.median([1,8,12])).to.equal(8);
+            expect(stats.median([1, 8, 12])).to.equal(8);
         });
         
         validationTests(stats.median);
     });
     
     describe('#percentile', function() {
-        var data = [1,3,4,5,7,9,11,13,14,15,17,22,25,26,27,29,30];
+        var data = [1, 3, 4, 5, 7, 9, 11, 13, 14, 15, 17, 22, 25, 26, 27, 29, 30];
         
         it('returns a number', function() {
             expect(stats.percentile([2], 50)).to.be.a('number');
@@ -65,13 +65,13 @@ describe('[stats]', function() {
         
         [
             // ground-truthed data
-            [0,1],
-            [1,1],
-            [10,3],
-            [50,14],
-            [90,29],
-            [99,30],
-            [100,30]
+            [0, 1],
+            [1, 1],
+            [10, 3],
+            [50, 14],
+            [90, 29],
+            [99, 30],
+            [100, 30]
         ].forEach(function(n) {
             it('calculates the nth percentile, where n is ' + n[0], function() {
                 expect(stats.percentile(data, n[0])).to.be.a('number').and.to.equal(n[1]);
@@ -84,10 +84,10 @@ describe('[stats]', function() {
         
         function validateInvalidN(n, error) {
             function guilty() {
-                    stats.percentile(data, n);
-                }
+                stats.percentile(data, n);
+            }
 
-                expect(guilty).to.throw(error);
+            expect(guilty).to.throw(error);
         }
         
         [-1, 101].forEach(function(n) {

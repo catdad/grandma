@@ -1,4 +1,5 @@
-/* jshint node: true, mocha: true, expr: true */
+/* eslint-env mocha */
+/* eslint-disable no-unused-expressions */
 
 var path = require('path');
 
@@ -32,7 +33,7 @@ describe('[run]', function() {
                 output.pipe(es.wait(function(err, data) {
                     outputCallback(err, data);
                     next();
-                }));        
+                }));
             }
         ], done);
     }
@@ -353,7 +354,7 @@ describe('[run]', function() {
                 output: through(),
                 duration: '1s'
             }, fixtures), 'either options.rate or options.concurrent is required', done);
-        });    
-    })();
+        });
+    }());
     
 });

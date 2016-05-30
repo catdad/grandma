@@ -1,6 +1,4 @@
-/* jshint node: true, mocha: true, expr: true */
-
-var util = require('util');
+/* eslint-env mocha */
 
 var expect = require('chai').expect;
 var _ = require('lodash');

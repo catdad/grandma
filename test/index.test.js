@@ -1,4 +1,4 @@
-/* jshint node: true, mocha: true, expr: true */
+/* eslint-env mocha */
 
 var expect = require('chai').expect;
 var index = require('../index');

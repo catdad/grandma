@@ -1,5 +1,4 @@
 #!/usr/bin/env node
-/* jshint node: true */
 
 var NAME = 'grandma';
 
@@ -19,7 +18,7 @@ process.title = NAME;
 
 function exitWithError(msg) {
     process.stderr.write(msg + '\n\n');
-    process.exit(1);            
+    process.exit(1);
 }
 
 function noTestsFoundErr(directory) {
@@ -27,7 +26,7 @@ function noTestsFoundErr(directory) {
         '\n%s\n%s',
         'No tests found.',
         directory ?
-            'Try setting the directory or make sure there are tests in ' + directory + '.' : 
+            'Try setting the directory or make sure there are tests in ' + directory + '.' :
             'Try setting the directory.'
     ));
 }
@@ -106,7 +105,7 @@ function initWithErrors(callback) {
 
 function onDone(err, data) {
     if (err) {
-        return exitWithError(err.message);   
+        return exitWithError(err.message);
     }
 
     if (data && _.isString(data)) {
