@@ -296,6 +296,21 @@ describe('[report]', function() {
     });
     
     describe('#json', function() {
+        it('is the default reporter when type is not defined', function(done) {
+            getReport({}, TESTDATA, function(err, content) {
+                expect(err).to.not.be.ok;
+                expect(content).to.be.ok;
+                
+                var jsonData = JSON.parse(content.toString());
+                
+                // match the ground-truthed json
+                // not sure how fragile this test actually is
+                expect(jsonData).to.deep.equal(TESTRESULTS);
+                
+                done();
+            });    
+        });
+        
         it('provides readable json data for rate mode', function(done) {
             getReport({
                 type: 'json'
