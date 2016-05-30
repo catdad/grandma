@@ -511,10 +511,16 @@ describe('[report]', function() {
                 output: through()
             }, 'no input stream defined', done);
         });
-        it('does not receive an output stream (for non-json reports)', function(done) {
+        it('does not receive an output stream, for text report', function(done) {
             getError({
                 input: through(),
                 type: 'text'
+            }, 'no output stream defined', done);
+        });
+        it('does not receive an output stream, for plot report', function(done) {
+            getError({
+                input: through(),
+                type: 'plot'
             }, 'no output stream defined', done);
         });
         it('receives an invalid report type', function(done) {
