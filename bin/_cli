@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-/* jshint node: true */
+/* eslint-disable no-console */
 
 var path = require('path');
 
