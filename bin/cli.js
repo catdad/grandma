@@ -1,5 +1,4 @@
 #!/usr/bin/env node
-/* jshint node: true */
 
 var NAME = 'grandma';
 
