@@ -189,6 +189,9 @@ var commands = {
 
         opts.input = getInputStream(glob);
         opts.output = getDestinationStream(opts);
+        
+        // the default type for the CLI is text
+        opts.type = opts.type || 'text';
 
         grandma.report(opts, onDone);
     },
