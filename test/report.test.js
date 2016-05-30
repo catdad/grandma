@@ -329,6 +329,53 @@ describe('[report]', function() {
             });
         });
         
+        it('provides an object as the second callback parameter when successful', function(done) {
+            var input = through();
+            var output = through();
+
+            var opts = {
+                input: input,
+                output: output,
+                type: 'json'
+            };
+
+            var streamContent;
+            var jsonObj;
+            
+            function onDone() {
+                if (!streamContent || !jsonObj) {
+                    return;
+                }
+                
+                expect(jsonObj).to.deep.equal(streamContent);
+                
+                done();
+            }
+            
+            report(opts, function(err, obj) {
+                if (err) {
+                    throw err;
+                }
+                
+                jsonObj = obj;
+                onDone();
+            });
+
+            // listen to output on the stream inside opts
+            opts.output.pipe(es.wait(function(err, content) {
+                if (err) {
+                    throw err;
+                }
+                
+                streamContent = JSON.parse(content.toString());
+                onDone();
+            }));
+
+            // write to original input, in case the user has decided
+            // to overwrite the opt with their own
+            input.end(TESTDATA.map(JSON.stringify).join('\n'));
+        });
+        
     });
     
     describe('#text', function() {
