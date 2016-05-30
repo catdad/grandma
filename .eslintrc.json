@@ -5,7 +5,7 @@
   },
   "globals": {},
   "rules": {
-    "complexity": ["error", 15],
+    "complexity": ["error", 10],
     "no-bitwise": "error",
     "camelcase": "off",
     "curly": "error",
