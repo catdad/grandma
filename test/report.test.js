@@ -138,7 +138,8 @@ describe('[report]', function() {
         var input = through();
         
         getReport({
-            input: input
+            input: input,
+            type: 'text'
         }, TESTDATA, function(err, content) {
             expect(err).to.not.be.ok;
             
@@ -376,6 +377,28 @@ describe('[report]', function() {
             input.end(TESTDATA.map(JSON.stringify).join('\n'));
         });
         
+        it('does not require an output stream', function(done) {
+            var input = through();
+
+            var opts = {
+                input: input,
+                type: 'json'
+            };
+
+            report(opts, function(err, obj) {
+                if (err) {
+                    throw err;
+                }
+                
+                expect(obj).to.be.an('object');
+                done();
+            });
+
+            // write to original input, in case the user has decided
+            // to overwrite the opt with their own
+            input.end(TESTDATA.map(JSON.stringify).join('\n'));
+        });
+        
     });
     
     describe('#text', function() {
@@ -488,9 +511,10 @@ describe('[report]', function() {
                 output: through()
             }, 'no input stream defined', done);
         });
-        it('does not receive an output stream', function(done) {
+        it('does not receive an output stream (for non-json reports)', function(done) {
             getError({
-                input: through()
+                input: through(),
+                type: 'text'
             }, 'no output stream defined', done);
         });
         it('receives an invalid report type', function(done) {
