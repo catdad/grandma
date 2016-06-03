@@ -1,6 +1,10 @@
 # grandma
 
-[![Build][1]][2] [![Code Climate][5]][6] [![Downloads][7]][8] [![Version][9]][8] [![Dependency Status](https://david-dm.org/catdad/grandma.svg)](https://david-dm.org/catdad/grandma)
+[![Build][1]][2]
+[![Code Climate][5]][6]
+[![Downloads][7]][8]
+[![Version][9]][8]
+[![Dependency Status][10]][11]
 
 [1]: https://travis-ci.org/catdad/grandma.svg?branch=master
 [2]: https://travis-ci.org/catdad/grandma
@@ -11,6 +15,9 @@
 [7]: https://img.shields.io/npm/dm/grandma.svg
 [8]: https://www.npmjs.com/package/grandma
 [9]: https://img.shields.io/npm/v/grandma.svg
+
+[10]: https://david-dm.org/catdad/grandma.svg
+[11]: https://david-dm.org/catdad/grandma
 
 This is a load testing library and CLI tool. It is inspired by the good parts of [Vegeta](https://github.com/tsenart/vegeta) and [JMeter](http://jmeter.apache.org/), but hopefully leaves out the bad parts of both.
 
