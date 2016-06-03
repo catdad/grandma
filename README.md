@@ -1,6 +1,6 @@
 # grandma
 
-[![Build][1]][2] [![Code Climate][5]][6] [![Downloads][7]][8] [![Version][9]][8]
+[![Build][1]][2] [![Code Climate][5]][6] [![Downloads][7]][8] [![Version][9]][8] [![Dependency Status](https://david-dm.org/catdad/grandma.svg)](https://david-dm.org/catdad/grandma)
 
 [1]: https://travis-ci.org/catdad/grandma.svg?branch=master
 [2]: https://travis-ci.org/catdad/grandma
