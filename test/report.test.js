@@ -156,7 +156,6 @@ describe('[report]', function() {
         
         input.end(TESTDATA.map(JSON.stringify).join('\n'));
     });
-    it('writes results to the output stream');
     
     describe('merges header data', function() {
         
