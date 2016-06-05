@@ -5,7 +5,12 @@ var stats = require('../lib/stats.js');
 
 describe('[stats]', function() {
     it('has all expected keys', function() {
-        expect(stats).to.have.all.keys(['mean', 'median', 'percentile']);
+        expect(stats).to.have.all.keys([
+            'mean',
+            'median',
+            'percentile',
+            'iqr'
+        ]);
     });
     
     function validationTests(func) {
