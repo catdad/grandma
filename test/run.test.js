@@ -242,9 +242,7 @@ describe('[run]', function() {
         }, done);
     });
     
-    // This test passes on Windows running under istanbul, but throws
-    // on Linux, when the file is required for some reason.
-    it.skip('errors if the test file throws immediately', function(done) {
+    it('errors if the test file throws immediately', function(done) {
         var opts = {
             duration: 10,
             concurrent: 2,
