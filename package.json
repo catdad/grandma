@@ -21,6 +21,7 @@
     "glob-filestream": "^0.2.0",
     "is-gzip-stream": "^0.1.0",
     "lodash": "^4.6.1",
+    "plain-text-box-plot": "0.0.1",
     "rc": "^1.1.6",
     "text-table": "^0.2.0",
     "through2": "^2.0.1",
