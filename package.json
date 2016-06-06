@@ -4,7 +4,7 @@
   "main": "index.js",
   "scripts": {
     "test": "mocha -R spec",
-    "coverage": "istanbul cover --dir coverage node_modules/mocha/bin/_mocha -x fixtures/**",
+    "coverage": "istanbul cover --dir coverage node_modules/mocha/bin/_mocha -x \"fixtures/**\"",
     "grandma": "node bin/_cli",
     "eslint": "eslint",
     "lint": "eslint index.js lib/** test/** bin/**"
