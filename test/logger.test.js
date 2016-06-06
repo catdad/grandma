@@ -19,7 +19,9 @@ describe('[logger]', function() {
         var optName = options.optName;
         var envName = options.envName;
         
-        describe('#' + name, function() {
+        var description = options.description || ('#' + name);
+        
+        describe(description, function() {
             function testLog(opts, args, expectedData) {
                 var stream = mockStream(function(data) {
                     expect(data).to.equal(expectedData + '\n');
@@ -42,7 +44,7 @@ describe('[logger]', function() {
 
                 testLog(opts, [DATA], DATA);
             });
-
+            
             it('formats strings', function() {
                 var DATA = 'monkeys';
 
@@ -60,6 +62,16 @@ describe('[logger]', function() {
                 testLog({}, [DATA], DATA);
 
                 delete process.env[envName];
+            });
+
+            it('can be enabled with the "debug" flag without the specific level flag', function() {
+                var DATA = 'monkeys';
+                
+                var opts = {
+                    debug: true
+                };
+
+                testLog(opts, [DATA], DATA);
             });
 
             it('queues writes synchronously', function() {
