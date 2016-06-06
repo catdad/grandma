@@ -1,1 +1,1 @@
-throw new Error('throws on require');
+// throw new Error('throws on require');
