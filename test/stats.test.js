@@ -107,4 +107,26 @@ describe('[stats]', function() {
             });
         });
     });
+    
+    describe('#iqr', function() {
+        var data = [1, 2, 3, 4, 5, 6, 7];
+        
+        it('returns all 5 iqr values', function() {
+            expect(stats.iqr(data)).to.have.all.keys([
+                'min', 'q1', 'q2', 'q3', 'max'
+            ]);
+        });
+        
+        it('returns the expected values', function() {
+            expect(stats.iqr(data)).to.deep.equal({
+                min: 1,
+                max: 7,
+                q1: stats.percentile(data, 25),
+                q2: 4, // mdeian
+                q3: stats.percentile(data, 75)
+            });
+            
+            
+        });
+    });
 });
