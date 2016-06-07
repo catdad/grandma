@@ -125,8 +125,6 @@ describe('[stats]', function() {
                 q2: 4, // mdeian
                 q3: stats.percentile(data, 75)
             });
-            
-            
         });
     });
 });
