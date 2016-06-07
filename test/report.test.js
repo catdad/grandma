@@ -526,6 +526,52 @@ describe('[report]', function() {
         });
     });
     
+    describe('#box', function() {
+        // Since we are using a lib for this, we really only need to test
+        // the relevant parts, namely that it will read the input and
+        // write the box plot to the output.
+        
+        // copied from the unit tests of the lib
+        function isValidBoxPlot(str) {
+            expect(str).to.be.a('string');
+
+            var strArr = str.split('\n');
+
+            expect(strArr).to.have.lengthOf(3);
+
+            var str1 = strArr[0];
+            var str2 = strArr[1];
+            var str3 = strArr[2];
+
+            expect(str1).to.match(/^\s{1,}\+\-{0,}\+\-{0,}\+\s{1,}$/);
+            expect(str2).to.match(/^\|\-{0,}\|\s{0,}\|\s{0,}\|\-{0,}\|\s{0,}$/);
+
+            // the top and bottom of the box plot are the same string
+            expect(str3).to.equal(str1);
+        }
+        
+        it('generated a box plot in plain text', function(done) {
+            getReport({
+                type: 'box'
+            }, TESTDATA, function(err, content) {
+                expect(err).to.not.be.ok;
+                expect(content).to.be.ok;
+                
+                var str = content.toString();
+                
+                // grandma adds a new line after the original box plot,
+                // so we should remove it here:
+                var strArr = str.split('\n');
+                expect(strArr).to.have.lengthOf(4);
+                strArr.pop();
+                
+                isValidBoxPlot(strArr.join('\n'));
+                
+                done();
+            });
+        });
+    });
+    
     describe('errors when the reporter', function() {
         function getError(opts, errString, done) {
             report(opts, function(err) {
