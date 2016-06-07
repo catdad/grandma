@@ -136,6 +136,19 @@ function getReport(options, data, callback) {
     input.end(data.map(JSON.stringify).join('\n'));
 }
 
+function testNoData(reporter, done) {
+    it('errors if no data is written to the input stream', function(done) {
+        getReport({
+            type: reporter
+        }, [], function(err, content) {
+            expect(err).to.be.instanceof(Error);
+            expect(err).to.have.property('message').and.to.equal('no data provided');
+
+            done();
+        });
+    });
+}
+
 describe('[report]', function() {
     it('takes an input and output stream', function(done) {
         var input = through();
@@ -428,6 +441,8 @@ describe('[report]', function() {
             input.end(TESTDATA.map(JSON.stringify).join('\n'));
         });
         
+        testNoData('json');
+        
     });
     
     describe('#text', function() {
@@ -506,6 +521,8 @@ describe('[report]', function() {
             });
         });
         
+        testNoData('text');
+        
     });
 
     describe('#plot', function() {
@@ -570,6 +587,8 @@ describe('[report]', function() {
                 done();
             });
         });
+        
+        testNoData('box');
     });
     
     describe('errors when the reporter', function() {
