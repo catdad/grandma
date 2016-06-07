@@ -442,7 +442,6 @@ describe('[report]', function() {
         });
         
         testNoData('json');
-        
     });
     
     describe('#text', function() {
@@ -522,7 +521,6 @@ describe('[report]', function() {
         });
         
         testNoData('text');
-        
     });
 
     describe('#plot', function() {
@@ -541,6 +539,8 @@ describe('[report]', function() {
                 done();
             });
         });
+        
+        testNoData('plot');
     });
     
     describe('#box', function() {
