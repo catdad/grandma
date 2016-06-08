@@ -187,7 +187,9 @@ var commands = {
 
         var opts = _.clone(argv);
         
-        opts.width = ttyHelper.width;
+        opts.box = {
+            width: ttyHelper.width
+        };
 
         opts.input = getInputStream(glob);
         opts.output = getDestinationStream(opts);
