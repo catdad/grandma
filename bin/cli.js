@@ -12,6 +12,7 @@ var rc = require('rc');
 var globfile = require('glob-filestream');
 
 var grandma = require('../index');
+var ttyHelper = require('../lib/tty-helper.js');
 var argv = {};
 
 process.title = NAME;
@@ -185,6 +186,8 @@ var commands = {
         }
 
         var opts = _.clone(argv);
+        
+        opts.width = ttyHelper.width;
 
         opts.input = getInputStream(glob);
         opts.output = getDestinationStream(opts);
