@@ -567,6 +567,19 @@ describe('[report]', function() {
             expect(str3).to.equal(str1);
         }
         
+        function testWidth(content, width) {
+            var str = content.toString();
+                
+            var line = str.split('\n').shift();
+
+            // Based on the content, the width may actualy be a bit
+            // less than the set maximum, but it should never be
+            // more than that.
+            expect(line).to.have.property('length')
+                .and.to.be.at.most(width)
+                .and.to.be.at.least(width - 2);
+        }
+        
         it('generated a box plot in plain text', function(done) {
             getReport({
                 type: 'box'
@@ -583,6 +596,36 @@ describe('[report]', function() {
                 strArr.pop();
                 
                 isValidBoxPlot(strArr.join('\n'));
+                
+                done();
+            });
+        });
+        
+        it('is 75 characters wide by default', function(done) {
+            getReport({
+                type: 'box'
+            }, TESTDATA, function(err, content) {
+                expect(err).to.not.be.ok;
+                expect(content).to.be.ok;
+                
+                testWidth(content, 75);
+                done();
+            });
+        });
+        
+        it('can have a custom width', function(done) {
+            var WIDTH = 32;
+            
+            getReport({
+                type: 'box',
+                box: {
+                    width: WIDTH
+                }
+            }, TESTDATA, function(err, content) {
+                expect(err).to.not.be.ok;
+                expect(content).to.be.ok;
+                
+                testWidth(content, 32);
                 
                 done();
             });
