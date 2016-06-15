@@ -38,6 +38,9 @@ describe('[run]', function() {
         ], done);
     }
     
+    function getLines(data) {
+        return data.toString().trim().split('\n').map(JSON.parse);
+    }
     
     it('runs tests in rate mode, outputting to a stream', function(done) {
         increaseTimeout(this);
@@ -57,7 +60,7 @@ describe('[run]', function() {
         }, function onOutput(err, data) {
             expect(err).to.not.be.ok;
                     
-            var lines = data.toString().trim().split('\n').map(JSON.parse);
+            var lines = getLines(data);
 
             expect(lines).to.be.an('array').and.to.have.length(3);
 
@@ -84,7 +87,7 @@ describe('[run]', function() {
         }, function onOutput(err, data) {
             expect(err).to.not.be.ok;
 
-            var lines = data.toString().trim().split('\n').map(JSON.parse);
+            var lines = getLines(data);
 
             expect(lines).to.be.an('array').and.to.have.length(5);
 
@@ -112,7 +115,7 @@ describe('[run]', function() {
         }, function onOutput(err, data) {
             expect(err).to.not.be.ok;
                     
-            var lines = data.toString().trim().split('\n').map(JSON.parse);
+            var lines = getLines(data);
 
             var header = lines.shift();
             expect(header).to.have.property('type').and.to.equal('header');
@@ -146,7 +149,7 @@ describe('[run]', function() {
         }, function onOutput(err, data) {
             expect(err).to.not.be.ok;
 
-            var lines = data.toString().trim().split('\n').map(JSON.parse);
+            var lines = getLines(data);
 
             expect(lines).to.be.an('array').and.to.have.length.of.at.least(2);
         }, done);
@@ -169,7 +172,7 @@ describe('[run]', function() {
         }, function onOutput(err, data) {
             expect(err).to.not.be.ok;
 
-            var lines = data.toString().trim().split('\n').map(JSON.parse);
+            var lines = getLines(data);
 
             expect(lines).to.be.an('array').and.to.have.length.of.at.least(2);
         }, done);
@@ -192,7 +195,7 @@ describe('[run]', function() {
         }, function onOutput(err, data) {
             expect(err).to.not.be.ok;
 
-            var lines = data.toString().trim().split('\n').map(JSON.parse);
+            var lines = getLines(data);
 
             expect(lines).to.be.an('array').and.to.have.length.of.at.least(2);
         }, done);
@@ -215,10 +218,43 @@ describe('[run]', function() {
         }, function onOutput(err, data) {
             expect(err).to.not.be.ok;
 
-            var lines = data.toString().trim().split('\n').map(JSON.parse);
+            var lines = getLines(data);
 
             expect(lines).to.be.an('array').and.to.have.length.of.at.least(2);
         }, done);
+    });
+    
+    it('has an optional timeout value', function(done) {
+        increaseTimeout(this);
+        
+        var opts = {
+            duration: 10,
+            concurrent: 1,
+            timeout: '1ms',
+            test: {
+                path: path.resolve(__dirname, '../fixtures/minute.js'),
+                name: 'minute'
+            }
+        };
+        
+        runRealTest(opts, function onRun(err) {
+            expect(err).to.not.be.ok;
+        }, function onOutput(err, data) {
+            expect(err).to.not.be.ok;
+            
+            var lines = getLines(data);
+            
+            // remove header
+            lines.shift();
+            
+            expect(lines.length).to.be.at.least(1);
+            
+            lines.forEach(function(line) {
+                expect(line.report.fullTest.errorCode).to.equal(-1);
+            });
+            
+            done();
+        });
     });
     
     it('errors if the test file does not exist', function(done) {
