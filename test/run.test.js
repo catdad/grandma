@@ -250,6 +250,7 @@ describe('[run]', function() {
             expect(lines.length).to.be.at.least(1);
             
             lines.forEach(function(line) {
+                expect(line.report.fullTest.status).to.equal('failure');
                 expect(line.report.fullTest.errorCode).to.equal(-1);
             });
             
