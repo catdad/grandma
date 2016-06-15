@@ -207,7 +207,13 @@ var commands = {
 
 function loadConfig() {
     var opts = rc('grandma');
-    argv = require('../lib/argv.js')(opts);
+    
+    // clean unwanted values that are added by rc
+    var clone = _.cloneDeep(opts);
+    delete clone.config;
+    delete clone.configs;
+    
+    argv = require('../lib/argv.js')(clone);
     return argv;
 }
 
