@@ -78,6 +78,7 @@ The following options are available as flags (some are only relevant for the `ru
 - `concurrent` - (run only) The amount of concurrent tests to use at the same time.
   - Cannot be used with `rate`.
   - Either `rate` or `concurrent` is required.
+- `timeout` - (run only) The amount of time to way for each test before treating it as a failure. The default is to wait indefinitely. This is a string value, set the same way as `duration`.
 - `directory` - (run and list) The folder that contains tests. All subfolders will be parsed as well, assuming all `.js` files are tests.
 - `threads` - (run only, defaults to 1) The number of threads to use to run the tests. Note that this can be any integer, although there is not much benefit to running more threads than CPU cores available.
 - `out` - (run and list) The name of an output file to write the results to. Defaults to writing to standard output. You can also specify `stdout` if you wish to write to standard output explicitly.
@@ -129,7 +130,7 @@ module.exports = {
 
 In the `test` function, you can pass an error (or any truthy value) to the `done` callback to fail the test. Further, if the value you pass in has an `errorCode` property, that property will be used in order to group different failures together.
 
-_Note: if you do not provide an error code, `0` will be used when binning and reporting errors, so avoid using `0` as the provided error code._
+_Note: if you do not provide an error code, `0` will be used when binning and reporting errors. If a test times out, it will use an error code of `-1`. It is best to avoid using `0` or `-1` as the provided error code, in order to avoid confusion._
 
 ```javascript
 module.exports = {
