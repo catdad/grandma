@@ -65,28 +65,45 @@ To see help on these commands, you can type one of:
 
 The following options are available as flags (some are only relevant for the `run` command):
 
-- `duration` - (run only, required) The duration for which the tests should run. Written as a number, followed by one of the following:
+### `grandma list`
+
+- `directory` - The folder that contains tests. All subfolders will be parsed as well, assuming all `.js` files are tests. I recomment just setting this in your `.grandmarc` file.
+
+### `grandma run`
+
+- `duration` - (required) The duration for which the tests should run. Written as a number, followed by one of the following:
   - `ms` - millisecond
   - `s` - second
   - `m` - minute
   - `h` - hour
   - `d` - day
   - `w` - week
-- `rate` - (run only) The rate at which the tests will run. Written as a number, representing number of tests per second.
+
+- `rate` - The rate at which the tests will run. Written as a number, representing number of tests per second.
   - Cannot be used with `concurrent`.
   - Either `rate` or `concurrent` is required.
-- `concurrent` - (run only) The amount of concurrent tests to use at the same time.
+
+- `concurrent` - The amount of concurrent tests to use at the same time.
   - Cannot be used with `rate`.
   - Either `rate` or `concurrent` is required.
-- `timeout` - (run only) The amount of time to way for each test before treating it as a failure. The default is to wait indefinitely. This is a string value, set the same way as `duration`.
-- `directory` - (run and list) The folder that contains tests. All subfolders will be parsed as well, assuming all `.js` files are tests.
-- `threads` - (run only, defaults to 1) The number of threads to use to run the tests. Note that this can be any integer, although there is not much benefit to running more threads than CPU cores available.
-- `out` - (run and list) The name of an output file to write the results to. Defaults to writing to standard output. You can also specify `stdout` if you wish to write to standard output explicitly.
-- `type` - (report only) The type of report to create. Available values are:
-  - `text` - human readable text summary of the results, suitable for the terminal
+
+- `timeout` - The amount of time to way for each test before treating it as a failure. The default is to wait indefinitely. This is a string value, set the same way as `duration`.
+
+- `directory` - The folder that contains tests. All subfolders will be parsed as well, assuming all `.js` files are tests.
+
+- `threads` - The number of threads to use to run the tests. Note that this can be any integer, although there is not much benefit to running more threads than CPU cores available. This is optional, and the default value is 1.
+
+- `out` - The name of an output file to write the results to. Defaults to writing to standard output. You can also specify `stdout` if you wish to write to standard output explicitly.
+
+### `grandma report`
+
+- `type` - The type of report to create. Available values are:
+  - `text` - (default) human readable text summary of the results, suitable for the terminal
   - `json` - summary of the results in json format, suitable for the terminal or to be parsed by another tool
   - `box` - a box plot in plain text, suitable for the terminal
   - `plot` - an HTML page containing a plot of the results, suitable for viewing in the browser
+
+- `out` - The name of an output file to write the results to. Defaults to writing to standard output. You can also specify `stdout` if you wish to write to standard output explicitly.
 
 ## Test files
 
