@@ -65,11 +65,11 @@ To see help on these commands, you can type one of:
 
 The following options are available as flags (some are only relevant for the `run` command):
 
-### `grandma list`
+#### `grandma list`
 
 - `directory` - The folder that contains tests. All subfolders will be parsed as well, assuming all `.js` files are tests. I recomment just setting this in your `.grandmarc` file.
 
-### `grandma run`
+#### `grandma run`
 
 - `duration` - (required) The duration for which the tests should run. Written as a number, followed by one of the following:
   - `ms` - millisecond
@@ -95,7 +95,7 @@ The following options are available as flags (some are only relevant for the `ru
 
 - `out` - The name of an output file to write the results to. Defaults to writing to standard output. You can also specify `stdout` if you wish to write to standard output explicitly.
 
-### `grandma report`
+#### `grandma report`
 
 - `type` - The type of report to create. Available values are:
   - `text` - (default) human readable text summary of the results, suitable for the terminal
