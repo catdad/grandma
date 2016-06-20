@@ -84,7 +84,7 @@ The following options are available as flags (some are only relevant for the `ru
 
 #### `grandma run`
 
-- `duration` - (required) The duration for which the tests should run. Written as a number, followed by one of the following:
+- **`duration`** - (required) The duration for which the tests should run. Written as a number, followed by one of the following:
   - `ms` - millisecond
   - `s` - second
   - `m` - minute
@@ -92,31 +92,31 @@ The following options are available as flags (some are only relevant for the `ru
   - `d` - day
   - `w` - week
 
-- `rate` - The rate at which the tests will run. Written as a number, representing number of tests per second.
+- **`rate`** - The rate at which the tests will run. Written as a number, representing number of tests per second.
   - Cannot be used with `concurrent`.
   - Either `rate` or `concurrent` is required.
 
-- `concurrent` - The amount of concurrent tests to use at the same time.
+- **`concurrent`** - The amount of concurrent tests to use at the same time.
   - Cannot be used with `rate`.
   - Either `rate` or `concurrent` is required.
 
-- `timeout` - The amount of time to way for each test before treating it as a failure. The default is to wait indefinitely. This is a string value, set the same way as `duration`.
+- **`timeout`** - The amount of time to way for each test before treating it as a failure. The default is to wait indefinitely. This is a string value, set the same way as `duration`.
 
-- `directory` - The folder that contains tests. All subfolders will be parsed as well, assuming all `.js` files are tests.
+- **`directory`** - The folder that contains tests. All subfolders will be parsed as well, assuming all `.js` files are tests.
 
-- `threads` - The number of threads to use to run the tests. Note that this can be any integer, although there is not much benefit to running more threads than CPU cores available. This is optional, and the default value is 1.
+- **`threads`** - The number of threads to use to run the tests. Note that this can be any integer, although there is not much benefit to running more threads than CPU cores available. This is optional, and the default value is 1.
 
-- `out` - The name of an output file to write the results to. Defaults to writing to standard output. You can also specify `stdout` if you wish to write to standard output explicitly.
+- **`out`** - The name of an output file to write the results to. Defaults to writing to standard output. You can also specify `stdout` if you wish to write to standard output explicitly.
 
 #### `grandma report`
 
-- `type` - The type of report to create. Available values are:
+- **`type`** - The type of report to create. Available values are:
   - `text` - (default) human readable text summary of the results, suitable for the terminal
   - `json` - summary of the results in json format, suitable for the terminal or to be parsed by another tool
   - `box` - a box plot in plain text, suitable for the terminal
   - `plot` - an HTML page containing a plot of the results, suitable for viewing in the browser
 
-- `out` - The name of an output file to write the results to. Defaults to writing to standard output. You can also specify `stdout` if you wish to write to standard output explicitly.
+- **`out`** - The name of an output file to write the results to. Defaults to writing to standard output. You can also specify `stdout` if you wish to write to standard output explicitly.
 
 <a name="tests"></a>
 ## Test files
@@ -227,15 +227,15 @@ var grandma = require('grandma');
 #### `grandma.run`
 
 Options:
-* `duration` {string|number} - the amount of time that the test should run for. This is the minimum amount of time that `grandma` will continue starting new tests. However, the actual full run might be longer, if tests take a while to finish. This is a number in milliseconds, or a string written as a number with `ms` (milliseconds), `s` (seconds), `m` (minutes), `h` (hours), `d` (days), or `w` (weeks), or a combination of those values. Example: `'1h30m26s'`
-* `rate` {number} - the rate at which to start a new test, as a number per second. For example, `5` would indicate 5 tests runs per second. This value is not compatible with `concurrent`.
-* `concurrent` {number} - the number of tests to run at once. When this value is used, a set amount of tests will start immediately, and when any test finished, it will be replaced with a new one. If `rate` is defined, this value will be ignored, and instead, the tests will run according to the rate value.
-* `timeout` {string|number} - the amount of time to wait for each test before failing the test. The default is to wait indefinitely. This is set to a value similarly to `duration`. When a test times out, it will be reported as a failure with an `errorCode` of `-1`.
-* `threads` {number} - the number of thread workers to run the tests in. This proeprty is optional and defaults to 1. There is usually no reason to set it higher than that.
-* `output` {stream} - a stream to write report data to. This can be any writable stream, such as a file stream, or a stream-like object, like a [through](https://github.com/rvagg/through2) stream.
-* `test` {object} - an object defining the test to run. It has the following properties:
-  * `path` {string} - a string path to the JavaScript file defining the test.
-  * `name` {string} - the name of the test. This value can be set to any string.
+- **`duration`** _{string|number}_ - the amount of time that the test should run for. This is the minimum amount of time that `grandma` will continue starting new tests. However, the actual full run might be longer, if tests take a while to finish. This is a number in milliseconds, or a string written as a number with `ms` (milliseconds), `s` (seconds), `m` (minutes), `h` (hours), `d` (days), or `w` (weeks), or a combination of those values. Example: `'1h30m26s'`
+- **`rate`** _{number}_ - the rate at which to start a new test, as a number per second. For example, `5` would indicate 5 tests runs per second. This value is not compatible with `concurrent`.
+- **`concurrent`** _{number}_ - the number of tests to run at once. When this value is used, a set amount of tests will start immediately, and when any test finished, it will be replaced with a new one. If `rate` is defined, this value will be ignored, and instead, the tests will run according to the rate value.
+- **`timeout`** _{string|number}_ - the amount of time to wait for each test before failing the test. The default is to wait indefinitely. This is set to a value similarly to `duration`. When a test times out, it will be reported as a failure with an `errorCode` of `-1`.
+- **`threads`** _{number}_ - the number of thread workers to run the tests in. This property is optional and defaults to 1. There is usually no reason to set it higher than that.
+- **`output`** _{stream}_ - a stream to write report data to. This can be any writable stream, such as a file stream, or a stream-like object, like a [through](https://github.com/rvagg/through2) stream.
+- **`test`** _{object}_ - an object defining the test to run. It has the following properties:
+  - **`path`** _{string}_ - a string path to the JavaScript file defining the test.
+  - **`name`** _{string}_ - the name of the test. This value can be set to any string.
 
 Example that runs 20 tests per second for 5 minutes:
 
@@ -284,11 +284,11 @@ grandma.run(options, callback);
 #### `grandma.report`
 
 Options:
-* `type` {string} - text, json, box, or plot. Default is json.
-* `input` {stream} - readable stream of report data generated by `grandma.run`.
-* `output` {stream} - writable stream to output the report to. This value is optional for the json reporter.
-* `box` {object} - options of the box plot type.
-  * `width` {number} - the maximum width, in characters, of the box plot. Default is 75.
+- **`type`** _{string}_ - text, json, box, or plot. Default is json.
+- **`input`** _{stream}_ - readable stream of report data generated by `grandma.run`.
+- **`output`** _{stream}_ - writable stream to output the report to. This value is optional for the json reporter.
+- **`box`** _{object}_ - options of the box plot type.
+  - **`width`** _{number}_ - the maximum width, in characters, of the box plot. Default is 75.
 
 Json example:
 
