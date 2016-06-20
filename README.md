@@ -25,10 +25,10 @@
 
 This is a load testing library and CLI tool. It is inspired by the good parts of [Vegeta](https://github.com/tsenart/vegeta) and [JMeter](http://jmeter.apache.org/), but hopefully leaves out the bad parts of both.
 
-* (Configuration)[#grandmarc]
-* (CLI)[#cli]
-* (Test Files)[#tests]
-* (API)[#api]
+* [Configuration](#grandmarc)
+* [CLI](#cli)
+* [Test Files](#tests)
+* [API](#api)
 
 ## Install
 
