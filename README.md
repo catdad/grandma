@@ -25,12 +25,20 @@
 
 This is a load testing library and CLI tool. It is inspired by the good parts of [Vegeta](https://github.com/tsenart/vegeta) and [JMeter](http://jmeter.apache.org/), but hopefully leaves out the bad parts of both.
 
+* (Configuration)[#grandmarc]
+* (CLI)[#cli]
+* (Test Files)[#tests]
+* (API)[#api]
+
 ## Install
 
 You can install `grandma` as a global CLI tool:
 
-    npm install grandma
+```bash
+npm install grandma
+```
 
+<a name="grandmarc"></a>
 ## `.grandmarc` file
 
 You can set up an RC file to help with managing some of the setting, such as the directory of test files. Here is the content a sample file.
@@ -44,6 +52,7 @@ You can set up an RC file to help with managing some of the setting, such as the
 
 All CLI flags are available through the RC file, and they can all be overwritten through the CLI.
 
+<a name="cli"></a>
 ## CLI
 
 To see the most up-to-date CLI, type:
@@ -109,6 +118,7 @@ The following options are available as flags (some are only relevant for the `ru
 
 - `out` - The name of an output file to write the results to. Defaults to writing to standard output. You can also specify `stdout` if you wish to write to standard output explicitly.
 
+<a name="tests"></a>
 ## Test files
 
 Test files are written in JavaScript, and should be placed inside the folder defined by the `directory` CLI flag or `.grandmarc` file. All JavaScript files in the folder and all subfolders will be considered test files.
@@ -205,6 +215,7 @@ module.exports = {
 };
 ```
 
+<a name="api"></a>
 ## API
 
 Grandma exposes the `run` and `report` commands as an API.
