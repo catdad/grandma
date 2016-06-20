@@ -37,7 +37,7 @@ You can install `grandma` as a global CLI tool:
 
 You can set up an RC file to help with managing some of the setting, such as the directory of test files. Here is the content a sample file.
 
-```
+```javascript
 {
     "directory": "fixtures",
     "threads": 1
@@ -50,18 +50,24 @@ All CLI flags are available through the RC file, and they can all be overwritten
 
 To see the most up-to-date CLI, type:
 
-    grandma help
+```bash
+grandma help
+```
 
 The following commands are available.
 
-    grandma run <testname> --duration=<duration> --rate=<rate> [options]
-    grandma report [glob=stdin] [options]
-    grandma list [options]
+```bash
+grandma run <testname> --duration=<duration> --rate=<rate> [options]
+grandma report [glob=stdin] [options]
+grandma list [options]
+```
 
 To see help on these commands, you can type one of:
 
-    grandma run -h
-    grandma report -h
+```bash
+grandma run -h
+grandma report -h
+```
 
 The following options are available as flags (some are only relevant for the `run` command):
 
