@@ -8,7 +8,7 @@
 
 This document is currently meant for me to record the current or desired API, and is subject to change before it is moved to the proper [README.md](README.md) file.
 
-## Run
+#### `grandma.run`
 
 Options:
 * `duration` {string|number} - the amount of time that the test should run for. This is the minimum amount of time that `grandma` will continue starting new tests. However, the actual full run might be longer, if tests take a while to finish. This is a number in milliseconds, or a string written as a number with `ms` (milliseconds), `s` (seconds), `m` (minutes), `h` (hours), `d` (days), or `w` (weeks), or a combination of those values. Example: `'1h30m26s'`
@@ -65,7 +65,7 @@ var options = {
 grandma.run(options, callback);
 ```
 
-## Report
+#### `grandma.report`
 
 Options:
 * `type` {string} - text, json, box, or plot. Default is json.
@@ -95,7 +95,7 @@ grandma.report({
 
 ```
 
-Text example:
+Text example printing to standard out:
 
 ```javascript
 var fs = require('fs');
@@ -117,7 +117,7 @@ grandma.report({
 });
 ```
 
-Plot example:
+Plot example writing to a file:
 
 ```javascript
 var fs = require('fs');
