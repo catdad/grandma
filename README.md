@@ -80,7 +80,7 @@ The following options are available as flags (some are only relevant for the `ru
 
 #### `grandma list`
 
-- `directory` - The folder that contains tests. All subfolders will be parsed as well, assuming all `.js` files are tests. I recomment just setting this in your `.grandmarc` file.
+- `directory` - The folder that contains tests. All subfolders will be parsed as well, assuming all `.js` files are tests. I recommend just setting this in your `.grandmarc` file.
 
 #### `grandma run`
 
@@ -123,7 +123,7 @@ The following options are available as flags (some are only relevant for the `ru
 
 Test files are written in JavaScript, and should be placed inside the folder defined by the `directory` CLI flag or `.grandmarc` file. All JavaScript files in the folder and all subfolders will be considered test files.
 
-A test will export a single object, consisting of the following methods (in order): `beforeAll`, `beforeEach`, `test`, `afterEach`, and `afterAll`. Npte that all methods other than `test` are optional and can be left out.
+A test will export a single object, consisting of the following methods (in order): `beforeAll`, `beforeEach`, `test`, `afterEach`, and `afterAll`. Note that all methods other than `test` are optional and can be left out.
 
 All methods will be called with a single parameter -- `done` -- which is a function to call when that method is complete. They will also be triggered with an object as the context -- the `this` keyword of the function.
 
@@ -173,7 +173,7 @@ module.exports = {
             // fail the test with specific errorCode
             done({ errorCode: 'someError' });
         } else {
-            // fail the test for an unknow reason
+            // fail the test for an unknown reason
             done(new Error('stuff happened'));
         }
     }
