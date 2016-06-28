@@ -1,5 +1,3 @@
-/* jshint node: true */
-
 var path = require('path');
 
 var run = require('./lib/run');

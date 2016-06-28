@@ -1,5 +1,3 @@
-/* jshint node: true */
-
 var loaded = Date.now();
 
 module.exports = {

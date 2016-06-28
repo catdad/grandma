@@ -1,5 +1,3 @@
-/* jshint node: true */
-
 module.exports = {
     test: function(done) {
         setTimeout(function() {
@@ -12,5 +10,5 @@ module.exports = {
             
             done(err);
         }, 1);
-    },
+    }
 };

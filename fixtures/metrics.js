@@ -1,5 +1,3 @@
-/* jshint node: true */
-
 var async = require('async');
 
 function rnd(min, max) {
@@ -8,10 +6,6 @@ function rnd(min, max) {
 
 function rndTime() {
     return rnd(5, 6);
-}
-
-function delay(callback) {
-    setTimeout(callback, rndTime());
 }
 
 module.exports = {
@@ -23,7 +17,7 @@ module.exports = {
         var that = this;
         
         async.parallel([
-            function (next) {
+            function(next) {
                 that.start('one');
                 
                 setTimeout(function() {
@@ -31,7 +25,7 @@ module.exports = {
                     next();
                 }, that.timeout / 2);
             },
-            function (next) {
+            function(next) {
                 that.start('two');
                 
                 setTimeout(function() {

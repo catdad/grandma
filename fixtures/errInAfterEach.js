@@ -1,5 +1,3 @@
-/* jshint node: true */
-
 module.exports = {
     afterEach: function(done) {
         setImmediate(done, new Error('err in aftereach'));

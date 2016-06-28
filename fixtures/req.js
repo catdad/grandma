@@ -1,5 +1,3 @@
-/* jshint node: true */
-
 var http = require('http');
 
 module.exports = {
