@@ -140,9 +140,27 @@
             }
         }
         
+        var dataLabels;
+        var data = (function(dirtyData, labels) {
+            dataLabels = labels;
+            
+            return dirtyData.map(function(val) {
+                if (val.length < labels.length) {
+                    for (var i = val.length, l = labels.length; i < l; i++) {
+                        val.push(null);
+                    }
+                }
+                
+                return val;
+            });
+        }(
+            JSON.parse('[{{data}}]'),
+            JSON.parse('{{labels}}')
+        ));
+        
         var plot = new Dygraph(
             plotDiv,
-            '{{data}}',
+            data,
             {
                 title: 'Test',
                 showRoller: true,
@@ -150,6 +168,7 @@
                 ylabel: 'milliseconds',
                 xlabel: 'seconds from start',
                 legend: 'always',
+                labels: dataLabels,
                 axes: {
                     y: {
                         axisLabelFormatter: yAxisFormatter
