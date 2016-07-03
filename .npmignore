@@ -8,3 +8,4 @@ npm-debug.log
 fixtures/
 coverage/
 test/
+*.log
