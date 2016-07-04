@@ -42,6 +42,18 @@ describe('[run]', function() {
         return data.toString().trim().split('\n').map(JSON.parse);
     }
     
+    function testHeaderProps(header) {
+        expect(header).to.have.all.keys([
+            'type',
+            'epoch',
+            'duration',
+            'rate',
+            'concurrent',
+            'targetCount',
+            'name'
+        ]);
+    }
+    
     it('runs tests in rate mode, outputting to a stream', function(done) {
         increaseTimeout(this);
         
@@ -67,6 +79,7 @@ describe('[run]', function() {
             var header = lines.shift();
 
             expect(header).to.have.property('type').and.to.equal('header');
+            testHeaderProps(header);
         }, done);
     });
     
@@ -94,6 +107,7 @@ describe('[run]', function() {
             var header = lines.shift();
 
             expect(header).to.have.property('type').and.to.equal('header');
+            testHeaderProps(header);
         }, done);
     });
     
@@ -119,7 +133,8 @@ describe('[run]', function() {
 
             var header = lines.shift();
             expect(header).to.have.property('type').and.to.equal('header');
-
+            testHeaderProps(header);
+            
             var threadCounts = lines.reduce(function(a, b) {
                 a[b.id] += 1;
                 return a;
