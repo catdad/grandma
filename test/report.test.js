@@ -281,6 +281,30 @@ describe('[report]', function() {
             expect(header.targetCount).to.equal(142);
         });
         
+        it('uses the name from the original header value by default', function() {
+            var NAME = 'the name';
+            var header = getMergedHeaders({
+                name: NAME
+            }, {
+                name: 'not the name'
+            });
+            
+            expect(header).to.have.property('name').and.to.equal(NAME);
+        });
+        
+        it('uses the name from the new header if one is not present in the first', function() {
+            var NAME = 'the name';
+            var header = getMergedHeaders({}, { name: NAME });
+            
+            expect(header).to.have.property('name').and.to.equal(NAME);
+        });
+        
+        it('outputs name as null if one is not available', function() {
+            var header = getMergedHeaders({}, {});
+            
+            expect(header).to.have.property('name').and.to.equal(null);
+        });
+        
         // have one test that actually goes through the proper system
         it('when read from the input stream', function(done) {
             var input = through();
