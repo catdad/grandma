@@ -3,9 +3,9 @@ node_modules/
 npm-debug.log
 .grandmarc
 *.cmd
+*.log
 
 # Specific to NPM
 fixtures/
 coverage/
 test/
-*.log
