@@ -10,6 +10,7 @@ var _ = require('lodash');
 var glob = require('glob');
 var rc = require('rc');
 var globfile = require('glob-filestream');
+var ensureGunzip = require('ensure-gunzip');
 
 var grandma = require('../index');
 var ttyHelper = require('../lib/tty-helper.js');
@@ -80,7 +81,9 @@ function getInputStream(glob) {
     var input = process.stdin;
     
     if (glob !== 'stdin') {
-        input = globfile(glob);
+        input = globfile(glob, {
+            transform: ensureGunzip
+        });
     }
     
     return input;
