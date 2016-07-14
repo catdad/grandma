@@ -105,10 +105,19 @@ describe('[now:Timer]', function() {
     });
     
     describe('#report', function() {
-        it('returns the "times" property of the Timer', function() {
+        it('returns the contents of "times" property of the Timer', function() {
             var timer = now.Timer();
+            
+            var name = Math.random().toString();
+            timer.start(name);
+            timer.end(name);
+            
             var val = timer.report();
-            expect(val).to.equal(timer.times);
+            expect(val).to.deep.equal(timer.times);
+            
+            // the value will be filtered and transformed, so it is
+            // not a direct object equality
+            expect(val).to.not.equal(timer.times);
         });
         it('reports all tests as succesful by default', function() {
             var TEST1 = 'grasshopper';
