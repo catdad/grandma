@@ -244,7 +244,7 @@ var fs = require('fs');
 var path = require('path');
 var grandma = require('grandma');
 
-var output = path.resolve('path/to/report.log');
+var output = fs.createWriteStream('path/to/report.log');
 
 var options = {
     duration: '5m',
@@ -266,7 +266,7 @@ var fs = require('fs');
 var path = require('path');
 var grandma = require('grandma');
 
-var output = path.resolve('path/to/report.log');
+var output = fs.createWriteStream('path/to/report.log');
 
 var options = {
     duration: '1d',
@@ -294,7 +294,7 @@ Json example:
 
 ```javascript
 var fs = require('fs');
-var input = fs.createReadStream('/path/to/a/grandma.log');
+var input = fs.createReadStream('path/to/a/grandma.log');
 
 var grandma = require('grandma');
 
@@ -315,7 +315,7 @@ Text example printing to standard out:
 
 ```javascript
 var fs = require('fs');
-var input = fs.createReadStream('/path/to/a/grandma.log');
+var input = fs.createReadStream('path/to/a/grandma.log');
 var output = process.stdout; // print to the console
 
 var grandma = require('grandma');
@@ -337,8 +337,8 @@ Plot example writing to a file:
 
 ```javascript
 var fs = require('fs');
-var input = fs.createReadStream('/path/to/a/grandma.log');
-var output = fs.createWriteStream('/path/to/a/report.html');
+var input = fs.createReadStream('path/to/a/grandma.log');
+var output = fs.createWriteStream('path/to/a/report.html');
 
 var grandma = require('grandma');
 
