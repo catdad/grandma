@@ -3,6 +3,9 @@
         "javascript": {
             "linting.prefer": "ESLint",
             "linting.usePreferredOnly": true
+        },
+        "markdown": {
+            "wordWrap": true
         }
     }
 }
