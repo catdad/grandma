@@ -356,6 +356,16 @@ describe('[run]', function() {
             }
         };
         
+        it('errors if an output stream is not defined', function(done) {
+            testError(fixtures, 'no writable output stream defined', done);
+        });
+        
+        it('errors if the output stream is invalid', function(done) {
+            testError(_.defaultsDeep({
+                output: 'a string'
+            }, fixtures), 'no writable output stream defined', done);
+        });
+        
         it('errors if duration is not defined in options', function(done) {
             testError(_.defaultsDeep({
                 output: through(),
