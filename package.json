@@ -13,7 +13,7 @@
   "license": "ISC",
   "dependencies": {
     "async": "^2.0.0-rc.6",
-    "byline": "^4.2.1",
+    "byline": "^5.0.0",
     "compute-quantile": "^1.0.1",
     "duration-js": "^3.5.1",
     "ensure-gunzip": "0.0.1",
