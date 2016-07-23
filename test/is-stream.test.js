@@ -27,14 +27,24 @@ describe('[is-stream]', function() {
         };
     }
     
-    function testPositive(val, type) {
-        var errStr = 'custom error string';
-        expect(test(val, type, errStr)).to.not.throw();
+    function testObjectMode() {
+        var args = arguments;
+        
+        return function() {
+            isStream.assertObjectStream.apply(undefined, args);
+        };
     }
     
-    function testNegative(val, type) {
+    function testPositive(val, type, objectMode) {
+        var func = objectMode ? testObjectMode : test;
         var errStr = 'custom error string';
-        expect(test(val, type, errStr)).to.throw(TypeError, errStr);
+        expect(func(val, type, errStr)).to.not.throw();
+    }
+    
+    function testNegative(val, type, objectMode) {
+        var func = objectMode ? testObjectMode : test;
+        var errStr = 'custom error string';
+        expect(func(val, type, errStr)).to.throw(TypeError, errStr);
     }
     
     it('accepts a ReadableStream as a readable stream', function() {
@@ -42,6 +52,7 @@ describe('[is-stream]', function() {
         testPositive(stream, 'readable');
         stream.close();
     });
+    
     it('accepts a WritableStream as a writable stream', function() {
         var stream = nullWStream();
         testPositive(stream, 'writable');
@@ -51,8 +62,17 @@ describe('[is-stream]', function() {
     it('accepts a through stream as a readable stream', function() {
         testPositive(through(), 'readable');
     });
+    
     it('accepts a through stream as a writable stream', function() {
         testPositive(through(), 'readable');
+    });
+    
+    it('accepts a through object stream as a readable object stream', function() {
+        testPositive(through.obj(), 'readable', true);
+    });
+    
+    it('accepts a through object stream as a writable object stream', function() {
+        testPositive(through.obj(), 'readable', true);
     });
     
     it('errors for a writable stream validated as a readable stream', function() {
@@ -60,9 +80,21 @@ describe('[is-stream]', function() {
         testNegative(stream, 'readable');
         stream.close();
     });
+    
     it('errors for a readable stream validated as a writable stream', function() {
         var stream = nullRStream();
         testNegative(stream, 'writable');
+        stream.close();
+    });
+    
+    it('errors for a readable stream validated as a readable object stream', function() {
+        var stream = nullRStream();
+        testNegative(stream, 'readable', true);
+        stream.close();
+    });
+    it('errors for a writable stream validated as a writable object stream', function() {
+        var stream = nullWStream();
+        testNegative(stream, 'writable', true);
         stream.close();
     });
     
@@ -85,6 +117,14 @@ describe('[is-stream]', function() {
         
         it('errors as a writable stream for invalid value: ' + str, function() {
             testNegative(val, 'writable');
+        });
+        
+        it('errors as a readable object stream for invalid value: ' + str, function() {
+            testNegative(val, 'readable', true);
+        });
+        
+        it('errors as a writable object stream for invalid value: ' + str, function() {
+            testNegative(val, 'writable', true);
         });
     });
 });
