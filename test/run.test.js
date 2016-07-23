@@ -332,6 +332,40 @@ describe('[run]', function() {
         }, done);
     });
     
+    it('can run tests an output object to an object stream', function(done) {
+        increaseTimeout(this);
+        
+        var output = through.obj();
+        var ended = false;
+        
+        var opts = {
+            duration: 50,
+            concurrent: 2,
+            test: {
+                path: path.resolve(__dirname, '../fixtures/test.concurrent.js'),
+                name: 'test.concurrent'
+            },
+            output: output
+        };
+        
+        output.on('end', function() {
+            ended = true;
+        });
+        
+        output.on('data', function(data) {
+            expect(data).to.be.an('object');
+            expect(Buffer.isBuffer(data)).to.equal(false);
+            
+            // test a prop to make sure it's tere
+            expect(data).to.have.property('type').and.to.be.a('string');
+        });
+        
+        run(opts, function(err) {
+            expect(ended).to.equal(true);
+            done();
+        });
+    });
+    
     function testError(opts, errorStr, done) {
         // all errors must be returned asynchronously
         var isAsync = false;
