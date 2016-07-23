@@ -273,6 +273,40 @@ describe('[run]', function() {
         });
     });
     
+    it('can run tests an output object to an object stream', function(done) {
+        increaseTimeout(this);
+        
+        var output = through.obj();
+        var ended = false;
+        
+        var opts = {
+            duration: 50,
+            concurrent: 2,
+            test: {
+                path: path.resolve(__dirname, '../fixtures/test.concurrent.js'),
+                name: 'test.concurrent'
+            },
+            output: output
+        };
+        
+        output.on('end', function() {
+            ended = true;
+        });
+        
+        output.on('data', function(data) {
+            expect(data).to.be.an('object');
+            expect(Buffer.isBuffer(data)).to.equal(false);
+            
+            // test a prop to make sure it's tere
+            expect(data).to.have.property('type').and.to.be.a('string');
+        });
+        
+        run(opts, function(err) {
+            expect(ended).to.equal(true);
+            done();
+        });
+    });
+    
     it('errors if the test file does not exist', function(done) {
         var FILE = 'non-existent-test-file-' + Math.random().toString().replace(/\./g, '') + '.js';
         
@@ -330,40 +364,6 @@ describe('[run]', function() {
             expect(err).to.not.be.ok;
             expect(data.toString()).to.equal('');
         }, done);
-    });
-    
-    it('can run tests an output object to an object stream', function(done) {
-        increaseTimeout(this);
-        
-        var output = through.obj();
-        var ended = false;
-        
-        var opts = {
-            duration: 50,
-            concurrent: 2,
-            test: {
-                path: path.resolve(__dirname, '../fixtures/test.concurrent.js'),
-                name: 'test.concurrent'
-            },
-            output: output
-        };
-        
-        output.on('end', function() {
-            ended = true;
-        });
-        
-        output.on('data', function(data) {
-            expect(data).to.be.an('object');
-            expect(Buffer.isBuffer(data)).to.equal(false);
-            
-            // test a prop to make sure it's tere
-            expect(data).to.have.property('type').and.to.be.a('string');
-        });
-        
-        run(opts, function(err) {
-            expect(ended).to.equal(true);
-            done();
-        });
     });
     
     function testError(opts, errorStr, done) {
