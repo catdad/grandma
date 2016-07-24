@@ -270,7 +270,7 @@ var output = fs.createWriteStream('path/to/report.log');
 
 var options = {
     duration: '1d',
-    concurrent: 10
+    concurrent: 10,
     output: output,
     test: {
         path: path.resolve('path/to/mytest.js'),
