@@ -8,7 +8,7 @@ var grandma = require('../');
 var output = through.obj();
 
 var task = grandma.run({
-    duration: '1m',
+    duration: '10s',
     concurrent: 2,
     output: output,
     test: {
@@ -17,10 +17,10 @@ var task = grandma.run({
     }
 }, function(err) {
     console.log('done callback');
-    console.log(arguments);
+    console.log('args', arguments);
 });
 
-console.log(task);
+console.log('task object:\n', task);
 
 var reportCount = 0;
 
