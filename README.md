@@ -256,7 +256,15 @@ var options = {
     }
 };
 
-grandma.run(options, callback);
+function done(err) {
+    if (err) {
+        return console.error('something went wrong', err);
+    }
+    
+    console.log('done!');
+}
+
+grandma.run(options, done);
 ```
 
 Example that runs 10 concurrent tests for 1 day (24 hours):
@@ -278,7 +286,15 @@ var options = {
     }
 };
 
-grandma.run(options, callback);
+function done(err) {
+    if (err) {
+        return console.error('something went wrong', err);
+    }
+    
+    console.log('done!');
+}
+
+grandma.run(options, done);
 ```
 
 #### `grandma.report`
