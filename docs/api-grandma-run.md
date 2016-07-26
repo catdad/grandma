@@ -4,7 +4,7 @@
 
 The run command takes an options object and a callback. It will trigger a test to start.
 
-#### options:
+#### `options`:
 
 The following options are available for running a test:
 
@@ -27,7 +27,7 @@ The following options are available for running a test:
   - **`path`** _{string}_ - a string path to the JavaScript file defining the test.
   - **`name`** _{string}_ - the name of the test. This value can be set to any string.
 
-#### callback:
+#### `callback`:
 
 A function. It takes a single parameter, `error`. If error is present, the test did not complete successfully. The `error` object will contain details as to what happened. If it is falsy, the test completed successfully and the results are ready to use.
 
