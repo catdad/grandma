@@ -6,4 +6,4 @@
 * API usage
   * [`grandma.run`](api-grandma-run.md)
   * `grandma.run` interactive mode
-  * `grandma.report`
+  * [`grandma.report`](api-grandma-report.md)
