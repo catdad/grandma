@@ -65,7 +65,7 @@ function runTest(onData, onEnd, done) {
         reportCount += 1;
 
         // increase rate by 2 at every 300 reports
-        if (reportCount % 10 === 0) {
+        if (reportCount % 25 === 0) {
             task.rate += 2;
 
             write(
