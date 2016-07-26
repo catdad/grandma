@@ -1,6 +1,6 @@
 # API: Running tests
 
-## `grandma.run({Object} options, {Function} callback)` → `{Object} task`
+### `grandma.run({Object} options, {Function} callback)` → `{Object} task`
 
 The run command takes an options object and a callback. It will trigger a test to start.
 
@@ -92,4 +92,3 @@ function done(err) {
 
 grandma.run(options, done);
 ```
-

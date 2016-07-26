@@ -1,6 +1,6 @@
 # API: reporting on tests
 
-## `grandma.report({Object} options, {Function} callback)` → `void`
+### `grandma.report({Object} options, {Function} callback)` → `void`
 
 The run command takes an options object and a callback.
 
