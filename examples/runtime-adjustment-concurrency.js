@@ -23,27 +23,27 @@ var task = grandma.run({
     console.log('finishd in', Date.now() - start);
 });
 
-setTimeout(function() {
-    var n = 10;
-    
-    console.log(
-        'increasing concurrency from %s to %s, at %s reports',
-        task.concurrent,
-        n,
-        reportCount
-    );
-    
-    task.concurrent = n;
-}, 15 * 1000);
-
-console.log('task object:\n', task);
-
 var reportCount = 0;
 
 output.on('data', function(obj) {
     reportCount += 1;
+    
+    // increase concurrency by 2 at every 300 reports
+    if (reportCount % 300 === 0) {
+        task.concurrent += 2;
+        
+        console.log(
+            'increased concurrency to %s at %s ms',
+            task.concurrent,
+            Date.now() - start
+        );
+    }
 });
 
 output.on('end', function() {
-    console.log('output end with %s reports', reportCount);
+    console.log(
+        'output end with %s reports in %s milliseconds',
+        reportCount,
+        Date.now() - start
+    );
 });
