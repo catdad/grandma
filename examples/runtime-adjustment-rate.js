@@ -37,7 +37,7 @@ function runTest(onData, onEnd, done) {
 (function regularRun() {
     var start = Date.now();
     var reportCount = 0;
-    var write = writer('regular    ');
+    var write = writer('  regular  ');
     
     runTest(function onData() {
         reportCount += 1;
