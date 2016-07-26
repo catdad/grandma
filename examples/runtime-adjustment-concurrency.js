@@ -7,8 +7,10 @@ var grandma = require('../');
 
 var output = through.obj();
 
+var start = Date.now();
+
 var task = grandma.run({
-    duration: '10s',
+    duration: '30s',
     concurrent: 2,
     output: output,
     test: {
@@ -18,7 +20,21 @@ var task = grandma.run({
 }, function(err) {
     console.log('done callback');
     console.log('args', arguments);
+    console.log('finishd in', Date.now() - start);
 });
+
+setTimeout(function() {
+    var n = 10;
+    
+    console.log(
+        'increasing concurrency from %s to %s, at %s reports',
+        task.concurrent,
+        n,
+        reportCount
+    );
+    
+    task.concurrent = n;
+}, 15 * 1000);
 
 console.log('task object:\n', task);
 
