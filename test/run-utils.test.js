@@ -120,11 +120,82 @@ describe('[run-utils]', function() {
         });
     });
     
-    describe('#writeToStream', function() {
-        it('can write existing Buffer data');
-        it('can write string data');
-        it('can write JSON data');
-        it('writes objects when objectMode is set on the utils');
+    describe.only('#writeToStream', function() {
+        function getStreams(output, objectMode) {
+            var util = runUtils({
+                objectMode: !!objectMode,
+                output: output
+            });
+            
+            return {
+                write: function(data) {
+                    util.writeToStream(data);
+                    util.output.end();
+                },
+                out: output
+            };
+        }
+        
+        it('can write existing Buffer data', function(done) {
+            var DATA = new Buffer('stuff and things');
+            
+            var streams = getStreams(through());
+            
+            streams.out.pipe(es.wait(function(err, data) {
+                expect(Buffer.isBuffer(data)).to.equal(true);
+                expect(data.equals(DATA)).to.equal(true);
+                
+                done();
+            }));
+            
+            streams.write(DATA);
+        });
+        it('can write string data', function(done) {
+            var DATA = 'stuff and things';
+            
+            var streams = getStreams(through());
+            
+            streams.out.pipe(es.wait(function(err, data) {
+                expect(Buffer.isBuffer(data)).to.equal(true);
+                expect(data.toString()).to.equal(DATA);
+                
+                done();
+            }));
+            
+            streams.write(DATA);
+        });
+        it('can write JSON data', function(done) {
+            var DATA = { an: 'object' };
+            
+            var streams = getStreams(through());
+            
+            streams.out.pipe(es.wait(function(err, data) {
+                expect(Buffer.isBuffer(data)).to.equal(true);
+                
+                var jsonData = JSON.parse(data.toString());
+                expect(jsonData).to.deep.equal(DATA);
+                
+                done();
+            }));
+            
+            streams.write(DATA);
+        });
+        it('writes objects when objectMode is set on the utils', function(done) {
+            var DATA = { an: 'object' };
+            
+            var streams = getStreams(through.obj(), true);
+            
+            streams.out.on('data', function(data) {
+                expect(data).to.be.an('object');
+                expect(data).to.equal(DATA);
+            });
+            
+            streams.out.on('finish', function() {
+                done();
+            });
+            
+            streams.write(DATA);
+        });
     });
     
     describe('#debug', function() {
