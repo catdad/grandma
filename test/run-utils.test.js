@@ -120,7 +120,7 @@ describe('[run-utils]', function() {
         });
     });
     
-    describe.only('#writeToStream', function() {
+    describe('#writeToStream', function() {
         function getStreams(output, objectMode) {
             var util = runUtils({
                 objectMode: !!objectMode,
