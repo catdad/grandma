@@ -74,7 +74,7 @@ describe('[run]', function() {
                     
             var lines = getLines(data);
 
-            expect(lines).to.be.an('array').and.to.have.length(3);
+            expect(lines).to.be.an('array').and.to.have.length.within(2, 4);
 
             var header = lines.shift();
 
