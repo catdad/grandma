@@ -577,8 +577,6 @@ describe('[run]', function() {
         });
         
         it('can be stopped while running when running in rate mode', function(done) {
-            increaseTimeout(this);
-
             var count = 0;
 
             var output = through.obj();
@@ -609,6 +607,67 @@ describe('[run]', function() {
                 // the stop happens
                 expect(count).to.be.at.most(2);
                 expect(count).to.be.at.least(1);
+                done();
+            });
+        });
+        
+        it('can be stopped immediately when running in concurrent mode', function(done) {
+            var count = 0;
+
+            var output = through.obj();
+
+            var opts = {
+                // set a long time, just in case
+                duration: '3s',
+                concurrent: 10,
+                test: CONCURRENT_TEST,
+                output: output
+            };
+
+            output.on('data', function(data) {
+                if (data.report) {
+                    count += 1;
+                }
+            });
+
+            var task = run(opts, function(err) {
+                expect(count).to.be.at.least(0);
+                done();
+            });
+            
+            expect(task).to.have.property('stop').and.to.be.a('function');
+            task.stop();
+        });
+        
+        it('can be stopped while running when running in concurrent mode', function(done) {
+            var count = 0;
+
+            var output = through.obj();
+
+            var opts = {
+                // set a long time, just in case
+                duration: '3s',
+                concurrent: 10,
+                test: CONCURRENT_TEST,
+                output: output
+            };
+
+            var stopOnce = _.once(function() {
+                task.stop();
+            });
+
+            output.on('data', function(data) {
+                if (data.report) {
+                    count += 1;
+                    stopOnce();
+                }
+            });
+
+            var task = run(opts, function(err) {
+                // we are stopping after the first concurrent
+                // run, so we will have exactly the 10 that were
+                // already started
+                expect(count).to.equal(10);
                 done();
             });
         });
