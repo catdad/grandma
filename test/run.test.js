@@ -141,9 +141,12 @@ describe('[run]', function() {
             }, { '0': 0, '1': 0 });
             
             expect(threadCounts).to.have.all.keys(['0', '1']);
-            expect(threadCounts).to.have.property('0').and.to.equal(2);
-            expect(threadCounts).to.have.property('1').and.to.equal(2);
-            
+            expect(threadCounts).to.have.property('0')
+                .and.to.be.at.least(2)
+                .and.to.be.at.most(3);
+            expect(threadCounts).to.have.property('1')
+                .and.to.be.at.least(2)
+                .and.to.be.at.most(3);
         }, done);
     });
     
