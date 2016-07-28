@@ -675,7 +675,7 @@ describe('[run]', function() {
             });
         });
 
-        it('throws if the runtime concurrent value is set to a non-integer', function() {
+        it('throws if the runtime concurrent value is set to a non-integer', function(done) {
             var output = through.obj();
 
             var task = run({
@@ -683,14 +683,16 @@ describe('[run]', function() {
                 concurrent: 1,
                 test: CONCURRENT_TEST,
                 output: output
-            }, _.noop);
+            }, done);
 
             expect(function() {
                 task.concurrent = 3.14;
             }).to.throw(TypeError, 'concurrent must be a positive non-zero integer');
+            
+            task.stop();
         });
 
-        it('throws if the runtime rate value is set to a non-number', function() {
+        it('throws if the runtime rate value is set to a non-number', function(done) {
             var output = through.obj();
 
             var task = run({
@@ -698,11 +700,13 @@ describe('[run]', function() {
                 rate: 2000,
                 test: RATE_TEST,
                 output: output
-            }, _.noop);
+            }, done);
             
             expect(function() {
                 task.rate = 'pineapples';
             }).to.throw(TypeError, 'rate must be a positive number');
+            
+            task.stop();
         });
 
     });
