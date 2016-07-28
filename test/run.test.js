@@ -513,7 +513,7 @@ describe('[run]', function() {
 
             var output = through.obj();
             var INIT_RATE = 1000 / 10 * 2;
-            var FINAL_RATE = 20000;
+            var FINAL_RATE = 30000;
 
             var opts = {
                 // we expect this to execute exactly 3 times
@@ -541,7 +541,7 @@ describe('[run]', function() {
                 // rate is less scientific, so just make
                 // sure it's more than the small amount previous
                 // tests got
-                expect(count).to.be.at.least(50);
+                expect(count).to.be.at.least(30);
                 expect(task).to.have.property('rate')
                     .and.to.equal(FINAL_RATE);
                 done();
