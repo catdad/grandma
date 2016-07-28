@@ -568,7 +568,7 @@ describe('[run]', function() {
             });
 
             var task = run(opts, function(err) {
-                expect(count).to.be.at.least(0);
+                expect(count).to.equal(0);
                 done();
             });
             
@@ -605,7 +605,7 @@ describe('[run]', function() {
                 // time already by the time we get the first
                 // report, so that will complete as well before
                 // the stop happens
-                expect(count).to.be.at.most(2);
+                expect(count).to.be.at.most(3);
                 expect(count).to.be.at.least(1);
                 done();
             });
@@ -631,7 +631,7 @@ describe('[run]', function() {
             });
 
             var task = run(opts, function(err) {
-                expect(count).to.be.at.least(0);
+                expect(count).to.equal(0);
                 done();
             });
             
