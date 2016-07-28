@@ -1,8 +1,6 @@
 # API: reporting on tests
 
-[Table of Contents](readme.md)
-
----
+> [Table of Contents](readme.md)
 
 ### `grandma.report({Object} options, {Function} callback)` → `void`
 

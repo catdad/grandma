@@ -1,8 +1,6 @@
 # Writing `grandma` tests
 
-[Table of Contents](readme.md)
-
----
+> [Table of Contents](readme.md)
 
 Test files are written in JavaScript, and should be placed inside the folder defined by the `directory` CLI flag or `.grandmarc` file. All JavaScript files in the folder and all subfolders will be considered test files.
 

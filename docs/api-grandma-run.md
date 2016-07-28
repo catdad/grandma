@@ -1,8 +1,6 @@
 # API: Running tests
 
-[Table of Contents](readme.md)
-
----
+> [Table of Contents](readme.md)
 
 ### `grandma.run({Object} options, {Function} callback)` → `{Object} task`
 
