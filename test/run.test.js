@@ -74,7 +74,7 @@ describe('[run]', function() {
                     
             var lines = getLines(data);
 
-            expect(lines).to.be.an('array').and.to.have.length(3);
+            expect(lines).to.be.an('array').and.to.have.length.within(2, 4);
 
             var header = lines.shift();
 
@@ -141,9 +141,12 @@ describe('[run]', function() {
             }, { '0': 0, '1': 0 });
             
             expect(threadCounts).to.have.all.keys(['0', '1']);
-            expect(threadCounts).to.have.property('0').and.to.equal(2);
-            expect(threadCounts).to.have.property('1').and.to.equal(2);
-            
+            expect(threadCounts).to.have.property('0')
+                .and.to.be.at.least(2)
+                .and.to.be.at.most(3);
+            expect(threadCounts).to.have.property('1')
+                .and.to.be.at.least(2)
+                .and.to.be.at.most(3);
         }, done);
     });
     
@@ -452,5 +455,260 @@ describe('[run]', function() {
             }, fixtures), 'either options.rate or options.concurrent is required', done);
         });
     }());
+    
+    describe('interactive mode:', function() {
+        
+        var CONCURRENT_TEST = {
+            path: path.resolve(__dirname, '../fixtures/test.concurrent.js'),
+            name: 'test.concurrent'
+        };
+        
+        var RATE_TEST = {
+            path: path.resolve(__dirname, '../fixtures/test.small.js'),
+            name: 'test.small'
+        };
+        
+        it('can have concurrency changed at runtime when running in concurrent mode', function(done) {
+            increaseTimeout(this);
+
+            var INIT_C = 1;
+            var FINAL_C = 20;
+            var count = 0;
+
+            var output = through.obj();
+
+            var opts = {
+                duration: 50,
+                concurrent: INIT_C,
+                test: CONCURRENT_TEST,
+                output: output
+            };
+
+            var increateConcurrent = _.once(function() {
+                task.concurrent = FINAL_C;
+            });
+
+            output.on('data', function(data) {
+                if (data.report) {
+                    count += 1;
+                    increateConcurrent();
+                }
+            });
+
+            var task = run(opts, function(err) {
+                expect(count).to.be.at.least(FINAL_C);
+                expect(task).to.have.property('concurrent')
+                    .and.to.equal(FINAL_C);
+                done();
+            });
+
+            expect(task).to.have.property('concurrent')
+                .and.to.equal(INIT_C);
+        });
+
+        it('can have rate changed at runtime when running in rate mode', function(done) {
+            increaseTimeout(this);
+
+            var count = 0;
+
+            var output = through.obj();
+            var INIT_RATE = 1000 / 10 * 2;
+            var FINAL_RATE = 20000;
+
+            var opts = {
+                // we expect this to execute exactly 3 times
+                // without changing the rate at runtime
+                duration: '20ms',
+                rate: INIT_RATE,
+                test: RATE_TEST,
+                output: output
+            };
+
+            var increateConcurrent = _.once(function() {
+                // a very large number, since we are running
+                // the test for a very short time
+                task.rate = FINAL_RATE;
+            });
+
+            output.on('data', function(data) {
+                if (data.report) {
+                    count += 1;
+                    increateConcurrent();
+                }
+            });
+
+            var task = run(opts, function(err) {
+                // rate is less scientific, so just make
+                // sure it's more than the small amount previous
+                // tests got
+                expect(count).to.be.at.least(50);
+                expect(task).to.have.property('rate')
+                    .and.to.equal(FINAL_RATE);
+                done();
+            });
+            
+            expect(task).to.have.property('rate')
+                .and.to.equal(INIT_RATE);
+        });
+        
+        it('can be stopped immediately when running in rate mode', function(done) {
+            var count = 0;
+
+            var output = through.obj();
+
+            var opts = {
+                // set a long time, just in case
+                duration: '3s',
+                rate: 1000 / 10 * 2,
+                test: RATE_TEST,
+                output: output
+            };
+
+            output.on('data', function(data) {
+                if (data.report) {
+                    count += 1;
+                }
+            });
+
+            var task = run(opts, function(err) {
+                expect(count).to.equal(0);
+                done();
+            });
+            
+            expect(task).to.have.property('stop').and.to.be.a('function');
+            task.stop();
+        });
+        
+        it('can be stopped while running when running in rate mode', function(done) {
+            var count = 0;
+
+            var output = through.obj();
+
+            var opts = {
+                // set a long time, just in case
+                duration: '3s',
+                rate: 1000 / 10 * 2,
+                test: RATE_TEST,
+                output: output
+            };
+
+            var stopOnce = _.once(function() {
+                task.stop();
+            });
+
+            output.on('data', function(data) {
+                if (data.report) {
+                    count += 1;
+                    stopOnce();
+                }
+            });
+
+            var task = run(opts, function(err) {
+                // the test probably started executing a second
+                // time already by the time we get the first
+                // report, so that will complete as well before
+                // the stop happens
+                expect(count).to.be.at.most(3);
+                expect(count).to.be.at.least(1);
+                done();
+            });
+        });
+        
+        it('can be stopped immediately when running in concurrent mode', function(done) {
+            var count = 0;
+
+            var output = through.obj();
+
+            var opts = {
+                // set a long time, just in case
+                duration: '3s',
+                concurrent: 10,
+                test: CONCURRENT_TEST,
+                output: output
+            };
+
+            output.on('data', function(data) {
+                if (data.report) {
+                    count += 1;
+                }
+            });
+
+            var task = run(opts, function(err) {
+                expect(count).to.equal(0);
+                done();
+            });
+            
+            expect(task).to.have.property('stop').and.to.be.a('function');
+            task.stop();
+        });
+        
+        it('can be stopped while running when running in concurrent mode', function(done) {
+            var count = 0;
+
+            var output = through.obj();
+
+            var opts = {
+                // set a long time, just in case
+                duration: '3s',
+                concurrent: 10,
+                test: CONCURRENT_TEST,
+                output: output
+            };
+
+            var stopOnce = _.once(function() {
+                task.stop();
+            });
+
+            output.on('data', function(data) {
+                if (data.report) {
+                    count += 1;
+                    stopOnce();
+                }
+            });
+
+            var task = run(opts, function(err) {
+                // we are stopping after the first concurrent
+                // run, so we will have exactly the 10 that were
+                // already started
+                expect(count).to.equal(10);
+                done();
+            });
+        });
+
+        it('throws if the runtime concurrent value is set to a non-integer', function(done) {
+            var output = through.obj();
+
+            var task = run({
+                duration: 50,
+                concurrent: 1,
+                test: CONCURRENT_TEST,
+                output: output
+            }, done);
+
+            expect(function() {
+                task.concurrent = 3.14;
+            }).to.throw(TypeError, 'concurrent must be a positive non-zero integer');
+            
+            task.stop();
+        });
+
+        it('throws if the runtime rate value is set to a non-number', function(done) {
+            var output = through.obj();
+
+            var task = run({
+                duration: '10ms',
+                rate: 2000,
+                test: RATE_TEST,
+                output: output
+            }, done);
+            
+            expect(function() {
+                task.rate = 'pineapples';
+            }).to.throw(TypeError, 'rate must be a positive number');
+            
+            task.stop();
+        });
+
+    });
     
 });
