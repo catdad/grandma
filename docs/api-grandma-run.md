@@ -1,5 +1,7 @@
 # API: Running tests
 
+[Table of Contents](readme.md)
+
 ### `grandma.run({Object} options, {Function} callback)` → `{Object} task`
 
 The run command takes an options object and a callback. It will trigger a test to start.
