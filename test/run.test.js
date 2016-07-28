@@ -547,6 +547,71 @@ describe('[run]', function() {
             expect(task).to.have.property('rate')
                 .and.to.equal(INIT_RATE);
         });
+        
+        it('can be stopped immediately when running in rate mode', function(done) {
+            var count = 0;
+
+            var output = through.obj();
+
+            var opts = {
+                // set a long time, just in case
+                duration: '3s',
+                rate: 1000 / 10 * 2,
+                test: RATE_TEST,
+                output: output
+            };
+
+            output.on('data', function(data) {
+                if (data.report) {
+                    count += 1;
+                }
+            });
+
+            var task = run(opts, function(err) {
+                expect(count).to.be.at.least(0);
+                done();
+            });
+            
+            expect(task).to.have.property('stop').and.to.be.a('function');
+            task.stop();
+        });
+        
+        it('can be stopped while running when running in rate mode', function(done) {
+            increaseTimeout(this);
+
+            var count = 0;
+
+            var output = through.obj();
+
+            var opts = {
+                // set a long time, just in case
+                duration: '3s',
+                rate: 1000 / 10 * 2,
+                test: RATE_TEST,
+                output: output
+            };
+
+            var stopOnce = _.once(function() {
+                task.stop();
+            });
+
+            output.on('data', function(data) {
+                if (data.report) {
+                    count += 1;
+                    stopOnce();
+                }
+            });
+
+            var task = run(opts, function(err) {
+                // the test probably started executing a second
+                // time already by the time we get the first
+                // report, so that will complete as well before
+                // the stop happens
+                expect(count).to.be.at.most(2);
+                expect(count).to.be.at.least(1);
+                done();
+            });
+        });
 
         it('throws if the runtime concurrent value is set to a non-integer', function() {
             var output = through.obj();
