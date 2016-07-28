@@ -2,6 +2,8 @@
 
 [Table of Contents](readme.md)
 
+---
+
 ### `grandma.report({Object} options, {Function} callback)` → `void`
 
 The run command takes an options object and a callback.
