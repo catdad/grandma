@@ -1,6 +1,9 @@
 # `grandma` documentation
 
 * [Quick Start](../README.md)
+* Discussion
+  * running tests in **rate** mode
+  * running tests in **concurrent** mode
 * CLI usage
   * [`grandma run`](cli-grandma-run.md)
   * [`grandma report`](cli-grandma-report.md)
