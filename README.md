@@ -114,7 +114,29 @@ The following options are available as flags (some are only relevant for the `ru
 <a name="tests"></a>
 ## Test files
 
-See more information about writing tests in the [test files help topic](docs/test-files.md).
+Here is a quick example of a test file:
+
+```javascript
+module.exports = {
+    beforeAll: function(done) {
+        process.nextTick(done);
+    },
+    beforeEach: function(done) {
+        process.nextTick(done);
+    },
+    test: function(done) {
+        process.nextTick(done);
+    },
+    afterEach: function(done) {
+        process.nextTick(done);
+    },
+    afterAll: function(done) {
+        process.nextTick(done);
+    }
+};
+```
+
+All functions other than `test` are optional, and you can exclude them if you do not need them. All functions are asynchronous, and you must call the `done` callback to continue. For more information about writing tests, see the [test files help topic](docs/test-files.md).
 
 <a name="api"></a>
 ## API
