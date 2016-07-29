@@ -6,5 +6,5 @@
   * [custom metrics in tests](test-custom-metrics.md)
 * API usage
   * [`grandma.run`](api-grandma-run.md)
-  * `grandma.run` interactive mode
+  * [`grandma.run` interactive mode](api-grandma-run-interactive.md)
   * [`grandma.report`](api-grandma-report.md)
