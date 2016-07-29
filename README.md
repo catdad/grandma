@@ -43,7 +43,7 @@ npm install grandma
 
 You can set up an RC file to help with managing some of the setting, such as the directory of test files. Here is the content a sample file.
 
-To find out more, see the [`.grandmarc` Doc Page](docs/cli-grandmarc.md);
+To find out more, see the [`.grandmarc` Doc Page](docs/cli-grandmarc.md).
 
 <a name="cli"></a>
 ## CLI
@@ -73,7 +73,7 @@ The following options are available as flags (some are only relevant for the `ru
 
 #### `grandma list`
 
-- `directory` - The folder that contains tests. All subfolders will be parsed as well, assuming all `.js` files are tests. I recommend just setting this in your `.grandmarc` file.
+- **`directory`** - The folder that contains tests. All subfolders will be parsed as well, assuming all `.js` files are tests. I recommend just setting this in your `.grandmarc` file.
 
 #### `grandma run`
 
