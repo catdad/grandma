@@ -77,29 +77,21 @@ The following options are available as flags (some are only relevant for the `ru
 
 #### `grandma run`
 
-- **`duration`** - (required) The duration for which the tests should run. Written as a number, followed by one of the following:
-  - `ms` - millisecond
-  - `s` - second
-  - `m` - minute
-  - `h` - hour
-  - `d` - day
-  - `w` - week
+Run a test named "pineapples" for 10 minutes at a rate of 500 tests per second:
 
-- **`rate`** - The rate at which the tests will run. Written as a number, representing number of tests per second.
-  - Cannot be used with `concurrent`.
-  - Either `rate` or `concurrent` is required.
+```bash
+grandma run pineapples --duration 10m --rate 500 --out pineapples.log
+```
 
-- **`concurrent`** - The amount of concurrent tests to use at the same time.
-  - Cannot be used with `rate`.
-  - Either `rate` or `concurrent` is required.
+Run a test named "peaches" for one and a half hours, running 100 concurrent tests:
 
-- **`timeout`** - The amount of time to way for each test before treating it as a failure. The default is to wait indefinitely. This is a string value, set the same way as `duration`.
+```bash
+grandma run peaches --duration 1h30m --concurrent 100 --out peaches.log
+```
 
-- **`directory`** - The folder that contains tests. All subfolders will be parsed as well, assuming all `.js` files are tests.
+To find out more about the CLI, please see the [`grandma run` CLI doc](docs/cli-grandma-run.md).
 
-- **`threads`** - The number of threads to use to run the tests. Note that this can be any integer, although there is not much benefit to running more threads than CPU cores available. This is optional, and the default value is 1.
-
-- **`out`** - The name of an output file to write the results to. Defaults to writing to standard output. You can also specify `stdout` if you wish to write to standard output explicitly.
+_Note: I will assume that you have configured the test directory in the [`.grandmarc`](docs/cli-grandmarc.md) file, so it was not included it in these examples._
 
 #### `grandma report`
 
