@@ -2,6 +2,7 @@
 
 * [Quick Start](../README.md)
 * CLI usage
+  * [`.grandmarc` file](cli-grandmarc.md)
 * [writing tests](test-files.md)
   * [custom metrics in tests](test-custom-metrics.md)
 * API usage

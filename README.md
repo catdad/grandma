@@ -43,14 +43,7 @@ npm install grandma
 
 You can set up an RC file to help with managing some of the setting, such as the directory of test files. Here is the content a sample file.
 
-```javascript
-{
-    "directory": "fixtures",
-    "threads": 1
-}
-```
-
-All CLI flags are available through the RC file, and they can all be overwritten through the CLI.
+To find out more, see the [`.grandmarc` Doc Page](docs/cli-grandmarc.md);
 
 <a name="cli"></a>
 ## CLI
