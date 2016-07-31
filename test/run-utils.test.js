@@ -1,5 +1,5 @@
 /* eslint-env mocha */
-/* eslint-disable no-unused-expressions */
+/* eslint-disable no-unused-expressions, max-len, max-nested-callbacks */
 
 var zlib = require('zlib');
 

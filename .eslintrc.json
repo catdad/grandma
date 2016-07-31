@@ -45,6 +45,7 @@
       }
     ],
     "strict": "off",
+    
     "max-len": [
       "warn",
       100
@@ -55,8 +56,23 @@
         "max": 3
       }
     ],
-    "max-statements": "off",
+    "max-statements": [
+      "off",
+      10,
+      {
+        "ignoreTopLevelFunctions": true
+      }
+    ],
     "max-statements-per-line": "error",
+    "max-params": [
+      "error",
+      3
+    ],
+    "max-nested-callbacks": [
+      "error",
+      3
+    ],
+    
     "no-extend-native": "error",
     "semi": [
       "error",

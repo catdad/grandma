@@ -1,5 +1,5 @@
 /* eslint-env mocha */
-/* eslint-disable no-unused-expressions, max-len */
+/* eslint-disable no-unused-expressions, max-len, max-nested-callbacks */
 
 var expect = require('chai').expect;
 var through = require('through2');
@@ -215,6 +215,7 @@ describe('[report]', function() {
             expect(header.epoch).to.equal(2);
             expect(header.duration).to.equal(DURATION + 3);
         });
+        
         it('when given a larger epoch first', function() {
             var header = getMergedHeaders({
                 epoch: 10
@@ -238,6 +239,7 @@ describe('[report]', function() {
             expect(header.epoch).to.equal(2);
             expect(header.duration).to.equal(110);
         });
+        
         it('when the second test occurs entirely outside of the first', function() {
             var header = getMergedHeaders({
                 epoch: 2,

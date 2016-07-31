@@ -1,8 +1,8 @@
 /* eslint-env mocha */
+/* eslint-disable no-unused-expressions, max-len, max-nested-callbacks */
 
 var expect = require('chai').expect;
 var index = require('../index');
-
 
 describe('[index]', function() {
     it('exposes a cliPath method', function() {

@@ -1,4 +1,5 @@
 /* eslint-env mocha */
+/* eslint-disable no-unused-expressions, max-len, max-nested-callbacks */
 
 var fs = require('fs');
 
