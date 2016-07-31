@@ -93,7 +93,7 @@ The following options are available as flags (some are only relevant for the `ru
 
 #### `grandma list`
 
-Lists all the tests in your test suite. See more information bout it in the [`granda list` CLI doc](docs/cli-grandma-list.md).
+Lists all the tests in your test suite. You can use these names in `grandma run` to run the test. See more information bout it in the [`granda list` CLI page](docs/cli-grandma-list.md).
 
 #### `grandma run`
 
@@ -109,26 +109,34 @@ Run a test named "peaches" for one and a half hours, running 100 concurrent test
 grandma run peaches --duration 1h30m --concurrent 100 --out peaches.log
 ```
 
-To find out more about the CLI, please see the [`grandma run` CLI doc](docs/cli-grandma-run.md).
+To find out more about the CLI, please see the [`grandma run` CLI page](docs/cli-grandma-run.md).
 
 _Note: I will assume that you have configured the test directory in the [`.grandmarc`](docs/cli-grandmarc.md) file, so it was not included it in these examples._
 
 #### `grandma report`
 
-- **`type`** - The type of report to create. Available values are:
-  - `text` - (default) human readable text summary of the results, suitable for the terminal
-  - `json` - summary of the results in json format, suitable for the terminal or to be parsed by another tool
-  - `box` - a box plot in plain text, suitable for the terminal
-  - `plot` - an HTML page containing a plot of the results, suitable for viewing in the browser
+Print a plain text report of the previously-described test run:
 
-- **`out`** - The name of an output file to write the results to. Defaults to writing to standard output. You can also specify `stdout` if you wish to write to standard output explicitly.
+```bash
+grandma report pineapples.log
+```
+
+You can also create an HTML page containing an interactive graph of the results:
+
+```bash
+grandma report pineapples.log --type plot --out pineapples.html
+```
+
+By default, all reports will print to standard output, unless you specify a file in the `--out` flag.
+
+You can find more information about the available reports and the data they provide in the [`grandma report` CLI page](docs/cli-grandma-report.md).
 
 <a name="grandmarc"></a>
 ## `.grandmarc` file
 
 You can set up an RC file to help with managing some of the setting, such as the directory of test files. Here is the content a sample file.
 
-To find out more, see the [`.grandmarc` Doc Page](docs/cli-grandmarc.md).
+To find out more, see the [`.grandmarc` ddc page](docs/cli-grandmarc.md).
 
 <a name="api"></a>
 ## API
