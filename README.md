@@ -25,9 +25,9 @@
 
 This is a load testing library and CLI tool. It is inspired by the good parts of [Vegeta](https://github.com/tsenart/vegeta) and [JMeter](http://jmeter.apache.org/), but hopefully leaves out the bad parts of both.
 
+* [Test Files](#tests)
 * [Configuration](#grandmarc)
 * [CLI](#cli)
-* [Test Files](#tests)
 * [API](#api)
 
 ## Install
@@ -38,12 +38,32 @@ You can install `grandma` as a global CLI tool:
 npm install grandma
 ```
 
-<a name="grandmarc"></a>
-## `.grandmarc` file
+<a name="tests"></a>
+## Test files
 
-You can set up an RC file to help with managing some of the setting, such as the directory of test files. Here is the content a sample file.
+Here is a quick example of a test file:
 
-To find out more, see the [`.grandmarc` Doc Page](docs/cli-grandmarc.md).
+```javascript
+module.exports = {
+    beforeAll: function(done) {
+        process.nextTick(done);
+    },
+    beforeEach: function(done) {
+        process.nextTick(done);
+    },
+    test: function(done) {
+        process.nextTick(done);
+    },
+    afterEach: function(done) {
+        process.nextTick(done);
+    },
+    afterAll: function(done) {
+        process.nextTick(done);
+    }
+};
+```
+
+All functions other than `test` are optional, and you can exclude them if you do not need them. All functions are asynchronous, and you must call the `done` callback to continue. For more information about writing tests, see the [test files help topic](docs/test-files.md).
 
 <a name="cli"></a>
 ## CLI
@@ -103,32 +123,12 @@ _Note: I will assume that you have configured the test directory in the [`.grand
 
 - **`out`** - The name of an output file to write the results to. Defaults to writing to standard output. You can also specify `stdout` if you wish to write to standard output explicitly.
 
-<a name="tests"></a>
-## Test files
+<a name="grandmarc"></a>
+## `.grandmarc` file
 
-Here is a quick example of a test file:
+You can set up an RC file to help with managing some of the setting, such as the directory of test files. Here is the content a sample file.
 
-```javascript
-module.exports = {
-    beforeAll: function(done) {
-        process.nextTick(done);
-    },
-    beforeEach: function(done) {
-        process.nextTick(done);
-    },
-    test: function(done) {
-        process.nextTick(done);
-    },
-    afterEach: function(done) {
-        process.nextTick(done);
-    },
-    afterAll: function(done) {
-        process.nextTick(done);
-    }
-};
-```
-
-All functions other than `test` are optional, and you can exclude them if you do not need them. All functions are asynchronous, and you must call the `done` callback to continue. For more information about writing tests, see the [test files help topic](docs/test-files.md).
+To find out more, see the [`.grandmarc` Doc Page](docs/cli-grandmarc.md).
 
 <a name="api"></a>
 ## API
