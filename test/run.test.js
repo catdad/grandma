@@ -305,6 +305,10 @@ describe('[run]', function() {
         });
         
         run(opts, function(err) {
+            if (err) {
+                return done(err);
+            }
+            
             expect(ended).to.equal(true);
             done();
         });
@@ -496,6 +500,10 @@ describe('[run]', function() {
             });
 
             var task = run(opts, function(err) {
+                if (err) {
+                    return done(err);
+                }
+                
                 expect(count).to.be.at.least(FINAL_C);
                 expect(task).to.have.property('concurrent')
                     .and.to.equal(FINAL_C);
@@ -538,6 +546,10 @@ describe('[run]', function() {
             });
 
             var task = run(opts, function(err) {
+                if (err) {
+                    return done(err);
+                }
+                
                 // rate is less scientific, so just make
                 // sure it's more than the small amount previous
                 // tests got
@@ -571,6 +583,10 @@ describe('[run]', function() {
             });
 
             var task = run(opts, function(err) {
+                if (err) {
+                    return done(err);
+                }
+                
                 expect(count).to.equal(0);
                 done();
             });
@@ -604,6 +620,10 @@ describe('[run]', function() {
             });
 
             var task = run(opts, function(err) {
+                if (err) {
+                    return done(err);
+                }
+                
                 // the test probably started executing a second
                 // time already by the time we get the first
                 // report, so that will complete as well before
@@ -634,6 +654,10 @@ describe('[run]', function() {
             });
 
             var task = run(opts, function(err) {
+                if (err) {
+                    return done(err);
+                }
+                
                 expect(count).to.equal(0);
                 done();
             });
@@ -667,6 +691,10 @@ describe('[run]', function() {
             });
 
             var task = run(opts, function(err) {
+                if (err) {
+                    return done(err);
+                }
+                
                 // we are stopping after the first concurrent
                 // run, so we will have exactly the 10 that were
                 // already started

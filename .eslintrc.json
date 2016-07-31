@@ -1,13 +1,21 @@
 {
   "env": {
+    "es6": false,
     "node": true
   },
+  "extends": "eslint:recommended",
   "globals": {},
   "rules": {
-    "complexity": ["error", 10],
+    "array-callback-return": "error",
+    "complexity": ["error", 8],
     "no-bitwise": "error",
     "camelcase": "off",
     "curly": "error",
+    "default-case": "error",
+    "dot-location": [
+      "error",
+      "property"
+    ],
     "eqeqeq": "error",
     "guard-for-in": "error",
     "wrap-iife": "error",
@@ -161,6 +169,8 @@
     "spaced-comment": [
       "error",
       "always"
-    ]
+    ],
+    "callback-return": "error",
+    "handle-callback-err": "error"
   }
 }

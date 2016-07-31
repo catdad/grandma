@@ -142,6 +142,10 @@ describe('[run-utils]', function() {
             var streams = getStreams(through());
             
             streams.out.pipe(es.wait(function(err, data) {
+                if (err) {
+                    return done(err);
+                }
+                
                 expect(Buffer.isBuffer(data)).to.equal(true);
                 expect(data.equals(DATA)).to.equal(true);
                 
@@ -156,6 +160,10 @@ describe('[run-utils]', function() {
             var streams = getStreams(through());
             
             streams.out.pipe(es.wait(function(err, data) {
+                if (err) {
+                    return done(err);
+                }
+                
                 expect(Buffer.isBuffer(data)).to.equal(true);
                 expect(data.toString()).to.equal(DATA);
                 
@@ -170,6 +178,10 @@ describe('[run-utils]', function() {
             var streams = getStreams(through());
             
             streams.out.pipe(es.wait(function(err, data) {
+                if (err) {
+                    return done(err);
+                }
+                
                 expect(Buffer.isBuffer(data)).to.equal(true);
                 
                 var jsonData = JSON.parse(data.toString());
