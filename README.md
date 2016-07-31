@@ -39,7 +39,7 @@ npm install grandma
 ```
 
 <a name="tests"></a>
-## [Test files][[cli-list]]
+## [Test files][tests]
 
 Here is a quick example of a test file:
 
