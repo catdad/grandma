@@ -1,5 +1,5 @@
 /* eslint-env mocha */
-/* eslint-disable no-unused-expressions */
+/* eslint-disable no-unused-expressions, max-len */
 
 var expect = require('chai').expect;
 var through = require('through2');
@@ -138,7 +138,7 @@ function getReport(options, data, callback) {
     input.end(data.map(JSON.stringify).join('\n'));
 }
 
-function testNoData(reporter, done) {
+function testNoData(reporter) {
     it('errors if no data is written to the input stream', function(done) {
         getReport({
             type: reporter
@@ -475,7 +475,7 @@ describe('[report]', function() {
             var str = [].slice.call(arguments).join('\\s+?');
             return new RegExp(str);
         }
-
+        
         it('provides pretty text data for rate mode', function(done) {
             getReport({
                 type: 'text'
@@ -526,11 +526,6 @@ describe('[report]', function() {
         });
         
         it('prints test status breakdowns', function(done) {
-            function tableRegex() {
-                var str = [].slice.call(arguments).join('\\s+?');
-                return new RegExp(str);
-            }
-            
             getReport({
                 type: 'text'
             }, TESTDATA, function(err, content) {

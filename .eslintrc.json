@@ -45,6 +45,10 @@
       }
     ],
     "strict": "off",
+    "max-len": [
+      "warn",
+      100
+    ],
     "max-depth": [
       "warn",
       {
@@ -170,7 +174,13 @@
       "error",
       "always"
     ],
+    
     "callback-return": "error",
-    "handle-callback-err": "error"
+    "handle-callback-err": "error",
+    
+    "no-shadow": "error",
+    "no-undef": "error",
+    "no-undef-init": "error",
+    "no-use-before-define": "error"
   }
 }

@@ -13,6 +13,10 @@ describe('[stats]', function() {
         ]);
     });
     
+    function stringify(val) {
+        return JSON.stringify(val) || val.toString();
+    }
+    
     function validationTests(func) {
         [
             null,
@@ -20,7 +24,7 @@ describe('[stats]', function() {
             {},
             function() {}
         ].forEach(function(val) {
-            it('throws if given invalid data value: ' + (JSON.stringify(val) || val.toString()), function() {
+            it('throws if given invalid data value: ' + stringify(val), function() {
                 function guilty() {
                     func(val);
                 }

@@ -16,6 +16,10 @@ describe('[run]', function() {
         that.timeout(1000 * 5);
     }
     
+    function stringify(val) {
+        return JSON.stringify(val) || val.toString();
+    }
+    
     function runRealTest(opts, runCallback, outputCallback, done) {
         var output = through();
         opts = _.defaultsDeep(opts, {
@@ -423,7 +427,8 @@ describe('[run]', function() {
         });
 
         [null, 'junk', [], {}, function() {}].forEach(function(val) {
-            it('errors for invalid duration value: ' + (JSON.stringify(val) || val.toString()), function(done) {
+            var name = 'errors for invalid duration value: ' + stringify(val);
+            it(name, function(done) {
                 testError(_.defaultsDeep({
                     output: through(),
                     duration: val,
@@ -433,7 +438,7 @@ describe('[run]', function() {
         });
 
         [null, '1', 'junk', [], {}, function() {}].forEach(function(val) {
-            it('errors for invalid rate value: ' + (JSON.stringify(val) || val.toString()), function(done) {
+            it('errors for invalid rate value: ' + stringify(val), function(done) {
                 testError(_.defaultsDeep({
                     output: through(),
                     duration: '1s',
@@ -443,7 +448,7 @@ describe('[run]', function() {
         });
 
         [null, '1', 'junk', [], {}, function() {}].forEach(function(val) {
-            it('errors for invalid concurrent value: ' + (JSON.stringify(val) || val.toString()), function(done) {
+            it('errors for invalid concurrent value: ' + stringify(val), function(done) {
                 testError(_.defaultsDeep({
                     output: through(),
                     duration: '1s',
@@ -472,7 +477,10 @@ describe('[run]', function() {
             name: 'test.small'
         };
         
-        it('can have concurrency changed at runtime when running in concurrent mode', function(done) {
+        var cMode = ' when running in concurrent mode';
+        var rMode = ' when running in rate mode';
+        
+        it('can have concurrency changed at runtime' + cMode, function(done) {
             increaseTimeout(this);
 
             var INIT_C = 1;
@@ -488,17 +496,6 @@ describe('[run]', function() {
                 output: output
             };
 
-            var increateConcurrent = _.once(function() {
-                task.concurrent = FINAL_C;
-            });
-
-            output.on('data', function(data) {
-                if (data.report) {
-                    count += 1;
-                    increateConcurrent();
-                }
-            });
-
             var task = run(opts, function(err) {
                 if (err) {
                     return done(err);
@@ -510,11 +507,22 @@ describe('[run]', function() {
                 done();
             });
 
+            var increateConcurrent = _.once(function() {
+                task.concurrent = FINAL_C;
+            });
+
+            output.on('data', function(data) {
+                if (data.report) {
+                    count += 1;
+                    increateConcurrent();
+                }
+            });
+
             expect(task).to.have.property('concurrent')
                 .and.to.equal(INIT_C);
         });
 
-        it('can have rate changed at runtime when running in rate mode', function(done) {
+        it('can have rate changed at runtime' + rMode, function(done) {
             increaseTimeout(this);
 
             var count = 0;
@@ -532,19 +540,6 @@ describe('[run]', function() {
                 output: output
             };
 
-            var increateConcurrent = _.once(function() {
-                // a very large number, since we are running
-                // the test for a very short time
-                task.rate = FINAL_RATE;
-            });
-
-            output.on('data', function(data) {
-                if (data.report) {
-                    count += 1;
-                    increateConcurrent();
-                }
-            });
-
             var task = run(opts, function(err) {
                 if (err) {
                     return done(err);
@@ -559,11 +554,24 @@ describe('[run]', function() {
                 done();
             });
             
+            var increateConcurrent = _.once(function() {
+                // a very large number, since we are running
+                // the test for a very short time
+                task.rate = FINAL_RATE;
+            });
+
+            output.on('data', function(data) {
+                if (data.report) {
+                    count += 1;
+                    increateConcurrent();
+                }
+            });
+
             expect(task).to.have.property('rate')
                 .and.to.equal(INIT_RATE);
         });
         
-        it('can be stopped immediately when running in rate mode', function(done) {
+        it('can be stopped immediately' + rMode, function(done) {
             var count = 0;
 
             var output = through.obj();
@@ -595,7 +603,7 @@ describe('[run]', function() {
             task.stop();
         });
         
-        it('can be stopped while running when running in rate mode', function(done) {
+        it('can be stopped while running' + rMode, function(done) {
             var count = 0;
 
             var output = through.obj();
@@ -607,17 +615,6 @@ describe('[run]', function() {
                 test: RATE_TEST,
                 output: output
             };
-
-            var stopOnce = _.once(function() {
-                task.stop();
-            });
-
-            output.on('data', function(data) {
-                if (data.report) {
-                    count += 1;
-                    stopOnce();
-                }
-            });
 
             var task = run(opts, function(err) {
                 if (err) {
@@ -632,9 +629,20 @@ describe('[run]', function() {
                 expect(count).to.be.at.least(1);
                 done();
             });
+            
+            var stopOnce = _.once(function() {
+                task.stop();
+            });
+
+            output.on('data', function(data) {
+                if (data.report) {
+                    count += 1;
+                    stopOnce();
+                }
+            });
         });
         
-        it('can be stopped immediately when running in concurrent mode', function(done) {
+        it('can be stopped immediately' + cMode, function(done) {
             var count = 0;
 
             var output = through.obj();
@@ -666,7 +674,7 @@ describe('[run]', function() {
             task.stop();
         });
         
-        it('can be stopped while running when running in concurrent mode', function(done) {
+        it('can be stopped while running' + cMode, function(done) {
             var count = 0;
 
             var output = through.obj();
@@ -679,17 +687,6 @@ describe('[run]', function() {
                 output: output
             };
 
-            var stopOnce = _.once(function() {
-                task.stop();
-            });
-
-            output.on('data', function(data) {
-                if (data.report) {
-                    count += 1;
-                    stopOnce();
-                }
-            });
-
             var task = run(opts, function(err) {
                 if (err) {
                     return done(err);
@@ -700,6 +697,17 @@ describe('[run]', function() {
                 // already started
                 expect(count).to.equal(10);
                 done();
+            });
+            
+            var stopOnce = _.once(function() {
+                task.stop();
+            });
+
+            output.on('data', function(data) {
+                if (data.report) {
+                    count += 1;
+                    stopOnce();
+                }
             });
         });
 

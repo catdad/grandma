@@ -77,11 +77,11 @@ function getDestinationStream(opts) {
     return output;
 }
 
-function getInputStream(glob) {
+function getInputStream(pattern) {
     var input = process.stdin;
     
-    if (glob !== 'stdin') {
-        input = globfile(glob, {
+    if (pattern !== 'stdin') {
+        input = globfile(pattern, {
             transform: ensureGunzip
         });
     }
@@ -142,8 +142,8 @@ var commands = {
         initWithErrors(function(opts) {
             opts.output = getDestinationStream(opts);
 
-            var test = _.find(opts.tests, function(test) {
-                return test.name === testFilter;
+            var test = _.find(opts.tests, function(t) {
+                return t.name === testFilter;
             });
             
             if (!test) {
@@ -167,14 +167,14 @@ var commands = {
 
         initWithErrors(function(opts) {
             
-            var list = opts.tests.map(function(test) {
-                return leftPad(test.name);
+            var testList = opts.tests.map(function(t) {
+                return leftPad(t.name);
             });
             
             var str = util.format(
                 '\n%s\n\n%s\n\n%s\n',
                 'The following tests are available:',
-                list.join('\n'),
+                testList.join('\n'),
                 'Run as: grandma run <testname> [options]'
             );
 
@@ -182,10 +182,10 @@ var commands = {
         });
     },
     report: function report() {
-        var glob = argv.glob || argv._[1];
+        var pattern = argv.glob || argv._[1];
 
-        if (!glob) {
-            glob = 'stdin';
+        if (!pattern) {
+            pattern = 'stdin';
         }
 
         var opts = _.clone(argv);
@@ -194,7 +194,7 @@ var commands = {
             width: ttyHelper.width
         };
 
-        opts.input = getInputStream(glob);
+        opts.input = getInputStream(pattern);
         opts.output = getDestinationStream(opts);
         
         // the default type for the CLI is text
