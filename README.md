@@ -93,7 +93,7 @@ The following options are available as flags (some are only relevant for the `ru
 
 #### `grandma list`
 
-- **`directory`** - The folder that contains tests. All subfolders will be parsed as well, assuming all `.js` files are tests. I recommend just setting this in your `.grandmarc` file.
+Lists all the tests in your test suite. See more information bout it in the [`granda list` CLI doc](docs/cli-grandma-list.md).
 
 #### `grandma run`
 

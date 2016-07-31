@@ -2,8 +2,7 @@
 
 * [Quick Start](../README.md)
 * Discussion
-  * running tests in **rate** mode
-  * running tests in **concurrent** mode
+  * **rate** mode vs. **concurrent** mode
 * Writing tests
   * [test files](test-files.md)
   * [custom metrics in tests](test-custom-metrics.md)
