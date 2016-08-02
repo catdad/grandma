@@ -2,9 +2,11 @@
 /* eslint-disable no-unused-expressions, max-len, max-nested-callbacks */
 
 var expect = require('chai').expect;
-var estimate = require('../lib/estimate-duration.js');
+var _ = require('lodash');
 
-describe('[estimate-duration]', function() {
+var estimate = require('../lib/estimate-rate.js');
+
+describe('[estimate-rate]', function() {
     function record(start, end) {
         return {
             report: {
@@ -44,7 +46,18 @@ describe('[estimate-duration]', function() {
         inst.include(record(0, 100));
         inst.include(record(20, 140));
         
-        expect(inst.result).to.equal(140);
+        expect(inst.result).to.equal(2 / (140 / 1000));
+    });
+    
+    it('can take a large amount of data', function() {
+        var C = 10;
+        var inst = estimate();
+        
+        _.times(C, function(i) {
+            inst.include(record(0, i + 1));
+        });
+        
+        expect(inst.result).to.equal(C / (C / 1000));
     });
     
     it('rejects data that is not a log record', function() {
