@@ -40,7 +40,7 @@ describe('[estimate-rate]', function() {
         expect(inst.result).to.equal(0);
     });
     
-    it('takes grandma log records and adds them to the duration', function() {
+    it('takes grandma log records and adds them to the rate', function() {
         var inst = estimate();
         
         inst.include(record(0, 100));
@@ -50,7 +50,7 @@ describe('[estimate-rate]', function() {
     });
     
     it('can take a large amount of data', function() {
-        var C = 10;
+        var C = 3000;
         var inst = estimate();
         
         _.times(C, function(i) {
