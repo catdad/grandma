@@ -4,7 +4,7 @@
 var expect = require('chai').expect;
 var estimate = require('../lib/estimate-concurrent.js');
 
-describe.only('[estimate-concurrent]', function() {
+describe('[estimate-concurrent]', function() {
     function record(start, end) {
         return {
             report: {
