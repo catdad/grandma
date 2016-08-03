@@ -85,8 +85,8 @@ grandma list [options]
 To see help on these commands, you can type one of:
 
 ```bash
-grandma run -h
-grandma report -h
+grandma run --help
+grandma report --help
 ```
 
 The following options are available as flags (some are only relevant for the `run` command):
