@@ -136,7 +136,7 @@ You can find more information about the available reports and the data they prov
 
 You can set up an RC file to help with managing some of the setting, such as the directory of test files. Here is the content a sample file.
 
-To find out more, see the [`.grandmarc` ddc page][rc].
+To find out more, see the [`.grandmarc` doc page][rc].
 
 <a name="api"></a>
 ## API
