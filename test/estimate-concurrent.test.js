@@ -56,6 +56,18 @@ describe('[estimate-concurrent]', function() {
         expect(inst.result).to.equal(1.5);
     });
     
+    it('can calculate results that have small bins', function() {
+        var inst = estimate();
+        
+        inst.include(record(0, 10));
+        inst.include(record(5, 15));
+        inst.include(record(10, 20));
+        
+        // this result is not totally accurate, but this
+        // is an estimation after all
+        expect(inst.result).to.equal(3);
+    });
+    
     it('rejects data that is not a log record', function() {
         var inst = estimate();
         
