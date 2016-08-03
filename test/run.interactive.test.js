@@ -9,7 +9,7 @@ var through = require('through2');
 
 var run = require('../lib/run.js');
 
-describe('[run: interactive]', function() {
+describe('[run:interactive]', function() {
     var CONCURRENT_TEST = {
         path: path.resolve(__dirname, '../fixtures/test.concurrent.js'),
         name: 'test.concurrent'
