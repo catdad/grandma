@@ -22,8 +22,25 @@ describe('[run-rate-values]', function() {
         });
     });
     
-    it('returns a rate of 1 per second for a value less than 1', function() {
-        var estimate = rrv(.5);
-        expect(estimate.realRate).to.equal(1);
-    });
+//    _.map(new Array(10), function(val, idx) {
+//        return (idx + 1) * 9 / 99;
+//    }).forEach(function(val) {
+//        it('estimates decimals less than 1 of value: ' + val, function() {
+//            var estimate = rrv(val);
+//            console.log(val, estimate);
+//
+//            expect(Math.abs(estimate.realRate - val)).to.be.below(1);
+//        });
+//    });
+//
+//    _.map(new Array(10), function(val, idx) {
+//        return (idx + 1) * 9 / 10;
+//    }).forEach(function(val) {
+//        it('estimates larger decimals of value: ' + val, function() {
+//            var estimate = rrv(val);
+//            console.log(val, estimate);
+//
+//            expect(Math.abs(estimate.realRate - val)).to.be.below(1);
+//        });
+//    });
 });
