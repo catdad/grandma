@@ -15,7 +15,7 @@ describe('[run-rate-values]', function() {
     
     _.map(new Array(20), function(val, idx) {
         return (61 + (idx * 2)) / 60;
-    }).forEach(function(val) {
+    }).concat([2.56, 3.14]).forEach(function(val) {
         it('estimates a close-enough rate for small value: ' + val, function() {
             var estimate = rrv(val);
             expect(Math.abs(estimate.realRate - val)).to.be.below(1);
