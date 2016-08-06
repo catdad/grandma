@@ -105,7 +105,7 @@ describe('[run]', function() {
             expect(err).to.not.be.ok;
 
             var lines = getLines(data);
-
+            
             expect(lines).to.be.an('array').and.to.have.length(5);
 
             var header = lines.shift();
