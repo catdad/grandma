@@ -24,7 +24,8 @@ describe('[run-rate-values]', function() {
             // for larger numbers, we might dip a bit below
             // in which case, we will use a bit more
             // wiggle room
-            expect(Math.abs(estimate.realRate - rate)).to.be.below(1);
+            var percent = Math.abs(estimate.realRate - rate) / rate;
+            expect(percent).to.be.below(0.05);
         }
     }
     
@@ -50,6 +51,15 @@ describe('[run-rate-values]', function() {
         return (idx + 1) * 9 / 10;
     }).forEach(function(val) {
         it('estimates larger decimal of value: ' + val, function() {
+            var estimate = rrv(val);
+            expectAdjustment(val, estimate);
+        });
+    });
+    
+    _.map(new Array(20), function(val, idx) {
+        return (idx + 1) * 3917;
+    }).forEach(function(val) {
+        it('estimates very large irregular number of value: ' + val, function() {
             var estimate = rrv(val);
             expectAdjustment(val, estimate);
         });
