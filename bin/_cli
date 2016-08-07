@@ -1,6 +1,9 @@
 #!/usr/bin/env node
 /* eslint-disable no-console */
 
+// set this as the very first thing we do in the app
+process.env.UV_THREADPOOL_SIZE = 128;
+
 var path = require('path');
 
 var BASE = process.cwd();
