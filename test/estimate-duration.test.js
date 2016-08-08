@@ -47,6 +47,15 @@ describe('[estimate-duration]', function() {
         expect(inst.result).to.equal(140);
     });
     
+    it('works if the data is out of order', function() {
+        var inst = estimate();
+        
+        inst.include(record(20, 140));
+        inst.include(record(0, 100));
+        
+        expect(inst.result).to.equal(140);
+    });
+    
     it('rejects data that is not a log record', function() {
         var inst = estimate();
         
