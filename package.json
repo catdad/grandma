@@ -34,8 +34,8 @@
     "codeclimate-test-reporter": "^0.3.1",
     "eslint": "^2.11.0",
     "event-stream": "^3.3.2",
-    "istanbul": "^0.4.3",
-    "mocha": "^2.4.5"
+    "istanbul": "^0.4.4",
+    "mocha": "^3.0.2"
   },
   "bin": {
     "grandma": "./bin/_cli"
