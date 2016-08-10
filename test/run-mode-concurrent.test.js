@@ -29,21 +29,17 @@ function runOpts(opts) {
 
 describe('[run-mode-concurrent]', function() {
     it('starts a defined number of concurrent tests immediately', function(done) {
-        var count = 0;
-        
-        function count4() {
-            count += 1;
-        }
+        var run = sinon.spy();
         
         var task = rmc(runOpts({
-            runTest: count4,
+            runTest: run,
             opts: {
                 concurrent: 4
             }
         }));
         
         task._start({}, function() {
-            expect(count).to.equal(4);
+            expect(run.callCount).to.equal(4);
             done();
         });
         
