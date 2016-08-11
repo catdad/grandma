@@ -82,4 +82,6 @@ describe('[run-mode-concurrent]', function() {
     it('waits for all tests to finish running when the duration is reached');
     
     it('calls the debug method with concurrency information');
+    
+    it('can have concurrency changes at runtime');
 });
