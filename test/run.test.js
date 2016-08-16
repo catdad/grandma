@@ -82,7 +82,12 @@ describe('[run]', function() {
 
             var header = lines.shift();
 
-            expect(header).to.have.property('type').and.to.equal('header');
+            expect(header)
+                .to.have.property('type')
+                .and.to.equal('header');
+            expect(header)
+                .to.have.property('name')
+                .and.to.equal('test.small');
             testHeaderProps(header);
         }, done);
     });
@@ -110,7 +115,12 @@ describe('[run]', function() {
 
             var header = lines.shift();
 
-            expect(header).to.have.property('type').and.to.equal('header');
+            expect(header)
+                .to.have.property('type')
+                .and.to.equal('header');
+            expect(header)
+                .to.have.property('name')
+                .and.to.equal('test.concurrent');
             testHeaderProps(header);
         }, done);
     });
