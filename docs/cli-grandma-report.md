@@ -8,7 +8,7 @@ The CLI has the following options:
 
 - **`type`** - The type of report to create. Available values are listed below.
 
-- **`out`** - The name of an output file to write the results to. Defaults to writing to standard output. You can also specify `stdout` if you wish to write to standard output explicitly.
+- **`out`** - The path to an output file to write the results to. Defaults to writing to standard output. You can also specify `stdout` if you wish to write to standard output explicitly.
 
 #### `text`
 
