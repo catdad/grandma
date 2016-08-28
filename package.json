@@ -12,7 +12,7 @@
   "author": "Kiril Vatev <vatev.1@gmail.com>",
   "license": "ISC",
   "dependencies": {
-    "async": "^2.0.0-rc.6",
+    "async": "^2.0.1",
     "byline": "^5.0.0",
     "compute-quantile": "^1.0.1",
     "duration-js": "^3.5.1",
