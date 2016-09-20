@@ -2,17 +2,23 @@
 
 var gulp = require('gulp');
 var shellton = require('shellton');
+var gutil = require('gulp-util');
 var argv = require('yargs').argv;
 
 gulp.task('exec', function(done) {
-    console.log('executing:', argv.exec);
+    gutil.log('executing:', gutil.colors.magenta(argv.exec));
     
     shellton.spawn(argv.exec, function(err, stdout, stderr) {
         if (err) {
-            console.error(err);
-        } else {
-            console.log(stdout);
-            console.error(stderr);
+            gutil.log(err);
+        }
+        
+        if (stdout && stdout.trim()) {
+            gutil.log(stdout.trim());
+        }
+        
+        if (stderr && stderr.trim()) {
+            gutil.log(stderr.trim());
         }
         
         done();
@@ -20,7 +26,7 @@ gulp.task('exec', function(done) {
 });
 
 gulp.task('watch', function() {
-    console.log('watching:', argv.pattern);
+    gutil.log('watching:', gutil.colors.magenta(argv.pattern));
     
     gulp.watch(argv.pattern, ['exec']);
 });
