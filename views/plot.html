@@ -83,7 +83,7 @@
         
         menuitem {
             display: inline-block;
-            padding: 10px 20px;
+            padding: .8em 20px;
             margin: 0;
             cursor: pointer;
         }
@@ -98,234 +98,282 @@
             color: #555;
         }
         
+        section {
+            position: absolute;
+            display: block;
+            width: 100%;
+            padding-top: 3em;
+        }
+        
+        pre {
+            margin: 20px;
+            padding: 10px;
+            background: white;
+            
+            border: 1px solid #d6d6d6;
+            border-radius: 4px;
+        }
+        
         .hide {
             display: none;
         }
     </style>
-</head>
-<body>
-    <menu type="toolbar" class="hide">
-        <menuitem label="plot" class="selected" x-for="plot">Plot</menuitem>
-        <menuitem label="stats" x-for="stats">Stats</menuitem>
-    </menu>
-    
-    <div id="plot-container">
-        <div id="plot"></div>
-    </div>
-    <div id="buttons">
-        <p>Toggle Series</p>
-    </div>
-
-    <a href="" id="download"></a>
-    <img id="copy-img">
     
     <script>
-        var container = document.querySelector('#plot-container');
-        var plotDiv = document.querySelector('#plot');
-        var buttons = document.querySelector('#buttons');
-        var link = document.querySelector('#download');
-        var img = document.querySelector('#copy-img');
-        
-        var yUnits;
-        var yDivisor;
-        
-        function getMax(graph) {
-            return graph.yAxisRange()[1];
-        }
-        
-        function setYLabel(graph) {
-            graph.updateOptions({
-                ylabel: yUnits
-            }, true);
-        }
-        
-        function getDivisor(graph) {
-            if (yDivisor !== undefined) {
+        window.addEventListener('load', function () {
+            var container = document.querySelector('#plot-container');
+            var plotDiv = document.querySelector('#plot');
+            var buttons = document.querySelector('#buttons');
+            var link = document.querySelector('#download');
+            var img = document.querySelector('#copy-img');
+
+            var yUnits;
+            var yDivisor;
+
+            function getMax(graph) {
+                return graph.yAxisRange()[1];
+            }
+
+            function setYLabel(graph) {
+                graph.updateOptions({
+                    ylabel: yUnits
+                }, true);
+            }
+
+            function getDivisor(graph) {
+                if (yDivisor !== undefined) {
+                    return yDivisor;
+                }
+
+                var max = parseInt(getMax(graph));
+
+                if (max > 1000 * 60) {
+                    yUnits = 'minutes';
+                    yDivisor = 1000 * 60;
+                } else if (max > 1000) {
+                    yUnits = 'seconds';
+                    yDivisor = 1000;
+                } else {
+                    yUnits = 'milliseconds';
+                    yDivisor = 1;
+                }
+
+                setYLabel(graph);
+
                 return yDivisor;
             }
-            
-            var max = parseInt(getMax(graph));
-            
-            if (max > 1000 * 60) {
-                yUnits = 'minutes';
-                yDivisor = 1000 * 60;
-            } else if (max > 1000) {
-                yUnits = 'seconds';
-                yDivisor = 1000;
-            } else {
-                yUnits = 'milliseconds';
-                yDivisor = 1;
-            }
-            
-            setYLabel(graph);
-            
-            return yDivisor;
-        }
-        
-        function yAxisFormatter(number, granularity, opts, graph) {
-            var r = number / getDivisor(graph);
-            
-            // Apply fixed decimals if the number is not an integer
-            if (parseInt(r) === r) {
-                return r;
-            } else {
-                return r.toFixed(2);
-            }
-        }
-        
-        var dataLabels;
-        var data = (function(dirtyData, labels) {
-            dataLabels = labels;
-            
-            // make sure that all of the data entries have the name
-            // number of items as the labels... dygraph does not
-            // like when there numbers don't match, because it is
-            // apparently too hard to assume they are null
-            return dirtyData.map(function(val) {
-                if (val.length < labels.length) {
-                    for (var i = val.length, l = labels.length; i < l; i++) {
-                        val.push(null);
-                    }
-                }
-                
-                return val;
-            });
-        }(
-            JSON.parse('[{{data}}]'),
-            JSON.parse('{{labels}}')
-        ));
-        
-        var plot = new Dygraph(
-            plotDiv,
-            data,
-            {
-                title: '{{testname}}',
-                showRoller: true,
-                rollPeriod: 1,
-                ylabel: 'milliseconds',
-                xlabel: 'seconds from start',
-                legend: 'always',
-                labels: dataLabels,
-                axes: {
-                    y: {
-                        axisLabelFormatter: yAxisFormatter
-                    }
-                }
-            }
-        );
-        
-        // the first series is always "full Err", which should be red
-        var colors = ['rgb(191,0,0)'].concat(plot.colors_);
-        plot.updateOptions({
-            colors: colors
-        });
 
-        // get all of the labels
-        var labels = plot.getLabels();
-        // remove the first label, which is the x axis
-        labels.shift();
-        
-        labels.forEach(function(label, i) {
-            var active = 'button-active';
-            
-            var b = document.createElement('button');
-            b.className = 'pure-button ' + active;
-            b.innerHTML = label;
-            
-            b.onclick = function() {
-                if (b.classList.contains(active)) {
-                    plot.setVisibility(i, false);
-                    b.classList.remove(active);
+            function yAxisFormatter(number, granularity, opts, graph) {
+                var r = number / getDivisor(graph);
+
+                // Apply fixed decimals if the number is not an integer
+                if (parseInt(r) === r) {
+                    return r;
                 } else {
-                    plot.setVisibility(i, true);
-                    b.classList.add(active);
+                    return r.toFixed(2);
                 }
-            };
-            
-            buttons.appendChild(b);
-        });
-        
-        (function(download) {
-            download.innerHTML = 'Download PNG';
-            download.className = 'pure-button pure-button-primary right';
-            
-            download.onclick = function() {
-                html2canvas(container).then(function(canvas) {
-                    link.href = canvas.toDataURL();
-                    link.download = 'test.png';
-                    link.click();
-                });
-            };
-            
-            buttons.appendChild(download);
-        })(document.createElement('button'));
-        
-        (function(copy, prep) {
-            var noShowClass = 'btn-no-show';
-            prep.innerHTML = 'Prepare to copy';
-            
-            copy.innerHTML = 'Copy PNG';
-            copy.className = prep.className = 'pure-button pure-button-primary right';
-            
-            copy.classList.add(noShowClass);
-            
-            // If copy is not supported, don't show the button
-            // TODO: copying images has terrible support in terms of
-            // where they can be pasted, so I am disabling this until
-            // I can figure out something that works well.
-            if (!document.queryCommandSupported('copy') || true) {
-                prep.classList.add(noShowClass);
             }
-            
-            var dataUri;
-            
-            // Since this is async, we cannot use a one-click copy. Use the first
-            // click to prepare the image data, and the second to copy it.
-            prep.onclick = function() {
-                html2canvas(container, {
-                    onrendered: function(canvas) {
-                        dataUri = canvas.toDataURL();
-                     
-                        prep.classList.toggle(noShowClass);
-                        copy.classList.toggle(noShowClass);
-                    },
-                    timeout: 0
+
+            var dataLabels;
+            var data = (function(dirtyData, labels) {
+                dataLabels = labels;
+
+                // make sure that all of the data entries have the name
+                // number of items as the labels... dygraph does not
+                // like when there numbers don't match, because it is
+                // apparently too hard to assume they are null
+                return dirtyData.map(function(val) {
+                    if (val.length < labels.length) {
+                        for (var i = val.length, l = labels.length; i < l; i++) {
+                            val.push(null);
+                        }
+                    }
+
+                    return val;
                 });
-            };
-            
-            // Use this click to copy the image data, and reset the UI.
-            copy.onclick = function() {
-                img.src = dataUri;
+            }(
+                JSON.parse('[{{data}}]'),
+                JSON.parse('{{labels}}')
+            ));
 
-                var range = document.createRange();
-                range.selectNode(img);
-                window.getSelection().addRange(range);
+            var plot = new Dygraph(
+                plotDiv,
+                data,
+                {
+                    title: '{{testname}}',
+                    showRoller: true,
+                    rollPeriod: 1,
+                    ylabel: 'milliseconds',
+                    xlabel: 'seconds from start',
+                    legend: 'always',
+                    labels: dataLabels,
+                    axes: {
+                        y: {
+                            axisLabelFormatter: yAxisFormatter
+                        }
+                    }
+                }
+            );
 
-                try {
-                    // Now that we've selected the anchor text, execute the copy command
-                    var successful = document.execCommand('copy');
-                    var msg = successful ? 'successful' : 'unsuccessful';
-                } catch(err) {
-                    // TODO: do I need to tell the user that it failed
+            // the first series is always "full Err", which should be red
+            var colors = ['rgb(191,0,0)'].concat(plot.colors_);
+            plot.updateOptions({
+                colors: colors
+            });
+
+            // get all of the labels
+            var labels = plot.getLabels();
+            // remove the first label, which is the x axis
+            labels.shift();
+
+            labels.forEach(function(label, i) {
+                var active = 'button-active';
+
+                var b = document.createElement('button');
+                b.className = 'pure-button ' + active;
+                b.innerHTML = label;
+
+                b.onclick = function() {
+                    if (b.classList.contains(active)) {
+                        plot.setVisibility(i, false);
+                        b.classList.remove(active);
+                    } else {
+                        plot.setVisibility(i, true);
+                        b.classList.add(active);
+                    }
+                };
+
+                buttons.appendChild(b);
+            });
+
+            (function(download) {
+                download.innerHTML = 'Download PNG';
+                download.className = 'pure-button pure-button-primary right';
+
+                download.onclick = function() {
+                    html2canvas(container).then(function(canvas) {
+                        link.href = canvas.toDataURL();
+                        link.download = 'test.png';
+                        link.click();
+                    });
+                };
+
+                buttons.appendChild(download);
+            })(document.createElement('button'));
+
+            (function(copy, prep) {
+                var noShowClass = 'btn-no-show';
+                prep.innerHTML = 'Prepare to copy';
+
+                copy.innerHTML = 'Copy PNG';
+                copy.className = prep.className = 'pure-button pure-button-primary right';
+
+                copy.classList.add(noShowClass);
+
+                // If copy is not supported, don't show the button
+                // TODO: copying images has terrible support in terms of
+                // where they can be pasted, so I am disabling this until
+                // I can figure out something that works well.
+                if (!document.queryCommandSupported('copy') || true) {
+                    prep.classList.add(noShowClass);
                 }
 
-                // Remove the selections
-                window.getSelection().removeAllRanges();
+                var dataUri;
+
+                // Since this is async, we cannot use a one-click copy. Use the first
+                // click to prepare the image data, and the second to copy it.
+                prep.onclick = function() {
+                    html2canvas(container, {
+                        onrendered: function(canvas) {
+                            dataUri = canvas.toDataURL();
+
+                            prep.classList.toggle(noShowClass);
+                            copy.classList.toggle(noShowClass);
+                        },
+                        timeout: 0
+                    });
+                };
+
+                // Use this click to copy the image data, and reset the UI.
+                copy.onclick = function() {
+                    img.src = dataUri;
+
+                    var range = document.createRange();
+                    range.selectNode(img);
+                    window.getSelection().addRange(range);
+
+                    try {
+                        // Now that we've selected the anchor text, execute the copy command
+                        var successful = document.execCommand('copy');
+                        var msg = successful ? 'successful' : 'unsuccessful';
+                    } catch(err) {
+                        // TODO: do I need to tell the user that it failed
+                    }
+
+                    // Remove the selections
+                    window.getSelection().removeAllRanges();
+
+                    img.src = '';
+
+                    prep.classList.toggle(noShowClass);
+                    copy.classList.toggle(noShowClass);
+                };
+
+                buttons.appendChild(copy);
+                buttons.appendChild(prep);
                 
-                img.src = '';
+                var menuItems = document.querySelectorAll('menuitem[x-for]');
+                var sections = document.querySelectorAll('section[id]');
                 
-                prep.classList.toggle(noShowClass);
-                copy.classList.toggle(noShowClass);
-            };
-            
-            buttons.appendChild(copy);
-            buttons.appendChild(prep);
-        })(document.createElement('button'), document.createElement('button'));
+                if (menuItems.length && sections.length) {
+                    sections = [].slice.call(sections);
+                    menuItems = [].slice.call(menuItems);
+                    
+                    menuItems.forEach(function (item) {
+                        item.section = document.querySelector('#' + item.getAttribute('x-for'));
+                        
+                        item.addEventListener('click', function () {
+                            menuItems.forEach(function (i) {
+                                if (i === item) {
+                                    return;
+                                }
+                                
+                                i.classList.remove('selected');
+                                i.section.classList.add('hide');
+                            });
+                            
+                            item.classList.add('selected');
+                            item.section.classList.remove('hide');
+                        });
+                    });
+                }
+            })(document.createElement('button'), document.createElement('button'));
+        });
     </script>
+</head>
+<body>
+    <menu type="toolbar" class="">
+        <menuitem label="plot" class="selected" x-for="plot-section">Plot</menuitem>
+        <menuitem label="stats" x-for="stats-section">Stats</menuitem>
+    </menu>
     
-    <pre>
+    <section id="plot-section">
+        <div id="plot-container">
+            <div id="plot"></div>
+        </div>
+        <div id="buttons">
+            <p>Toggle Series</p>
+        </div>
+
+        <a href="" id="download"></a>
+        <img id="copy-img">
+    </section>
+    
+    <section id="stats-section" class="hide">
+        <pre>
 {{textStats}}
-    </pre>
+        </pre>
+    </section>    
     
 </body>
 </html>
