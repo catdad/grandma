@@ -18,6 +18,16 @@ var TESTDATA = [
     {"type":"report","report":{"fullTest":{"start":97.46002200000001,"end":111.861504,"duration":14.401481999999987,"status":"success"},"one":{"start":97.46877600000002,"end":99.933471,"duration":2.4646949999999777,"status":"success"},"two":{"start":97.493529,"end":101.74916300000001,"duration":4.255634000000015,"status":"success"}},"id":0}
 ];
 
+var TESTDATACATEGORIES = TESTDATA.map(function(data, idx) {
+    if (data.type !== 'report') {
+        return data;
+    }
+    
+    return _.merge(_.cloneDeep(data), {
+        categories: [(idx % 3).toString()]
+    });
+});
+
 // Test data using concurrent mode with errors
 var TESTERRDATA = [
     {"type":"header","epoch":1463604033635,"duration":120,"rate":null,"concurrent":3,"targetCount":null,"name":"errname"},
@@ -76,7 +86,8 @@ var TESTRESULTS = {
             "median": 4.255634000000015,
             "min": 4.152096999999998
         }
-    }
+    },
+    "categories": {}
 };
 
 var TESTERRRESULTS = {
@@ -108,7 +119,8 @@ var TESTERRRESULTS = {
             "median": 1.4217399999999998,
             "min": 0.09281899999999865
         }
-    }
+    },
+    "categories": {}
 };
 
 /* eslint-enable quotes, key-spacing, comma-spacing */
@@ -395,6 +407,42 @@ describe('[report]', function() {
                 // match the ground-truthed json
                 // not sure how fragile this test actually is
                 expect(jsonData).to.deep.equal(TESTERRRESULTS);
+                
+                done();
+            });
+        });
+        
+        it('provides category output when present in the input', function(done) {
+            getReport({
+                type: 'json'
+            }, TESTDATACATEGORIES, function(err, content) {
+                expect(err).to.not.be.ok;
+                expect(content).to.be.ok;
+                
+                var jsonData = JSON.parse(content.toString());
+                
+                expect(jsonData).to.have.property('categories').and.to.be.an('object');
+                
+                var categories = jsonData.categories;
+                var rootLatencies = jsonData.latencies;
+                
+                expect(categories).to.have.all.keys(['0', '1', '2']);
+                
+                _.forEach(function(category) {
+                    expect(category).to.have.all.keys(['info', 'latencies']);
+                    expect(category.info)
+                        .to.be.an('object')
+                        .and.to.have.all.keys(['count'])
+                        .and.to.have.property('count')
+                        .and.to.be.a('number')
+                        .and.to.be.above(0);
+                    
+                    expect(category.latencies).to.have.all.keys(_.keys(rootLatencies));
+                    
+                    _.forEach(category.latencies, function(val, name) {
+                        expect(val).to.have.all.keys(_.keys(rootLatencies[name]));
+                    });
+                });
                 
                 done();
             });
