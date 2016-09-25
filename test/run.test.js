@@ -356,7 +356,7 @@ describe('[run]', function() {
             }
             
             // test a prop to make sure it's tere
-            expect(data.report)
+            expect(data)
                 .to.have.property('categories')
                 .and.to.deep.equal(['one', 'two', 'three', 'four', 'five']);
         });
