@@ -76,7 +76,8 @@ var TESTRESULTS = {
             "median": 4.255634000000015,
             "min": 4.152096999999998
         }
-    }
+    },
+    "categories": {}
 };
 
 var TESTERRRESULTS = {
@@ -108,7 +109,8 @@ var TESTERRRESULTS = {
             "median": 1.4217399999999998,
             "min": 0.09281899999999865
         }
-    }
+    },
+    "categories": {}
 };
 
 /* eslint-enable quotes, key-spacing, comma-spacing */
