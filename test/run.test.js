@@ -290,7 +290,7 @@ describe('[run]', function() {
         });
     });
     
-    it('can run tests an output object to an object stream', function(done) {
+    it('can run tests and output object to an object stream', function(done) {
         increaseTimeout(this);
         
         var output = through.obj();
