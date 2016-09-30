@@ -11,6 +11,7 @@ var glob = require('glob');
 var rc = require('rc');
 var globfile = require('glob-filestream');
 var ensureGunzip = require('ensure-gunzip');
+var mkdirp = require('mkdirp');
 
 var grandma = require('../index');
 var ttyHelper = require('../lib/tty-helper.js');
@@ -71,7 +72,13 @@ function getDestinationStream(opts) {
     var output = process.stdout;
     
     if (_.isString(opts.out) && opts.out !== 'stdout') {
-        output = fs.createWriteStream(path.resolve('.', opts.out));
+        var fullPath = path.resolve('.', opts.out);
+        var rootPath = path.dirname(fullPath);
+        
+        // this is a cli, so fuck it
+        mkdirp.sync(rootPath);
+            
+        output = fs.createWriteStream(fullPath);
     }
     
     return output;
