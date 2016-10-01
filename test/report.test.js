@@ -625,11 +625,14 @@ describe('[report]', function() {
 
             var strArr = str.split('\n');
 
-            expect(strArr).to.have.lengthOf(3);
+            expect(strArr).to.have.lengthOf(4);
 
-            var str1 = strArr[0];
-            var str2 = strArr[1];
-            var str3 = strArr[2];
+            var str0 = strArr[0];
+            var str1 = strArr[1];
+            var str2 = strArr[2];
+            var str3 = strArr[3];
+            
+            expect(str0).to.equal('Full Test:');
 
             expect(str1).to.match(/^\s{1,}\+\-{0,}\+\-{0,}\+\s{1,}$/);
             expect(str2).to.match(/^\|\-{0,}\|\s{0,}\|\s{0,}\|\-{0,}\|\s{0,}$/);
@@ -640,8 +643,9 @@ describe('[report]', function() {
         
         function testWidth(content, width) {
             var str = content.toString();
-                
-            var line = str.split('\n').shift();
+            
+            // the 3rd line is the one with the dashes
+            var line = str.split('\n')[2];
 
             // Based on the content, the width may actualy be a bit
             // less than the set maximum, but it should never be
@@ -663,7 +667,7 @@ describe('[report]', function() {
                 // grandma adds a new line after the original box plot,
                 // so we should remove it here:
                 var strArr = str.split('\n');
-                expect(strArr).to.have.lengthOf(4);
+                expect(strArr).to.have.lengthOf(5);
                 strArr.pop();
                 
                 isValidBoxPlot(strArr.join('\n'));
