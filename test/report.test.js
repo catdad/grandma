@@ -632,7 +632,7 @@ describe('[report]', function() {
             var str2 = strArr[2];
             var str3 = strArr[3];
             
-            expect(str0).to.equal('Full Test:');
+            expect(str0).to.match(/(^Full Test:$)|(^Category:)/);
 
             expect(str1).to.match(/^\s{1,}\+\-{0,}\+\-{0,}\+\s{1,}$/);
             expect(str2).to.match(/^\|\-{0,}\|\s{0,}\|\s{0,}\|\-{0,}\|\s{0,}$/);
@@ -701,6 +701,42 @@ describe('[report]', function() {
                 expect(content).to.be.ok;
                 
                 testWidth(content, 32);
+                
+                done();
+            });
+        });
+        
+        it('reports on categories if present', function(done) {
+            getReport({
+                type: 'box'
+            }, TESTDATACATEGORIES, function(err, content) {
+                expect(err).to.not.be.ok;
+                expect(content).to.be.ok;
+                
+                var str = content.toString();
+                
+                // grandma adds a new line after the original box plot,
+                // so we should remove it here:
+                var strArr = str.split('\n');
+                // there are 3 categories, so 4 total box plots
+                expect(strArr).to.have.lengthOf(5 * 4);
+                strArr.pop();
+                
+                var plots = [];
+                var size = 4;
+                
+                while (strArr.length) {
+                    plots.push(strArr.splice(0, size));
+                    
+                    // throw away the next line
+                    strArr.shift();
+                }
+                
+                expect(plots).to.have.lengthOf(4);
+                
+                plots.forEach(function(arr) {
+                    isValidBoxPlot(arr.join('\n'));
+                });
                 
                 done();
             });
