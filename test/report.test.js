@@ -6,7 +6,7 @@ var through = require('through2');
 var es = require('event-stream');
 var _ = require('lodash');
 
-var report = require('../lib/report.js');
+var report = require('../').report;
 
 var DATA = require('./data/testdata.js');
 
