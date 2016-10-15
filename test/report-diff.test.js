@@ -49,7 +49,7 @@ function objToArr(obj) {
     });
 }
 
-describe.only('[diff]', function() {
+describe('[diff]', function() {
     it('takes an array of input streams and writes output', function(done) {
         getReport([
             writeData(through(), DATA.test),
