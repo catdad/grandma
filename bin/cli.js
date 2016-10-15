@@ -212,6 +212,10 @@ var commands = {
     diff: function diff() {
         var patterns = argv.logs;
         
+        if (patterns.length < 2) {
+            return setImmediate(onDone, new Error('Please provide at least two logs to diff.'));
+        }
+        
         var opts = _.clone(argv);
         
         var streams = patterns.reduce(function(memo, pattern) {
