@@ -4,6 +4,7 @@ var expect = require('chai').expect;
 var through = require('through2');
 var es = require('event-stream');
 var _ = require('lodash');
+var unstyle = require('unstyle');
 
 var DATA = require('./data/testdata.js');
 
@@ -36,8 +37,12 @@ function getReport(streams, options, callback) {
     opts.output.pipe(es.wait(cb));
 }
 
-describe('[diff]', function() {
-    it('takes an array of input streams', function(done) {
+function hasColors(str) {
+    return str !== unstyle.string(str);
+}
+
+describe.only('[diff]', function() {
+    it('takes an array of input streams and writes output', function(done) {
         getReport([
             writeData(through(), DATA.test),
             writeData(through(), DATA.test)
@@ -49,12 +54,47 @@ describe('[diff]', function() {
             data = data.toString();
             
             expect(data).to.be.a('string').and.to.have.length.above(1);
+            expect(hasColors(data)).to.equal(false);
             
             done();
         });
     });
     
-    it('takes an object hash of input streams');
+    it('takes an object hash of input streams and writes output', function(done) {
+        getReport({
+            one: writeData(through(), DATA.test),
+            two: writeData(through(), DATA.test)
+        }, {}, function(err, data) {
+            if (err) {
+                return done(err);
+            }
+            
+            data = data.toString();
+            
+            expect(data).to.be.a('string').and.to.have.length.above(1);
+            expect(hasColors(data)).to.equal(false);
+            
+            done();
+        });
+    });
     
-    it('writes to an output stream');
+    it('can write color output', function(done) {
+        getReport([
+            writeData(through(), DATA.test),
+            writeData(through(), DATA.test)
+        ], {
+            color: true
+        }, function(err, data) {
+            if (err) {
+                return done(err);
+            }
+            
+            data = data.toString();
+            
+            expect(data).to.be.a('string').and.to.have.length.above(1);
+            expect(hasColors(data)).to.equal(true);
+            
+            done();
+        });
+    });
 });
