@@ -7,7 +7,7 @@
     "coverage": "istanbul cover --dir coverage node_modules/mocha/bin/_mocha -x \"fixtures/**\"",
     "grandma": "node bin/_cli",
     "eslint": "eslint",
-    "lint": "eslint index.js lib/** test/** bin/**"
+    "lint": "eslint index.js lib/** test/**/*.js bin/**"
   },
   "author": "Kiril Vatev <vatev.1@gmail.com>",
   "license": "ISC",
