@@ -103,6 +103,8 @@ var TESTERRRESULTS = {
     }
 };
 
+// always return copies, just in case a rogue test tries
+// to modify the data
 Object.defineProperties(module.exports, {
     test: {
         enumerable: true,
