@@ -226,6 +226,7 @@ var commands = {
         
         opts.output = getDestinationStream(opts);
         opts.mode = 'fastest';
+        opts.type = 'text';
         
         grandma.diff(streams, opts, onDone);
     },

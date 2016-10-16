@@ -27,7 +27,8 @@ function getReport(streams, options, callback) {
 
     var opts = _.defaults(options, {
         output: output,
-        mode: 'fastest'
+        mode: 'fastest',
+        type: 'text'
     });
     
     diff(streams, opts, function(err) {
@@ -286,6 +287,23 @@ describe.only('[diff]', function() {
 
                 expect(err).to.have.property('message')
                     .and.to.match(/^options.mode must be one of:/);
+
+                done();
+            });
+        });
+        
+        it('errors if options.type is not a known value', function(done) {
+            getReport([
+                writeData(through(), DATA.test),
+                writeData(through(), DATA.test)
+            ], {
+                mode: 'fastest',
+                type: 'pineapples'
+            }, function(err, data) {
+                expect(err).to.be.instanceOf(Error);
+
+                expect(err).to.have.property('message')
+                    .and.to.match(/^options.type must be one of:/);
 
                 done();
             });
