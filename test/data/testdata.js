@@ -115,43 +115,20 @@ var TESTERRRESULTS = {
     }
 };
 
-// always return copies, just in case a rogue test tries
-// to modify the data
-Object.defineProperties(module.exports, {
-    test: {
+_.forEach({
+    test: TESTDATA,
+    test2: TESTDATA2,
+    test_outlier: TESTDATA_OUTLIER,
+    testerr: TESTERRDATA,
+    results: TESTRESULTS,
+    resultserr: TESTERRRESULTS
+}, function(val, name) {
+    Object.defineProperty(module.exports, name, {
         enumerable: true,
         get: function() {
-            return _.cloneDeep(TESTDATA);
+            // always return copies, just in case a
+            // rogue test tries to modify the data
+            return _.cloneDeep(val);
         }
-    },
-    test2: {
-        enumerable: true,
-        get: function() {
-            return _.cloneDeep(TESTDATA2);
-        }
-    },
-    test_outlier: {
-        enumerable: true,
-        get: function() {
-            return _.cloneDeep(TESTDATA_OUTLIER);
-        }
-    },
-    testerr: {
-        enumerable: true,
-        get: function() {
-            return _.cloneDeep(TESTERRDATA);
-        }
-    },
-    results: {
-        enumerable: true,
-        get: function() {
-            return _.cloneDeep(TESTRESULTS);
-        }
-    },
-    resultserr: {
-        enumerable: true,
-        get: function() {
-            return _.cloneDeep(TESTERRRESULTS);
-        }
-    }
+    });
 });
