@@ -21,6 +21,7 @@ var streams = [
 
 ```javascript
 var fs = require('fs');
+
 var streams = {
     one: fs.createReadStream('one.log'),
     two: fs.createReadStream('two.log')
