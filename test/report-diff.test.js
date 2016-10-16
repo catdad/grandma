@@ -49,6 +49,11 @@ function objToArr(obj) {
     });
 }
 
+function tableRegex() {
+    var str = [].slice.call(arguments).join('\\s+?');
+    return new RegExp(str);
+}
+
 describe('[diff]', function() {
     it('takes an array of input streams and writes output', function(done) {
         getReport([
@@ -101,6 +106,34 @@ describe('[diff]', function() {
             
             expect(data).to.be.a('string').and.to.have.length.above(1);
             expect(hasColors(data)).to.equal(true);
+            
+            done();
+        });
+    });
+    
+    it('outputs percentages next to the latesncies of the slower average logs', function(done) {
+        getReport([
+            writeData(through(), DATA.test),
+            writeData(through(), DATA.test2)
+        ], {}, function(err, data) {
+            if (err) {
+                return done(err);
+            }
+            
+            data = data.toString();
+            
+            expect(data).to.be.a('string').and.to.have.length.above(1);
+
+            var regex = tableRegex(
+                'fullTest',
+                '60\\.000ms \\(-[0-9]+%\\)',
+                '60\\.000ms \\(-[0-9]+%\\)',
+                '70\\.000ms \\(-[0-9]+%\\)',
+                '70\\.000ms \\(-[0-9]+%\\)',
+                '70\\.000ms \\(-[0-9]+%\\)'
+            );
+
+            expect(data).to.match(regex);
             
             done();
         });
