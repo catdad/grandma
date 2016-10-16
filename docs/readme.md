@@ -16,3 +16,4 @@
   * [`grandma.run`](api-grandma-run.md)
   * [`grandma.run` interactive mode](api-grandma-run-interactive.md)
   * [`grandma.report`](api-grandma-report.md)
+  * [`grandma.diff`](api-grandma-diff.md)
