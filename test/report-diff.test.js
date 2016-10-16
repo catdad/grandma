@@ -139,6 +139,51 @@ describe('[diff]', function() {
         });
     });
     
+    it('outputs positive percentages if some metrics are faster', function(done) {
+        getReport([
+            writeData(through(), DATA.test2),
+            writeData(through(), DATA.test_outlier)
+        ], {}, function(err, data) {
+            if (err) {
+                return done(err);
+            }
+            
+            data = data.toString();
+            
+            expect(data).to.be.a('string').and.to.have.length.above(1);
+
+            var regex = tableRegex(
+                'fullTest',
+                '60\\.000ms \\(-[0-9]+%\\)',
+                '60\\.000ms \\(-[0-9]+%\\)',
+                '70\\.000ms \\([0-9]+%\\)',
+                '70\\.000ms \\([0-9]+%\\)',
+                '70\\.000ms \\([0-9]+%\\)'
+            );
+
+            expect(data).to.match(regex);
+            
+            done();
+        });
+    });
+    
+    it('can handle some logs having custom metrics that other logs do not have', function(done) {
+        getReport([
+            writeData(through(), DATA.test2),
+            writeData(through(), DATA.testerr)
+        ], {}, function(err, data) {
+            if (err) {
+                return done(err);
+            }
+            
+            data = data.toString();
+            
+            expect(data).to.be.a('string').and.to.have.length.above(1);
+            
+            done();
+        });
+    });
+    
     describe('errors if', function() {
         [{
             description: 'there are less than two streams',
