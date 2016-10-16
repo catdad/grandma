@@ -10,7 +10,7 @@ var unstyle = require('unstyle');
 
 var DATA = require('./data/testdata.js');
 
-var diff = require('../').diff;
+var diff = require('../').fastDiff;
 
 function writeData(stream, data) {
     setTimeout(function() {
