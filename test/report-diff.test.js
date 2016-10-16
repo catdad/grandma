@@ -10,7 +10,7 @@ var unstyle = require('unstyle');
 
 var DATA = require('./data/testdata.js');
 
-var diff = require('../').fastDiff;
+var diff = require('../').diff;
 
 function writeData(stream, data) {
     setTimeout(function() {
@@ -26,7 +26,8 @@ function getReport(streams, options, callback) {
     var output = through();
 
     var opts = _.defaults(options, {
-        output: output
+        output: output,
+        mode: 'fastest'
     });
     
     diff(streams, opts, function(err) {
@@ -54,7 +55,7 @@ function tableRegex() {
     return new RegExp(str);
 }
 
-describe('[diff]', function() {
+describe.only('[diff]', function() {
     it('takes an array of input streams and writes output', function(done) {
         getReport([
             writeData(through(), DATA.test),
@@ -269,6 +270,22 @@ describe('[diff]', function() {
 
                 expect(err).to.have.property('message')
                     .and.to.equal('options.output is not a writable stream');
+
+                done();
+            });
+        });
+        
+        it('errors if options.mode is not a known value', function(done) {
+            getReport([
+                writeData(through(), DATA.test),
+                writeData(through(), DATA.test)
+            ], {
+                mode: 'pineapples'
+            }, function(err, data) {
+                expect(err).to.be.instanceOf(Error);
+
+                expect(err).to.have.property('message')
+                    .and.to.match(/^options.mode must be one of:/);
 
                 done();
             });

@@ -7,7 +7,7 @@ var diff = require('./lib/report-diff');
 module.exports = {
     run: run,
     report: report,
-    fastDiff: diff,
+    diff: diff,
     cliPath: function() {
         return path.resolve(__dirname, 'lib/cli');
     }
