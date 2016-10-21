@@ -11,7 +11,9 @@
   * [`grandma list`](cli-grandma-list.md)
   * [`grandma run`](cli-grandma-run.md)
   * [`grandma report`](cli-grandma-report.md)
+  * [`grandma diff`](cli-grandma-diff.md)
 * API usage
   * [`grandma.run`](api-grandma-run.md)
   * [`grandma.run` interactive mode](api-grandma-run-interactive.md)
   * [`grandma.report`](api-grandma-report.md)
+  * [`grandma.diff`](api-grandma-diff.md)

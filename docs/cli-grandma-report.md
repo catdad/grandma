@@ -2,7 +2,7 @@
 
 > [Table of Contents](readme.md)
 
-Once you have run a test and have the log, you can use it to build several different reports. ALl of these tests are also available throught the [`grandma` API](api-grandma-report.md).
+Once you have run a test and have the log, you can use it to build several different reports. All of this functionality is also available throught the [`grandma` API](api-grandma-report.md).
 
 The CLI has the following options:
 

@@ -209,6 +209,27 @@ var commands = {
 
         grandma.report(opts, onDone);
     },
+    diff: function diff() {
+        var patterns = argv.logs;
+        
+        if (patterns.length < 2) {
+            return setImmediate(onDone, new Error('Please provide at least two logs to diff.'));
+        }
+        
+        var opts = _.clone(argv);
+        
+        var streams = patterns.reduce(function(memo, pattern) {
+            memo[pattern] = getInputStream(pattern);
+            
+            return memo;
+        }, {});
+        
+        opts.output = getDestinationStream(opts);
+        opts.mode = 'fastest';
+        opts.type = 'text';
+        
+        grandma.diff(streams, opts, onDone);
+    },
     help: function help() {
         argv._yargs.showHelp();
         onDone(undefined, '');
@@ -230,7 +251,7 @@ function loadConfig() {
 function runCommand() {
     var command = argv._[0] || 'help';
     
-    var commandList = ['run', 'report', 'list'];
+    var commandList = ['run', 'report', 'list', 'diff'];
     var errorMsg = 'Available commands: ' + commandList.join(', ');
     
     if (command === undefined) {
