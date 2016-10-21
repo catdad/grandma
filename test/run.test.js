@@ -290,7 +290,7 @@ describe('[run]', function() {
         });
     });
     
-    it('can run tests an output object to an object stream', function(done) {
+    it('can run tests and output object to an object stream', function(done) {
         increaseTimeout(this);
         
         var output = through.obj();
@@ -316,6 +316,49 @@ describe('[run]', function() {
             
             // test a prop to make sure it's tere
             expect(data).to.have.property('type').and.to.be.a('string');
+        });
+        
+        run(opts, function(err) {
+            if (err) {
+                return done(err);
+            }
+            
+            expect(ended).to.equal(true);
+            done();
+        });
+    });
+    
+    it('reports categories assigned during testing', function(done) {
+        increaseTimeout(this);
+        
+        var output = through.obj();
+        var ended = false;
+        
+        var opts = {
+            duration: 10,
+            concurrent: 1,
+            test: {
+                path: path.resolve(__dirname, '../fixtures/categories.js'),
+                name: 'test.concurrent'
+            },
+            output: output
+        };
+        
+        output.on('end', function() {
+            ended = true;
+        });
+        
+        output.on('data', function(data) {
+            expect(data).to.be.an('object');
+            
+            if (data.type !== 'report') {
+                return;
+            }
+            
+            // test a prop to make sure it's tere
+            expect(data)
+                .to.have.property('categories')
+                .and.to.deep.equal(['one', 'two', 'three', 'four', 'five']);
         });
         
         run(opts, function(err) {

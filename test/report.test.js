@@ -297,6 +297,42 @@ describe('[report]', function() {
             });
         });
         
+        it('provides category output when present in the input', function(done) {
+            getReport({
+                type: 'json'
+            }, DATA.testcategories, function(err, content) {
+                expect(err).to.not.be.ok;
+                expect(content).to.be.ok;
+                
+                var jsonData = JSON.parse(content.toString());
+                
+                expect(jsonData).to.have.property('categories').and.to.be.an('object');
+                
+                var categories = jsonData.categories;
+                var rootLatencies = jsonData.latencies;
+                
+                expect(categories).to.have.all.keys(['0', '1', '2']);
+                
+                _.forEach(function(category) {
+                    expect(category).to.have.all.keys(['info', 'latencies']);
+                    expect(category.info)
+                        .to.be.an('object')
+                        .and.to.have.all.keys(['count'])
+                        .and.to.have.property('count')
+                        .and.to.be.a('number')
+                        .and.to.be.above(0);
+                    
+                    expect(category.latencies).to.have.all.keys(_.keys(rootLatencies));
+                    
+                    _.forEach(category.latencies, function(val, name) {
+                        expect(val).to.have.all.keys(_.keys(rootLatencies[name]));
+                    });
+                });
+                
+                done();
+            });
+        });
+        
         it('provides an object as the second callback parameter when successful', function(done) {
             var input = through();
             var output = through();
@@ -474,11 +510,14 @@ describe('[report]', function() {
 
             var strArr = str.split('\n');
 
-            expect(strArr).to.have.lengthOf(3);
+            expect(strArr).to.have.lengthOf(4);
 
-            var str1 = strArr[0];
-            var str2 = strArr[1];
-            var str3 = strArr[2];
+            var str0 = strArr[0];
+            var str1 = strArr[1];
+            var str2 = strArr[2];
+            var str3 = strArr[3];
+            
+            expect(str0).to.match(/(^Full Test:$)|(^Category:)/);
 
             expect(str1).to.match(/^\s{1,}\+\-{0,}\+\-{0,}\+\s{1,}$/);
             expect(str2).to.match(/^\|\-{0,}\|\s{0,}\|\s{0,}\|\-{0,}\|\s{0,}$/);
@@ -489,8 +528,9 @@ describe('[report]', function() {
         
         function testWidth(content, width) {
             var str = content.toString();
-                
-            var line = str.split('\n').shift();
+            
+            // the 3rd line is the one with the dashes
+            var line = str.split('\n')[2];
 
             // Based on the content, the width may actualy be a bit
             // less than the set maximum, but it should never be
@@ -512,7 +552,7 @@ describe('[report]', function() {
                 // grandma adds a new line after the original box plot,
                 // so we should remove it here:
                 var strArr = str.split('\n');
-                expect(strArr).to.have.lengthOf(4);
+                expect(strArr).to.have.lengthOf(5);
                 strArr.pop();
                 
                 isValidBoxPlot(strArr.join('\n'));
@@ -546,6 +586,42 @@ describe('[report]', function() {
                 expect(content).to.be.ok;
                 
                 testWidth(content, 32);
+                
+                done();
+            });
+        });
+        
+        it('reports on categories if present', function(done) {
+            getReport({
+                type: 'box'
+            }, DATA.testcategories, function(err, content) {
+                expect(err).to.not.be.ok;
+                expect(content).to.be.ok;
+                
+                var str = content.toString();
+                
+                // grandma adds a new line after the original box plot,
+                // so we should remove it here:
+                var strArr = str.split('\n');
+                // there are 3 categories, so 4 total box plots
+                expect(strArr).to.have.lengthOf(5 * 4);
+                strArr.pop();
+                
+                var plots = [];
+                var size = 4;
+                
+                while (strArr.length) {
+                    plots.push(strArr.splice(0, size));
+                    
+                    // throw away the next line
+                    strArr.shift();
+                }
+                
+                expect(plots).to.have.lengthOf(4);
+                
+                plots.forEach(function(arr) {
+                    isValidBoxPlot(arr.join('\n'));
+                });
                 
                 done();
             });
