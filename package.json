@@ -5,7 +5,7 @@
   "scripts": {
     "test": "mocha -R spec",
     "coverage": "istanbul cover --dir coverage node_modules/mocha/bin/_mocha -x \"fixtures/**\"",
-    "nyccov": "nyc --all --reporter text --reporter lcov npm test",
+    "nyccov": "nyc npm test",
     "grandma": "node bin/_cli",
     "eslint": "eslint",
     "lint": "eslint index.js lib/** test/**/*.js bin/**"
@@ -74,8 +74,13 @@
     "grandma"
   ],
   "nyc": {
+    "statements": 90,
+    "branches": 80,
     "include": [
-      "index.js", "bin/**", "lib/**"
-    ]
+      "index.js", "lib/**"
+    ],
+    "reporter": [ "lcov", "text" ],
+    "all": true,
+    "check-coverage": true
   }
 }
