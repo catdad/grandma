@@ -1,6 +1,7 @@
-# From gitignore
+# Node stuff
 node_modules/
 npm-debug.log
+.nyc_output
 .grandmarc
 *.cmd
 *.log
