@@ -5,6 +5,7 @@
   "scripts": {
     "test": "mocha -R spec",
     "coverage": "istanbul cover --dir coverage node_modules/mocha/bin/_mocha -x \"fixtures/**\"",
+    "nyccov": "nyc --all --reporter text --reporter lcov npm test",
     "grandma": "node bin/_cli",
     "eslint": "eslint",
     "lint": "eslint index.js lib/** test/**/*.js bin/**"
@@ -41,6 +42,7 @@
     "gulp-util": "^3.0.7",
     "istanbul": "^0.4.4",
     "mocha": "^3.0.2",
+    "nyc": "^8.3.2",
     "shellton": "^2.1.0",
     "sinon": "^1.17.5"
   },
@@ -70,5 +72,10 @@
     "benchmark",
     "benchmarking",
     "grandma"
-  ]
+  ],
+  "nyc": {
+    "include": [
+      "index.js", "bin/**", "lib/**"
+    ]
+  }
 }
