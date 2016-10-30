@@ -1,11 +1,14 @@
-var time = 0;
+function rnd() {
+    return Math.random().toString(36).slice(2);
+}
+
+var c = 0;
+var cats = [rnd(), rnd(), rnd()];
 
 module.exports = {
     test: function(done) {
-        time = (++time) % 5;
+        this.category(cats[c++ % cats.length]);
         
-        this.category(time.toString());
-        
-        setTimeout(done, time);
+        setTimeout(done, Math.random() * 10);
     }
 };
