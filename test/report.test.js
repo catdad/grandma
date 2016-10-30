@@ -5,6 +5,7 @@ var expect = require('chai').expect;
 var through = require('through2');
 var es = require('event-stream');
 var _ = require('lodash');
+var unstyle = require('unstyle');
 
 var report = require('../').report;
 
@@ -460,6 +461,29 @@ describe('[report]', function() {
             });
         });
         
+        it('outputs latencies for categories', function(done) {
+            getReport({
+                type: 'text'
+            }, DATA.testcategories, function(err, content) {
+                expect(err).to.not.be.ok;
+                expect(content).to.be.ok;
+               
+                var str = content.toString();
+                
+                expect(str).to.match(tableRegex('Summary:', 'duration', 'rate', 'concurrent', 'total'));
+                expect(str).to.match(/Category: 0/);
+                expect(str).to.match(/Category: 1/);
+                expect(str).to.match(/Category: 2/);
+                
+                // test that fullTest is reported multiple times
+                expect(str.match(/fullTest/g)).to.have.lengthOf(4);
+                expect(str.match(/one/g)).to.have.lengthOf(4);
+                expect(str.match(/two/g)).to.have.lengthOf(4);
+                
+                done();
+            });
+        });
+        
         it('prints test status breakdowns', function(done) {
             getReport({
                 type: 'text'
@@ -471,6 +495,37 @@ describe('[report]', function() {
                 
                 expect(str).to.match(tableRegex('Successes:', '3'));
                 expect(str).to.match(tableRegex('Failures:', '0'));
+                
+                done();
+            });
+        });
+        
+        it('does not print colors by default', function(done) {
+            getReport({
+                type: 'text'
+            }, DATA.testcategories, function(err, content) {
+                expect(err).to.not.be.ok;
+                expect(content).to.be.ok;
+                
+                var str = content.toString();
+                
+                expect(unstyle.string(str)).to.equal(str);
+                
+                done();
+            });
+        });
+        
+        it('can print the text report in color', function(done) {
+            getReport({
+                type: 'text',
+                color: true
+            }, DATA.testcategories, function(err, content) {
+                expect(err).to.not.be.ok;
+                expect(content).to.be.ok;
+                
+                var str = content.toString();
+                
+                expect(unstyle.string(str)).to.not.equal(str);
                 
                 done();
             });
