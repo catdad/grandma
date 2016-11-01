@@ -31,7 +31,7 @@ module.exports = {
         
         var filename = inputFiles[idx++ % inputFiles.length];
         var filetype = path.extname(filename).slice(1);
-        var length = 0;
+        var bytes = 0;
         
         // record the type of file, assuming it matters to
         // your test scenario
@@ -44,12 +44,12 @@ module.exports = {
         }).pipe(stream);
         
         stream.on('data', function (chunk) {
-            lenght += chunk.length;
+            bytes += chunk.length;
         });
         
         stream.on('end', function () {
             // record the general size of the file
-            var size = Math.round((length / mb) * mb);
+            var size = Math.round((bytes / mb) * mb);
             
             that.category(size + 'ish MB');
         });
