@@ -21,6 +21,7 @@ var fs = require('fs');
 var path = require('path');
 var request = erquire('request');
 
+var mb = 1024 * 1024;
 var idx = 0;
 var inputFiles = fs.readdirSync('./input-files');
 
@@ -48,8 +49,7 @@ module.exports = {
         
         stream.on('end', function () {
             // record the general size of the file
-            var mb = 1024 * 1024;
-            var size = Math.round((length * mb) / mb);
+            var size = Math.round((length / mb) * mb);
             
             that.category(size + 'ish MB');
         });
