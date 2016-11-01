@@ -26,6 +26,8 @@ var inputFiles = fs.readdirSync('./input-files');
 
 module.exports = {
     test: function (done) {
+        var that = this;
+        
         var filename = inputFiles[idx++ % inputFiles.length];
         var filetype = path.extname(filename).slice(1);
         var length = 0;
@@ -45,8 +47,11 @@ module.exports = {
         });
         
         stream.on('end', function () {
-            // ideally, you would group this somehow, but you get the idea
-            this.category(length.toString());
+            // record the general size of the file
+            var mb = 1024 * 1024;
+            var size = Math.round((length * mb) / mb);
+            
+            that.category(size + 'ish MB');
         });
     }
 };
