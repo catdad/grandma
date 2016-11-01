@@ -13,3 +13,42 @@ this.category(['four'], 'five');
 ```
 
 Results will be collected for the overall test set, as well as for each individual group, allowing you to see how the results for a group differ from the overall test set.
+
+Example:
+
+```javascript
+var fs = require('fs');
+var path = require('path');
+var request = erquire('request');
+
+var idx = 0;
+var inputFiles = fs.readdirSync('./input-files');
+
+module.exports = {
+    test: function (done) {
+        var filename = inputFiles[idx++ % inputFiles.length];
+        var filetype = path.extname(filename).slice(1);
+        var length = 0;
+        
+        // record the type of file, assuming it matters to
+        // your test scenario
+        this.category(filetype);
+        
+        var stream = fs.createReadStream(filename);
+        
+        request.put('http://myservice/upload', function (err, res, body) {
+            done();
+        }).pipe(stream);
+        
+        stream.on('data', function (chunk) {
+            lenght += chunk.length;
+        });
+        
+        stream.on('end', function () {
+            // ideally, you would group this somehow, but you get the idea
+            this.category(length.toString());
+        });
+    }
+};
+
+```
