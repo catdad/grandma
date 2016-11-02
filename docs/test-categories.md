@@ -8,11 +8,12 @@ With categories, you can split tests into groups, allowing the report to be spli
 
 ```javascript
 this.category('one');
-this.category(['two', 'three']);
-this.category(['four'], 'five');
+this.category('two', 'three');
+this.category(['four', 'five']);
+this.category(['six'], 'seven');
 ```
 
-Results will be collected for the overall test set, as well as for each individual group, allowing you to see how the results for a group differ from the overall test set.
+Results will be collected for the overall test set, as well as for each individual group that is added during the test, allowing you to see how the results for a group differ from the overall test set.
 
 Example:
 
