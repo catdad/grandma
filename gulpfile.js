@@ -3,7 +3,9 @@
 var gulp = require('gulp');
 var shellton = require('shellton');
 var gutil = require('gulp-util');
-var argv = require('yargs').argv;
+var argv = require('yargs')
+    .array('pattern')
+    .argv;
 
 gulp.task('exec', function(done) {
     gutil.log('executing:', gutil.colors.magenta(argv.exec));
