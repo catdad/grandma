@@ -3,6 +3,7 @@
 
 var expect = require('chai').expect;
 var through = require('through2');
+var async = require('async');
 var es = require('event-stream');
 var _ = require('lodash');
 var unstyle = require('unstyle');
@@ -22,15 +23,22 @@ function getReport(options, data, callback) {
         output: output
     });
     
-    report(opts, function(err) {
+    async.auto({
+        report: function(next) {
+            report(opts, next);
+        },
+        output: function(next) {
+            // listen to output on the stream inside opts
+            opts.output.pipe(es.wait(next));
+        }
+    }, function(err, result) {
         if (err) {
             return cb(err);
         }
+        
+        cb(null, result.output);
     });
     
-    // listen to output on the stream inside opts
-    opts.output.pipe(es.wait(cb));
-
     // write to original input, in case the user has decided
     // to overwrite the opt with their own
     input.end(data.map(JSON.stringify).join('\n'));
