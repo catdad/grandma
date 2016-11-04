@@ -57,7 +57,7 @@ function testNoData(reporter) {
     });
 }
 
-describe.only('[report]', function() {
+describe('[report]', function() {
     it('takes an input and output stream', function(done) {
         var input = through();
         
@@ -399,7 +399,7 @@ describe.only('[report]', function() {
 
             report(opts, function(err, obj) {
                 if (err) {
-                    throw err;
+                    return done(err);
                 }
                 
                 expect(obj).to.be.an('object');
@@ -409,6 +409,50 @@ describe.only('[report]', function() {
             // write to original input, in case the user has decided
             // to overwrite the opt with their own
             input.end(DATA.test.map(JSON.stringify).join('\n'));
+        });
+        
+        it('skips non-json lines', function(done) {
+            var input = through();
+
+            var opts = {
+                input: input,
+                type: 'json'
+            };
+
+            report(opts, function(err, obj) {
+                if (err) {
+                    return done(err);
+                }
+                
+                expect(obj).to.be.an('object');
+                done();
+            });
+
+            input.end(DATA.test.map(JSON.stringify).concat(['this is not json']).join('\n'));
+        });
+        
+        it('errors if there is an error on the input stream', function(done) {
+            var ERR = new Error('pineapples');
+            var input = through();
+
+            var opts = {
+                input: input,
+                type: 'json'
+            };
+
+            report(opts, function(err, obj) {
+                expect(err).to.equal(ERR);
+                expect(obj).to.equal(undefined);
+
+                done();
+            });
+            
+            input.write('thing');
+            input.write('stuff');
+
+            setImmediate(function() {
+                input.emit('error', ERR);
+            });
         });
         
         testNoData('json');
