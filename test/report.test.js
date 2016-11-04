@@ -72,6 +72,7 @@ describe('[report]', function() {
         
         input.end();
     });
+    
     it('reads data from the input stream', function(done) {
         var input = through();
         
@@ -751,18 +752,21 @@ describe('[report]', function() {
                 output: through()
             }, 'no readable input stream defined', done);
         });
+        
         it('does not receive an output stream, for text report', function(done) {
             getError({
                 input: through(),
                 type: 'text'
             }, 'no writable output stream defined', done);
         });
+        
         it('does not receive an output stream, for plot report', function(done) {
             getError({
                 input: through(),
                 type: 'plot'
             }, 'no writable output stream defined', done);
         });
+        
         it('receives an invalid report type', function(done) {
             var type = Math.random().toString(36);
             getError({
@@ -771,6 +775,7 @@ describe('[report]', function() {
                 type: type
             }, type + ' is not a valid report type', done);
         });
+        
         it('encounters a read error on the input stream', function(done) {
             var input = through();
             var ERROR = new Error('flapjacks');
