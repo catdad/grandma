@@ -6,6 +6,7 @@ var gulp = require('gulp');
 var shellton = require('shellton');
 var gutil = require('gulp-util');
 var del = require('del');
+
 var argv = require('yargs')
     .array('pattern')
     .alias('input', 'i')
@@ -44,15 +45,13 @@ gulp.task('watch', function() {
 });
 
 gulp.task('watch-report', function() {
-    var exec = util.format(
+    argv.pattern = ['lib/**', 'views/**'];
+    argv.exec = util.format(
         'grandma report %s --type %s --out %s',
         argv.input || 'file.log',
         argv.type || 'html',
         argv.output || 'file.html'
     );
-    
-    argv.pattern = ['lib/**', 'views/**'];
-    argv.exec = exec;
     
     gulp.start('exec');
     gulp.start('watch');
