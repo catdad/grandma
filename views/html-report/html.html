@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Grandma Report</title>
+    
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/rickshaw/1.5.1/rickshaw.min.css">
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.3.11/d3.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/rickshaw/1.5.1/rickshaw.min.js"></script>
+    
+    <style>
+        /*=include style.css*/
+    </style>
+    
+    <script>
+        (function(data) {
+            window.DATA = data;
+        }(
+            JSON.parse('{{data}}')
+        ));
+    </script>
+</head>
+<body>
+    <div id="test_container" class="container">
+        <div>Tests:</div>
+        <div id="tests"></div>
+    </div>
+    
+    <div id="chart_container" class="container">
+        <div id="y_axis"></div>
+        <div id="chart"></div>
+        <div class="sidebar_container">
+            <div id="meta"></div>
+            <div id="legend"></div>
+        </div>
+
+        <div id="stats_container">
+        </div>
+
+    </div>
+    
+    <script>
+        //=include chart.js
+    </script>
+</body>
+</html>
