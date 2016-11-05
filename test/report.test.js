@@ -599,6 +599,7 @@ describe('[report]', function() {
                 
                 // what the hell do I test here?
                 expect(str).to.match(/<html/);
+                expect(str).to.match(/<\/html\>/);
                 
                 done();
             });
