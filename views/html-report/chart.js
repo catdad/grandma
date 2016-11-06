@@ -2,7 +2,7 @@
 /* eslint-disable no-new */
 /* globals Rickshaw, DATA */
 
-var chartContainer = document.querySelector('#chart_container');
+var chartContainer = document.querySelector('#chart-container');
 var chart = document.querySelector('#chart');
 
 function makeGraph(series) {

@@ -23,26 +23,37 @@
     </script>
 </head>
 <body>
-    <div id="test_container" class="container">
-        <div>Tests:</div>
-        <div id="tests"></div>
-    </div>
+    <menu type="toolbar" class="">
+        <menuitem label="plot" class="selected" x-for="plot-section">Plot</menuitem>
+        <menuitem label="stats" x-for="stats-section">Stats</menuitem>
+    </menu>
     
-    <div id="chart_container" class="container">
-        <div id="y_axis"></div>
-        <div id="chart"></div>
-        <div class="sidebar_container">
-            <div id="meta"></div>
-            <div id="legend"></div>
+    <section id="plot-section">
+        <div id="chart-container">
+            <div id="y_axis"></div>
+            <div id="chart"></div>
+            <div class="sidebar_container">
+                <div id="legend"></div>
+            </div>
         </div>
 
-        <div id="stats_container">
+        <div id="buttons">
+            <p>Toggle Series</p>
         </div>
 
-    </div>
+        <a href="" id="download"></a>
+        <img id="copy-img">
+    </section>
+    
+    <section id="stats-section" class="hide">
+        <pre>{{textStats}}</pre>
+    </section>
     
     <script>
         //=include chart.js
+    </script>
+    <script>
+        //=include nav.js
     </script>
 </body>
 </html>

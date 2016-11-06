@@ -6,43 +6,79 @@ blockquote, q {quotes: none;}
 blockquote:before, blockquote:after, q:before, q:after {content: ''; content: none;}
 table {border-collapse: collapse; border-spacing: 0;}
 
-* { outline: none;}
+* { outline: none; }
 /* End Reset CSS */
 
-html, body
-{
+html, body {
+    font-family: sans-serif;
     margin: 0;
     padding: 0;
-    font-family: sans-serif;
-    background: #e5e5e5;
+    background: #eee;
     color: #444;
 }
 
-h1{
-    font-size: 1.2em;
-    padding: 8px 0;
+menu {
+    display: block;
+    padding: 0;
+    margin: 0;
+    background: #555;
+    color: #eee;
     font-weight: bold;
-}
-h2{
-    font-size: 1.1em;
-    padding: 4px 0;
-    font-weight: bold;
+    font-size: 0.9em;
 }
 
-.container{
+menuitem {
+    display: inline-block;
+    padding: .8em 20px;
+    margin: 0;
+    cursor: pointer;
+}
+
+menuitem.selected {
+    background: #eee;
+    color: #555;
+}
+
+menuitem:hover {
+    background: #d6d6d6;
+    color: #555;
+}
+
+section {
+    position: absolute;
+    display: block;
+    width: 100%;
+    padding-top: 3em;
+}
+
+pre {
+    font-family: monospace;
+    margin: 20px;
+    padding: 10px;
+    background: white;
+
+    border: 1px solid #d6d6d6;
+    border-radius: 4px;
+}
+
+.hide {
+    display: none;
+}
+
+#chart-container {
     width: 90%;
     max-width: 1200px;
     display: block;
     position: relative;
-    margin: 10px auto 0;
+    margin: 0 auto;
 }
 
-#chart
-{
+#chart {
     height: 500px;
     width: 100%;
     display: inline-block;
 }
+
 #y_axis {
     width: 40px;
     left: -40px;
@@ -58,39 +94,7 @@ h2{
     background: rgba(0,0,0,.5);
     border-radius: 2px;
 }
-    .sidebar_container *
-    {
-        background: none;
-    }
-    #meta{
-        color: white;
-        font-size: .8em;
-        padding: 8px;
-    }
-    #meta label{
-        display: block;
-        font-size: .9em;
-        font-variant:small-caps;
-    }
-    #meta div{
-        margin: 0 0 5px 0;
-        max-width: 200px;
-        word-wrap: break-word;
-    }
 
-#stats_container {
-    padding: 0 0 20px 0;
-}
-    #stats_container .stats_card {
-        display: inline-block;
-        max-width: 200px;
-        padding: 15px;
-        margin: 20px 20px 0 0;
-        background: white;
-        border-radius: 2px;
-        box-shadow: 0px 3px 4px 0px rgba(0,0,0,.2);
-    }
-
-#tests div {
-    margin: 10px;
+.sidebar_container * {
+    background: none;
 }
