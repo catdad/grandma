@@ -4,6 +4,68 @@
 
 var chartContainer = document.querySelector('#chart-container');
 var chart = document.querySelector('#chart');
+var yAxisElem = document.querySelector('#y_axis');
+
+var formatter = (function() {
+    var ymin = Infinity;
+    var ymax = -Infinity;
+    
+    var yUnits;
+    var yShortUnit;
+    var yDivisor;
+    
+    function getDivisor() {
+        if (yDivisor !== undefined) {
+            return yDivisor;
+        }
+        
+        if (ymax > 1000 * 60) {
+            yUnits = 'minutes';
+            yShortUnit = 'm';
+            yDivisor = 1000 * 60;
+        } else if (ymax > 1000) {
+            yUnits = 'seconds';
+            yShortUnit = 's';
+            yDivisor = 1000;
+        } else {
+            yUnits = 'milliseconds';
+            yShortUnit = 'ms';
+            yDivisor = 1;
+        }
+        
+        return yDivisor;
+    }
+
+    return {
+        add: function(yval) {
+            ymin = Math.min(ymin, Math.floor(yval));
+            ymax = Math.max(ymax, Math.ceil(yval));
+        },
+        ylabel: function(val) {
+            var r = val / getDivisor();
+            
+            // skip 0, since it looks funny on the plot
+            if (r === 0) {
+                return '';
+            }
+            
+            // use fixed decimals if the number is no an int
+            if (parseInt(r) === r) {
+                return r.toString();
+            } else {
+                return r.toFixed(2);
+            }
+        },
+        yunit: function() {
+            getDivisor();
+            return yUnits;
+        },
+        yshortunit: function() {
+            getDivisor();
+            return yShortUnit;
+        }
+    };
+}());
 
 function makeGraph(series) {
     var graph = new Rickshaw.Graph({
@@ -13,13 +75,11 @@ function makeGraph(series) {
         series: series
     });
 
-    var first = series[0].data[0].x; // very first request
-    
     // create the x-axis on the graph
     (new Rickshaw.Graph.Axis.X({
         graph: graph,
         tickFormat: function(n) {
-            return Math.round((n - first) / 1000) + ' s';
+            return n + ' s';
         }
     }));
 
@@ -27,15 +87,15 @@ function makeGraph(series) {
     (new Rickshaw.Graph.Axis.Y({
         graph: graph,
         orientation: 'left',
-        tickFormat: Rickshaw.Fixtures.Number.formatKMBT,
-        element: document.getElementById('y_axis')
+        tickFormat: formatter.ylabel,
+        element: yAxisElem
     }));
 
     // add a hover effect to points on the graph
     (new Rickshaw.Graph.HoverDetail({
         graph: graph,
-        xFormatter: function(x) { return x + ' ms'; },
-        yFormatter: function(y) { return y + ' ms'; }
+        xFormatter: function(x) { return x + ' s'; },
+        yFormatter: function(y) { return y + ' ' + formatter.yshortunit(); }
     }));
 
     var legend = new Rickshaw.Graph.Legend({
@@ -83,7 +143,9 @@ var palette = new Rickshaw.Color.Palette({ scheme: 'colorwheel' });
 var namedSeries = DATA.reduce(function(memo, item) {
     memo[item.name] = memo[item.name] || [];
     memo[item.name].push(item);
-
+    
+    formatter.add(item.y);
+    
     return memo;
 }, {});
 
