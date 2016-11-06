@@ -13,8 +13,8 @@ html, body {
     font-family: sans-serif;
     margin: 0;
     padding: 0;
-    background: #eee;
-    color: #444;
+    background: #e5e5e5;
+    color: #333;
 }
 
 menu {
@@ -22,7 +22,7 @@ menu {
     padding: 0;
     margin: 0;
     background: #555;
-    color: #eee;
+    color: #e5e5e5;
     font-weight: bold;
     font-size: 0.9em;
 }
@@ -35,12 +35,12 @@ menuitem {
 }
 
 menuitem.selected {
-    background: #eee;
+    background: #e5e5e5;
     color: #555;
 }
 
 menuitem:hover {
-    background: #d6d6d6;
+    background: #d3d3d3;
     color: #555;
 }
 
