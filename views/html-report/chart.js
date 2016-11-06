@@ -77,6 +77,35 @@ var formatter = (function() {
     });
 }());
 
+var palette = (function() {
+    var green = '#8ece40';
+    var red = '#ce4040';
+    
+    var c = 0;
+    var colors = [
+        '#65b9ac',
+        '#4682b4',
+        '#96557e',
+        '#785f43',
+        '#858772',
+        '#b5b6a9'
+    ];
+    
+    return {
+        color: function(name) {
+            if (name === 'fullTest') {
+                return green;
+            }
+            
+            if (name === 'fullTest_Err') {
+                return red;
+            }
+            
+            return colors[c++ % colors.length];
+        }
+    };
+}());
+
 function makeGraph(series) {
     var graph = new Rickshaw.Graph({
         element: chartElem,
@@ -153,8 +182,6 @@ function makeGraph(series) {
     });
 }
 
-var palette = new Rickshaw.Color.Palette({ scheme: 'colorwheel' });
-
 var namedSeries = DATA.reduce(function(memo, item) {
     memo[item.name] = memo[item.name] || [];
     memo[item.name].push(item);
@@ -166,7 +193,7 @@ var namedSeries = DATA.reduce(function(memo, item) {
 
 var series = Object.keys(namedSeries).map(function(key) {
     return {
-        color: palette.color(),
+        color: palette.color(key),
         data: namedSeries[key],
         name: key
     };
