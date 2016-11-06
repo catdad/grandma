@@ -63,4 +63,31 @@ describe('[report cli]', function() {
             });
         });
     });
+    
+    describe('#json', function() {
+        it('prints out json to standard out', function(done) {
+            run('report --type json', data(), function(err, stdout, stderr) {
+                if (err) {
+                    return done(err);
+                }
+                
+                expect(stdout).to.be.a('string')
+                    .and.to.have.length.above(1);
+                
+                var obj = JSON.parse(stdout);
+                
+                expect(obj).to.deep.equal(DATA.results);
+                
+                done();
+            });
+        });
+    });
+    
+    describe('#plot', function() {
+        it('prints out an html page to standard out');
+    });
+    
+    describe('#box', function() {
+        it('prints out a box plot to standard out');
+    });
 });
