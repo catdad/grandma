@@ -36,10 +36,13 @@ var formatter = (function() {
         return yDivisor;
     }
 
-    return {
+    return Object.defineProperties({
         add: function(yval) {
             ymin = Math.min(ymin, Math.floor(yval));
             ymax = Math.max(ymax, Math.ceil(yval));
+            
+            // reset these, just in case
+            yDivisor = yUnits = yShortUnit = undefined;
         },
         ylabel: function(val) {
             var r = val / getDivisor();
@@ -51,20 +54,27 @@ var formatter = (function() {
             
             // use fixed decimals if the number is no an int
             if (parseInt(r) === r) {
-                return r.toString();
+                return r.toString() + ' ' + yShortUnit;
             } else {
-                return r.toFixed(2);
+                return r.toFixed(2) + ' ' + yShortUnit;
+            }
+        }
+    }, {
+        yunit: {
+            enumerable: true,
+            get: function() {
+                getDivisor();
+                return yUnits;
             }
         },
-        yunit: function() {
-            getDivisor();
-            return yUnits;
-        },
-        yshortunit: function() {
-            getDivisor();
-            return yShortUnit;
+        yshortunit: {
+            enumerable: true,
+            get: function() {
+                getDivisor();
+                return yShortUnit;
+            }
         }
-    };
+    });
 }());
 
 function makeGraph(series) {
@@ -94,8 +104,13 @@ function makeGraph(series) {
     // add a hover effect to points on the graph
     (new Rickshaw.Graph.HoverDetail({
         graph: graph,
-        xFormatter: function(x) { return x + ' s'; },
-        yFormatter: function(y) { return y + ' ' + formatter.yshortunit(); }
+        xFormatter: function(x) {
+            return x + ' s';
+        },
+        yFormatter: function(y) {
+            // the floating label will always be in milliseconds
+            return y + ' ms';
+        }
     }));
 
     var legend = new Rickshaw.Graph.Legend({
