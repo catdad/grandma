@@ -33,7 +33,7 @@ function run(command, input, done) {
     stream.end();
 }
 
-describe.only('[report cli]', function() {
+describe('[report cli]', function() {
     describe('#default', function() {
         it('prints out text to standard out', function(done) {
             run('report', data(), function(err, stdout, stderr) {
