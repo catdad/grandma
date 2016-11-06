@@ -2,8 +2,8 @@
 /* eslint-disable no-new */
 /* globals Rickshaw, DATA */
 
-var chartContainer = document.querySelector('#chart-container');
-var chart = document.querySelector('#chart');
+var chartContainerElem = document.querySelector('#chart-container');
+var chartElem = document.querySelector('#chart');
 var yAxisElem = document.querySelector('#y_axis');
 
 var formatter = (function() {
@@ -69,7 +69,7 @@ var formatter = (function() {
 
 function makeGraph(series) {
     var graph = new Rickshaw.Graph({
-        element: chart,
+        element: chartElem,
         renderer: 'scatterplot',
         stroke: true,
         series: series
@@ -127,14 +127,14 @@ function makeGraph(series) {
         // trigger tolerance
         // event can executes multiple times for one single resize
         timeout = setTimeout(function() {
-            var width = chartContainer.offsetWidth;
+            var width = chartContainerElem.offsetWidth;
             var height = parseInt(width * 500 / 1200); // ratio based on original CSS
             // re-render graph
             graph.setSize({ width: width, height: height});
             graph.render();
             // update div size
-            chart.style.height = height + 'px';
-        }, 100);
+            chartElem.style.height = height + 'px';
+        }, 50);
     });
 }
 
