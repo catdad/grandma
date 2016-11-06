@@ -38,20 +38,20 @@ function makeGraph(series) {
         yFormatter: function(y) { return y + ' ms'; }
     }));
 
-    (new Rickshaw.Graph.Legend({
+    var legend = new Rickshaw.Graph.Legend({
         element: document.getElementById('legend'),
         graph: graph
+    });
+
+    (new Rickshaw.Graph.Behavior.Series.Toggle({
+        graph: graph,
+        legend: legend
     }));
 
-//    var shelving = new Rickshaw.Graph.Behavior.Series.Toggle({
-//        graph: graph,
-//        legend: legend
-//    });
-
-//    var highlighter = new Rickshaw.Graph.Behavior.Series.Highlight({
-//        graph: graph,
-//        legend: legend
-//    });
+    (new Rickshaw.Graph.Behavior.Series.Highlight({
+        graph: graph,
+        legend: legend
+    }));
 
     graph.render();
 
@@ -78,6 +78,8 @@ function makeGraph(series) {
     });
 }
 
+var palette = new Rickshaw.Color.Palette({ scheme: 'colorwheel' });
+
 var namedSeries = DATA.reduce(function(memo, item) {
     memo[item.name] = memo[item.name] || [];
     memo[item.name].push(item);
@@ -87,8 +89,9 @@ var namedSeries = DATA.reduce(function(memo, item) {
 
 var series = Object.keys(namedSeries).map(function(key) {
     return {
-        name: key,
-        data: namedSeries[key]
+        color: palette.color(),
+        data: namedSeries[key],
+        name: key
     };
 });
 
