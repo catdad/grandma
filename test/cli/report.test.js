@@ -6,6 +6,7 @@ var expect = require('chai').expect;
 var grandma = require('./util-grandma.js');
 
 var DATA = require('../data/testdata.js');
+var expectations = require('../data/testexpectations.js');
 
 function json(val) {
     return JSON.stringify(val);
@@ -26,6 +27,8 @@ describe('[report cli]', function() {
                 expect(stdout).to.be.a('string')
                     .and.to.have.length.above(1);
                 
+                expectations.text.test(stdout);
+                
                 done();
             });
         });
@@ -41,6 +44,8 @@ describe('[report cli]', function() {
                 expect(stdout).to.be.a('string')
                     .and.to.have.length.above(1);
                 
+                expectations.text.test(stdout);
+
                 done();
             });
         });
