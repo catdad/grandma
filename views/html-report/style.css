@@ -67,7 +67,6 @@ pre {
 
 #chart-container {
     width: 90%;
-    max-width: 1200px;
     display: block;
     position: relative;
     margin: 0 auto;
@@ -88,9 +87,8 @@ pre {
 }
 
 .sidebar_container {
-    position: absolute;
-    top: 0;
-    right: 0;
+    position: relative;
+    margin: 20px 20px;
     background: rgba(0,0,0,.5);
     border-radius: 2px;
 }
