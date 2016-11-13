@@ -131,7 +131,7 @@ By default, all reports will print to standard output, unless you specify a file
 
 You can find more information about the available reports and the data they provide in the [`grandma report` CLI page][cli-report].
 
-#### [`gradnma diff`][cli-diff]
+#### [`grandma diff`][cli-diff]
 
 Compares two or more test runs, calculating the difference in timing among them.
 
