@@ -131,6 +131,14 @@ By default, all reports will print to standard output, unless you specify a file
 
 You can find more information about the available reports and the data they provide in the [`grandma report` CLI page][cli-report].
 
+#### [`grandma diff`][cli-diff]
+
+Compares two or more test runs, calculating the difference in timing among them.
+
+```bash
+grandma diff --logs one.log two.log three.log
+```
+
 <a name="grandmarc"></a>
 ## [`.grandmarc` file][rc]
 
@@ -160,5 +168,6 @@ See more information about using report in the [`grandma.report` API page][api-r
 [cli-list]: docs/cli-grandma-list.md
 [cli-run]: docs/cli-grandma-run.md
 [cli-report]: docs/cli-grandma-report.md
+[cli-diff]: docs/cli-grandma-diff.md
 [api-run]: docs/api-grandma-run.md
 [api-report]: docs/api-grandma-report.md
