@@ -71,7 +71,22 @@ describe('[report cli]', function() {
     });
     
     describe('#plot', function() {
-        it('prints out an html page to standard out');
+        it('prints out an html page to standard out', function(done) {
+            grandma('report --type plot', data(), function(err, stdout, stderr) {
+                if (err) {
+                    return done(err);
+                }
+                
+                expect(stdout.trim())
+                    .to.match(/^\<\!DOCTYPE html\>/)
+                    .and.to.match(/<html/)
+                    .and.to.match(/\<\/html\>$/);
+                
+                expect(stderr).to.equal('');
+                
+                done();
+            });
+        });
     });
     
     describe('#box', function() {
