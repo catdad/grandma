@@ -25,8 +25,8 @@
 
 This is a load testing library and CLI tool. It is inspired by the good parts of [Vegeta](https://github.com/tsenart/vegeta) and [JMeter](http://jmeter.apache.org/), but hopefully leaves out the bad parts of both.
 
-* [Test Files](#tests)
-* [Configuration](#grandmarc)
+* [Test Files](#tests-files)
+* [Configuration](#grandmarc-file)
 * [CLI](#cli)
 * [API](#api)
 
@@ -38,7 +38,6 @@ You can install `grandma` as a global CLI tool:
 npm install grandma
 ```
 
-<a name="tests"></a>
 ## [Test files][tests]
 
 Here is a quick example of a test file:
@@ -65,7 +64,6 @@ module.exports = {
 
 All functions other than `test` are optional, and you can exclude them if you do not need them. All functions are asynchronous, and you must call the `done` callback to continue. For more information about writing tests, see the [test files help topic][tests].
 
-<a name="cli"></a>
 ## CLI
 
 To see the most up-to-date CLI, type:
@@ -139,14 +137,12 @@ Compares two or more test runs, calculating the difference in timing among them.
 grandma diff --logs one.log two.log three.log
 ```
 
-<a name="grandmarc"></a>
 ## [`.grandmarc` file][rc]
 
 You can set up an RC file to help with managing some of the setting, such as the directory of test files. Here is the content a sample file.
 
 To find out more, see the [`.grandmarc` doc page][rc].
 
-<a name="api"></a>
 ## API
 
 Grandma exposes the `run` and `report` commands as an API.

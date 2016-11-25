@@ -46,7 +46,7 @@
     "istanbul": "^0.4.4",
     "mocha": "^3.0.2",
     "rootrequire": "^1.0.0",
-    "shellton": "^2.1.0",
+    "shellton": "^3.0.0",
     "sinon": "^1.17.5"
   },
   "bin": {
