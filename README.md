@@ -1,6 +1,7 @@
 # grandma
 
-[![Build][1]][2]
+[![Linux Build][1]][2]
+[![Windows Build][12]][13]
 [![Test Coverage][3]][4]
 [![Code Climate][5]][6]
 [![Downloads][7]][8]
@@ -22,6 +23,9 @@
 
 [10]: https://david-dm.org/catdad/grandma.svg
 [11]: https://david-dm.org/catdad/grandma
+
+[12]: https://ci.appveyor.com/api/projects/status/github/catdad/grandma?branch=master&svg=true
+[13]: https://ci.appveyor.com/project/catdad/grandma
 
 This is a load testing library and CLI tool. It is inspired by the good parts of [Vegeta](https://github.com/tsenart/vegeta) and [JMeter](http://jmeter.apache.org/), but hopefully leaves out the bad parts of both.
 
