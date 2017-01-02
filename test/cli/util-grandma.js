@@ -4,6 +4,7 @@ var util = require('util');
 var shellton = require('shellton');
 var through = require('through2');
 var root = require('rootrequire');
+var unstyle = require('unstyle').string;
 
 module.exports = function run(command, input, done) {
     // TODO figure out how to use process.execPath instead of relying
@@ -15,7 +16,13 @@ module.exports = function run(command, input, done) {
         task: task,
         cwd: root,
         stdin: stream
-    }, done);
+    }, function(err, stdout, stderr) {
+        if (err) {
+            return done(err, stdout, stderr);
+        }
+        
+        done(null, unstyle(stdout), unstyle(stderr));
+    });
     
     stream.write(input);
     stream.end();
