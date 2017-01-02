@@ -1,3 +1,5 @@
+version: "{build}_{branch}"
+
 environment:
   matrix:
     # node.js
