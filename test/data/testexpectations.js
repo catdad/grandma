@@ -48,5 +48,27 @@ module.exports = {
             expect(str.match(/one/g)).to.have.lengthOf(4);
             expect(str.match(/two/g)).to.have.lengthOf(4);
         }
+    },
+    box: {
+        isValid: function(str) {
+            expect(str).to.be.a('string');
+
+            var strArr = str.split('\n');
+
+            expect(strArr).to.have.lengthOf(4);
+
+            var str0 = strArr[0];
+            var str1 = strArr[1];
+            var str2 = strArr[2];
+            var str3 = strArr[3];
+            
+            expect(str0).to.match(/(^Full Test:$)|(^Category:)/);
+
+            expect(str1).to.match(/^\s{1,}\+\-{0,}\+\-{0,}\+\s{1,}$/);
+            expect(str2).to.match(/^\|\-{0,}\|\s{0,}\|\s{0,}\|\-{0,}\|\s{0,}$/);
+
+            // the top and bottom of the box plot are the same string
+            expect(str3).to.equal(str1);
+        }
     }
 };

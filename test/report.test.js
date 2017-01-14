@@ -583,28 +583,6 @@ describe('[report]', function() {
         // the relevant parts, namely that it will read the input and
         // write the box plot to the output.
         
-        // copied from the unit tests of the lib
-        function isValidBoxPlot(str) {
-            expect(str).to.be.a('string');
-
-            var strArr = str.split('\n');
-
-            expect(strArr).to.have.lengthOf(4);
-
-            var str0 = strArr[0];
-            var str1 = strArr[1];
-            var str2 = strArr[2];
-            var str3 = strArr[3];
-            
-            expect(str0).to.match(/(^Full Test:$)|(^Category:)/);
-
-            expect(str1).to.match(/^\s{1,}\+\-{0,}\+\-{0,}\+\s{1,}$/);
-            expect(str2).to.match(/^\|\-{0,}\|\s{0,}\|\s{0,}\|\-{0,}\|\s{0,}$/);
-
-            // the top and bottom of the box plot are the same string
-            expect(str3).to.equal(str1);
-        }
-        
         function testWidth(content, width) {
             var str = content.toString();
             
@@ -634,7 +612,7 @@ describe('[report]', function() {
                 expect(strArr).to.have.lengthOf(5);
                 strArr.pop();
                 
-                isValidBoxPlot(strArr.join('\n'));
+                expectations.box.isValid(strArr.join('\n'));
                 
                 done();
             });
@@ -699,7 +677,7 @@ describe('[report]', function() {
                 expect(plots).to.have.lengthOf(4);
                 
                 plots.forEach(function(arr) {
-                    isValidBoxPlot(arr.join('\n'));
+                    expectations.box.isValid(arr.join('\n'));
                 });
                 
                 done();
