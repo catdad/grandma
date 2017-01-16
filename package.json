@@ -37,7 +37,7 @@
   },
   "devDependencies": {
     "chai": "^3.5.0",
-    "codeclimate-test-reporter": "^0.3.1",
+    "codeclimate-test-reporter": "^0.4.0",
     "del": "^2.2.2",
     "eslint": "^2.11.0",
     "event-stream": "^3.3.2",
@@ -46,7 +46,7 @@
     "istanbul": "^0.4.4",
     "mocha": "^3.0.2",
     "rootrequire": "^1.0.0",
-    "shellton": "^3.0.0",
+    "shellton": "^3.0.2",
     "sinon": "^1.17.5"
   },
   "bin": {
