@@ -25,8 +25,8 @@
 
 This is a load testing library and CLI tool. It is inspired by the good parts of [Vegeta](https://github.com/tsenart/vegeta) and [JMeter](http://jmeter.apache.org/), but hopefully leaves out the bad parts of both.
 
-* [Test Files](#tests)
-* [Configuration](#grandmarc)
+* [Test Files](#test-files)
+* [Configuration](#grandmarc-file)
 * [CLI](#cli)
 * [API](#api)
 
@@ -38,7 +38,6 @@ You can install `grandma` as a global CLI tool:
 npm install grandma
 ```
 
-<a name="tests"></a>
 ## [Test files][tests]
 
 Here is a quick example of a test file:
@@ -65,7 +64,6 @@ module.exports = {
 
 All functions other than `test` are optional, and you can exclude them if you do not need them. All functions are asynchronous, and you must call the `done` callback to continue. For more information about writing tests, see the [test files help topic][tests].
 
-<a name="cli"></a>
 ## CLI
 
 To see the most up-to-date CLI, type:
@@ -131,14 +129,20 @@ By default, all reports will print to standard output, unless you specify a file
 
 You can find more information about the available reports and the data they provide in the [`grandma report` CLI page][cli-report].
 
-<a name="grandmarc"></a>
+#### [`grandma diff`][cli-diff]
+
+Compares two or more test runs, calculating the difference in timing among them.
+
+```bash
+grandma diff --logs one.log two.log three.log
+```
+
 ## [`.grandmarc` file][rc]
 
 You can set up an RC file to help with managing some of the setting, such as the directory of test files. Here is the content a sample file.
 
 To find out more, see the [`.grandmarc` doc page][rc].
 
-<a name="api"></a>
 ## API
 
 Grandma exposes the `run` and `report` commands as an API.
@@ -160,5 +164,6 @@ See more information about using report in the [`grandma.report` API page][api-r
 [cli-list]: docs/cli-grandma-list.md
 [cli-run]: docs/cli-grandma-run.md
 [cli-report]: docs/cli-grandma-report.md
+[cli-diff]: docs/cli-grandma-diff.md
 [api-run]: docs/api-grandma-run.md
 [api-report]: docs/api-grandma-report.md
