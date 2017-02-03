@@ -90,6 +90,20 @@ describe('[report cli]', function() {
     });
     
     describe('#box', function() {
-        it('prints out a box plot to standard out');
+        it('prints out a box plot to standard out', function(done) {
+            grandma('report --type box', data(), function(err, stdout, stderr) {
+                if (err) {
+                    return done(err);
+                }
+                
+                // remove the last line inserted by the CLI
+                expectations.box.isValid(stdout.replace(/\n$/, ''));
+                
+                expect(stderr).to.equal('');
+                
+                done();
+            });
+        });
     });
+    
 });
