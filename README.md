@@ -1,4 +1,4 @@
-# grandma
+# [<img title="grandma" src="http://cdn.rawgit.com/catdad/grandma/master/assets/banner.svg" width="100%" alt="grandma" />](https://github.com/catdad/grandma)
 
 [![Build][1]][2]
 [![Test Coverage][3]][4]
