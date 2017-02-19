@@ -15,41 +15,41 @@
     }
 	</style>
 
-	<linearGradient id="SVGID_1_" gradientUnits="userSpaceOnUse" x1="45.5" y1="385.5" x2="45.5" y2="-114.5">
-		<stop offset="0.05" stop-color="#FFE986"/>
-		<stop offset="0.13" stop-color="#FEE37F"/>
-		<stop offset="0.23" stop-color="#FDD46C"/>
-		<stop offset="0.35" stop-color="#FBBA4D"/>
-		<stop offset="0.48" stop-color="#F79722"/>
-		<stop offset="0.5" stop-color="#F7931D"/>
-		<stop offset="0.63" stop-color="#F47A3A"/>
-		<stop offset="0.76" stop-color="#F26850"/>
-		<stop offset="0.88" stop-color="#F05D5D"/>
-		<stop offset="1" stop-color="#F05961"/>
+	<linearGradient id="background" gradientUnits="userSpaceOnUse" x1="45.5" y1="385.5" x2="45.5" y2="-114.5">
+      <stop offset="0.05" stop-color="#FFE986"/>
+      <stop offset="0.13" stop-color="#FEE37F"/>
+      <stop offset="0.23" stop-color="#FDD46C"/>
+      <stop offset="0.35" stop-color="#FBBA4D"/>
+      <stop offset="0.48" stop-color="#F79722"/>
+      <stop offset="0.5" stop-color="#F7931D"/>
+      <stop offset="0.63" stop-color="#F47A3A"/>
+      <stop offset="0.76" stop-color="#F26850"/>
+      <stop offset="0.88" stop-color="#F05D5D"/>
+      <stop offset="1" stop-color="#F05961"/>
 	</linearGradient>
 
 	<defs>
-		<circle id="clipping_mask_1_" cx="45.5" cy="135.5" r="250"/>
+      <circle id="clip_shape" cx="45.5" cy="135.5" r="250"/>
 	</defs>
-	<clipPath id="clipping_mask_2_">
-		<use xlink:href="#clipping_mask_1_"/>
+	<clipPath id="circle_mask">
+      <use xlink:href="#clip_shape"/>
 	</clipPath>
 
 	<g id="full_color">
-    <circle cx="45.5" cy="135.5" r="250" style="clip-path:url(#clipping_mask_2_);fill:url(#SVGID_1_)"/>
+    <circle cx="45.5" cy="135.5" r="250" style="clip-path:url(#circle_mask);fill:url(#background)"/>
 
-		<path class="skin" d="M46.64 295.12c17.9 0 34.36-8.62 44.55-23.19 -4.07-2.94-8.9-7.53-8.91-12.84v-58.09l-70.52 0.34v57.75c0 5.58-5.31 10.36-9.43 13.21C12.54 286.65 28.86 295.12 46.64 295.12z" />
+    <path class="skin" d="M46.64 295.12c17.9 0 34.36-8.62 44.55-23.19 -4.07-2.94-8.9-7.53-8.91-12.84v-58.09l-70.52 0.34v57.75c0 5.58-5.31 10.36-9.43 13.21C12.54 286.65 28.86 295.12 46.64 295.12z" />
 
-		<ellipse fill="#627A82" cx="45.94" cy="-2.92" rx="74.04" ry="47.4" />
+    <ellipse fill="#627A82" cx="45.94" cy="-2.92" rx="74.04" ry="47.4" />
     <ellipse class="cloth" cx="45.94" cy="16.82" rx="74.04" ry="47.4" />
 
-		<path class="skin" d="M170.82 82.49c-77-77.02-173.26-77.51-250.26 0l0.49 85.41c0 37.03 36.53 78 126.86 78 85.39 0 122.91-33.57 122.91-78V82.49" />
+    <path class="skin" d="M170.82 82.49c-77-77.02-173.26-77.51-250.26 0l0.49 85.41c0 37.03 36.53 78 126.86 78 85.39 0 122.91-33.57 122.91-78V82.49" />
     <path class="line" d="M81.48 195.05c0.49 0.99 0.99 1.97 0.99 2.96 0 8.39-16.78 18.76-37.02 18.76 -20.24 0-37.02-10.37-37.02-18.76 0-0.99 0.49-2.47 0.99-2.96 0 0 15.8 7.41 36.03 7.41C65.68 202.45 81.48 195.05 81.48 195.05" />
     <path fill="#748A93" d="M45.94-15.27c-145.61 0-176.71 117.01-124.39 157.98 0 0 25.67-43.44 79.47-64.18C141.21 24.72 102.21-15.27 45.94-15.27" />
     <path fill="#8B9FA5" d="M45.94-15.27c-56.27 0-95.27 39.99 44.92 93.8 53.8 20.74 79.47 64.18 79.47 64.18C222.65 102.23 191.06-15.27 45.94-15.27" />
     <path class="line" d="M99.25 208.38c-2.96 0-5.43-0.99-7.9-1.97 -2.47-0.99-4.94-2.47-6.91-4.44 -3.95-3.46-7.9-8.89-7.9-14.32 3.95 3.95 7.4 7.41 10.86 10.86C91.35 201.47 95.3 204.43 99.25 208.38M-8.36 208.38c3.95-3.95 8.39-6.42 11.85-9.87 3.95-3.45 7.4-6.42 10.86-10.86 0 5.93-3.45 10.86-7.9 14.32 -1.97 1.98-4.44 3.46-6.91 4.44C-2.43 207.39-5.4 208.38-8.36 208.38M-24.65 142.22l-1.48-14.81c3.95-0.49 9.38-1.48 15.3-2.47 29.12-5.43 77.5-14.81 130.31 2.96l-4.94 13.82c-48.87-16.79-94.77-7.9-122.42-2.47C-14.28 140.74-20.2 141.73-24.65 142.22" />
 
-		<ellipse class="line" cx="-14.77" cy="135.31" rx="44.43" ry="44.43" />
+    <ellipse class="line" cx="-14.77" cy="135.31" rx="44.43" ry="44.43" />
     <ellipse class="glass" cx="-14.77" cy="135.31" rx="29.62" ry="29.62" />
     <ellipse class="line" cx="106.65" cy="135.31" rx="44.43" ry="44.43" />
     <ellipse class="glass" cx="106.65" cy="135.31" rx="29.62" ry="29.62" />
