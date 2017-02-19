@@ -1,18 +1,18 @@
 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" x="0" y="0" width="500" height="500" viewBox="-204.5 -114.5 500 500" xml:space="preserve">
 <!-- Based on an emoji provided free by http://emojione.com -->
 	<style>
-		.cloth {
-      fill: #B67EF2;
-    }
-    .line {
-      fill: #454749;
-    }
-    .skin {
-      fill: #876557;
-    }
-    .glass {
-      fill: #B4D7EE;
-    }
+      .cloth {
+        fill: #B67EF2;
+      }
+      .line {
+        fill: #454749;
+      }
+      .skin {
+        fill: #876557;
+      }
+      .glass {
+        fill: #B4D7EE;
+      }
 	</style>
 
 	<linearGradient id="background" gradientUnits="userSpaceOnUse" x1="45.5" y1="385.5" x2="45.5" y2="-114.5">
