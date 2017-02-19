@@ -2,53 +2,53 @@
 <!-- Based on an emoji provided free by http://emojione.com -->
 
 	<style>
-		.text {
-			fill: #FFFFFF;
-		}
-
-    .responsive-text {
-      transform-origin: 600px 250px;
-      transform: scale(0.6, 0.6);
-
-      transition: 300ms ease;
-    }
-
-    @media screen and (max-width: 750px) {
-      .responsive-text {
-        transform: scale(0.8, 0.8);
-      }
-    }
-
-    @media screen and (max-width: 450px) {
-      .responsive-text {
-        transform: scale(1, 1);
-      }
-    }
-
-    @media print {
       .text {
-        fill: #000
+        fill: #FFFFFF;
       }
 
       .responsive-text {
-        transform: scale(1, 1);
+        transform-origin: 600px 250px;
+        transform: scale(0.6, 0.6);
+
+        transition: 300ms ease;
       }
 
-      .background {
-        display: none;
+      @media screen and (max-width: 750px) {
+        .responsive-text {
+          transform: scale(0.8, 0.8);
+        }
       }
-    }
+
+      @media screen and (max-width: 450px) {
+        .responsive-text {
+          transform: scale(1, 1);
+        }
+      }
+
+      @media print {
+        .text {
+          fill: #000
+        }
+
+        .responsive-text {
+          transform: scale(1, 1);
+        }
+
+        .background {
+          display: none;
+        }
+      }
 	</style>
 
 	<defs>
-		<rect id="rect_clip_shape" width="1200" height="500"/>
-		<circle id="logo_clip_shape" cx="196.5" cy="250.02" r="124.15"/>
+      <rect id="rect_clip_shape" width="1200" height="500"/>
+      <circle id="logo_clip_shape" cx="196.5" cy="250.02" r="124.15"/>
 	</defs>
 	<clipPath id="rect_mask">
-		<use xlink:href="#rect_clip_shape" overflow="visible"/>
+      <use xlink:href="#rect_clip_shape" overflow="visible"/>
 	</clipPath>
 	<clipPath id="logo_mask">
-		<use xlink:href="#logo_clip_shape" overflow="visible"/>
+      <use xlink:href="#logo_clip_shape" overflow="visible"/>
 	</clipPath>
 
   <g id="orange_back" class="background">
