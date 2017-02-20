@@ -1,41 +1,41 @@
 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" x="0" y="0" width="500" height="500" viewBox="-204.5 -114.5 500 500" xml:space="preserve">
 <!-- Based on an emoji provided free by http://emojione.com -->
-	<style>
-      .cloth {
-        fill: #B67EF2;
-      }
-      .line {
-        fill: #454749;
-      }
-      .skin {
-        fill: #876557;
-      }
-      .glass {
-        fill: #B4D7EE;
-      }
-	</style>
+  <style>
+    .cloth {
+      fill: #B67EF2;
+    }
+    .line {
+      fill: #454749;
+    }
+    .skin {
+      fill: #876557;
+    }
+    .glass {
+      fill: #B4D7EE;
+    }
+  </style>
 
-	<linearGradient id="background" gradientUnits="userSpaceOnUse" x1="45.5" y1="385.5" x2="45.5" y2="-114.5">
-      <stop offset="0.05" stop-color="#FFE986"/>
-      <stop offset="0.13" stop-color="#FEE37F"/>
-      <stop offset="0.23" stop-color="#FDD46C"/>
-      <stop offset="0.35" stop-color="#FBBA4D"/>
-      <stop offset="0.48" stop-color="#F79722"/>
-      <stop offset="0.5" stop-color="#F7931D"/>
-      <stop offset="0.63" stop-color="#F47A3A"/>
-      <stop offset="0.76" stop-color="#F26850"/>
-      <stop offset="0.88" stop-color="#F05D5D"/>
-      <stop offset="1" stop-color="#F05961"/>
-	</linearGradient>
+  <linearGradient id="background" gradientUnits="userSpaceOnUse" x1="45.5" y1="385.5" x2="45.5" y2="-114.5">
+    <stop offset="0.05" stop-color="#FFE986"/>
+    <stop offset="0.13" stop-color="#FEE37F"/>
+    <stop offset="0.23" stop-color="#FDD46C"/>
+    <stop offset="0.35" stop-color="#FBBA4D"/>
+    <stop offset="0.48" stop-color="#F79722"/>
+    <stop offset="0.5" stop-color="#F7931D"/>
+    <stop offset="0.63" stop-color="#F47A3A"/>
+    <stop offset="0.76" stop-color="#F26850"/>
+    <stop offset="0.88" stop-color="#F05D5D"/>
+    <stop offset="1" stop-color="#F05961"/>
+  </linearGradient>
 
-	<defs>
-      <circle id="clip_shape" cx="45.5" cy="135.5" r="250"/>
-	</defs>
-	<clipPath id="circle_mask">
-      <use xlink:href="#clip_shape"/>
-	</clipPath>
+  <defs>
+    <circle id="clip_shape" cx="45.5" cy="135.5" r="250"/>
+  </defs>
+  <clipPath id="circle_mask">
+    <use xlink:href="#clip_shape"/>
+  </clipPath>
 
-	<g id="full_color">
+  <g id="full_color">
     <circle cx="45.5" cy="135.5" r="250" style="clip-path:url(#circle_mask);fill:url(#background)"/>
 
     <path class="skin" d="M46.64 295.12c17.9 0 34.36-8.62 44.55-23.19 -4.07-2.94-8.9-7.53-8.91-12.84v-58.09l-70.52 0.34v57.75c0 5.58-5.31 10.36-9.43 13.21C12.54 286.65 28.86 295.12 46.64 295.12z" />
