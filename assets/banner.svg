@@ -8,14 +8,14 @@
 
       .responsive-text {
         transform-origin: 600px 250px;
-        transform: scale(0.6, 0.6);
+        transform: scale(0.5, 0.5);
 
         transition: 300ms ease;
       }
 
       @media screen and (max-width: 750px) {
         .responsive-text {
-          transform: scale(0.8, 0.8);
+          transform: scale(0.7, 0.7);
         }
       }
 
