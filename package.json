@@ -19,6 +19,7 @@
     "compute-quantile": "^1.0.1",
     "duration-js": "^3.7.1",
     "ensure-gunzip": "0.0.1",
+    "fancy-text-table": "^1.0.0",
     "fractional": "^1.0.0",
     "glob": "^7.0.3",
     "glob-filestream": "^0.3.0",
@@ -28,9 +29,7 @@
     "mkdirp": "^0.5.1",
     "plain-text-box-plot": "0.0.1",
     "rc": "^1.1.6",
-    "text-table": "^0.2.0",
     "through2": "^2.0.1",
-    "unstyle": "0.0.8",
     "yargs": "^5.0.0"
   },
   "devDependencies": {
@@ -45,7 +44,8 @@
     "mocha": "^3.0.2",
     "rootrequire": "^1.0.0",
     "shellton": "^3.0.2",
-    "sinon": "^1.17.5"
+    "sinon": "^1.17.5",
+    "unstyle": "0.0.8"
   },
   "bin": {
     "grandma": "./bin/_cli"

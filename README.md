@@ -1,4 +1,4 @@
-# grandma
+# [<img title="grandma" src="http://catdad.github.com/grandma/assets/banner.svg" width="100%" alt="grandma" />](https://github.com/catdad/grandma)
 
 [![Linux Build][1]][2]
 [![Windows Build][12]][13]

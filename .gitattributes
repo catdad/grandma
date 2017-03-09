@@ -10,6 +10,7 @@
 *.less   text eol=lf
 *.scss   text eol=lf
 *.sass   text eol=lf
+*.svg    text eol=lf
 
 # Custom for Visual Studio
 *.cs     diff=csharp
