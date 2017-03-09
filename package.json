@@ -42,7 +42,7 @@
     "gulp-util": "^3.0.7",
     "istanbul": "^0.4.4",
     "mocha": "^3.0.2",
-    "nyc": "^8.3.2",
+    "nyc": "^10.1.2",
     "rootrequire": "^1.0.0",
     "shellton": "^3.0.2",
     "sinon": "^1.17.5",
@@ -79,9 +79,13 @@
     "statements": 90,
     "branches": 80,
     "include": [
-      "index.js", "lib/**"
+      "index.js",
+      "lib/**"
     ],
-    "reporter": [ "lcov", "text" ],
+    "reporter": [
+      "lcov",
+      "text"
+    ],
     "all": true,
     "check-coverage": true
   }
