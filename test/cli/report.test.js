@@ -105,4 +105,5 @@ describe('[report cli]', function() {
             });
         });
     });
+    
 });

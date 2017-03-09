@@ -10,3 +10,6 @@ npm-debug.log
 fixtures/
 coverage/
 test/
+
+# Art and stuff
+assets/
