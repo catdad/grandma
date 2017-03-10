@@ -3,6 +3,7 @@
 [![Build][1]][2]
 [![Test Coverage][3]][4]
 [![Code Climate][5]][6]
+[![bitHound Overall Score][12]][13]
 [![Downloads][7]][8]
 [![Version][9]][8]
 [![Dependency Status][10]][11]
@@ -22,6 +23,9 @@
 
 [10]: https://david-dm.org/catdad/grandma.svg
 [11]: https://david-dm.org/catdad/grandma
+
+[12]: https://www.bithound.io/github/catdad/grandma/badges/score.svg
+[13]: https://www.bithound.io/github/catdad/grandma
 
 This is a load testing library and CLI tool. It is inspired by the good parts of [Vegeta](https://github.com/tsenart/vegeta) and [JMeter](http://jmeter.apache.org/), but hopefully leaves out the bad parts of both.
 
