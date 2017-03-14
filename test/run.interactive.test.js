@@ -25,7 +25,7 @@ describe('[run:interactive]', function() {
     }
 
     describe('concurrent mode', function() {
-        it.only('can have concurrency changed at runtime', function(done) {
+        it('can have concurrency changed at runtime', function(done) {
             increaseTimeout(this);
 
             var INIT_C = 1;
