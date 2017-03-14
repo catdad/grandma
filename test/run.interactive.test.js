@@ -171,7 +171,7 @@ describe('[run:interactive]', function() {
             var opts = {
                 // we expect this to execute exactly 3 times
                 // without changing the rate at runtime
-                duration: '50ms',
+                duration: '100ms',
                 rate: INIT_RATE,
                 test: RATE_TEST,
                 output: output
