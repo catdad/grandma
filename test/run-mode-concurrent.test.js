@@ -20,7 +20,6 @@ function runOpts(opts) {
         debug: sinon.spy(),
         options: o,
         writeOutput: sinon.spy(),
-        // TODO
         getRunningCount: sinon.stub().returns(0),
         repeater: new EventEmitter(),
         runTest: sinon.spy()
