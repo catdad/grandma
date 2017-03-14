@@ -1,35 +1,35 @@
 # [<img title="grandma" src="http://catdad.github.com/grandma/assets/banner.svg" width="100%" alt="grandma" />](https://github.com/catdad/grandma)
 
-[![Linux Build][1]][2]
-[![Windows Build][12]][13]
-[![Test Coverage][3]][4]
-[![Code Climate][5]][6]
-[![bitHound Overall Score][14]][15]
-[![Downloads][7]][8]
-[![Version][9]][8]
-[![Dependency Status][10]][11]
+[![Linux Build][travis.svg]][travis]
+[![Windows Build][appveyor.svg]][appveyor]
+[![Test Coverage][codeclimate-cov.svg]][codeclimate-cov]
+[![Code Climate][codeclimate-gpa.svg]][codeclimate-gpa]
+[![bitHound Overall Score][bithound.svg]][bithound]
+[![Downloads][npm-download.svg]][npm]
+[![Version][npm-version.svg]][npm]
+[![Dependency Status][daviddm.svg]][daviddm]
 
-[1]: https://travis-ci.org/catdad/grandma.svg?branch=master
-[2]: https://travis-ci.org/catdad/grandma
+[travis.svg]: https://travis-ci.org/catdad/grandma.svg?branch=master
+[travis]: https://travis-ci.org/catdad/grandma
 
-[3]: https://codeclimate.com/github/catdad/grandma/badges/coverage.svg
-[4]: https://codeclimate.com/github/catdad/grandma/coverage
+[codeclimate-cov.svg]: https://codeclimate.com/github/catdad/grandma/badges/coverage.svg
+[codeclimate-cov]: https://codeclimate.com/github/catdad/grandma/coverage
 
-[5]: https://codeclimate.com/github/catdad/grandma/badges/gpa.svg
-[6]: https://codeclimate.com/github/catdad/grandma
+[codeclimate-gpa.svg]: https://codeclimate.com/github/catdad/grandma/badges/gpa.svg
+[codeclimate-gpa]: https://codeclimate.com/github/catdad/grandma
 
-[7]: https://img.shields.io/npm/dm/grandma.svg
-[8]: https://www.npmjs.com/package/grandma
-[9]: https://img.shields.io/npm/v/grandma.svg
+[npm-download.svg]: https://img.shields.io/npm/dm/grandma.svg
+[npm]: https://www.npmjs.com/package/grandma
+[npm-version.svg]: https://img.shields.io/npm/v/grandma.svg
 
-[10]: https://david-dm.org/catdad/grandma.svg
-[11]: https://david-dm.org/catdad/grandma
+[daviddm.svg]: https://david-dm.org/catdad/grandma.svg
+[daviddm]: https://david-dm.org/catdad/grandma
 
-[12]: https://ci.appveyor.com/api/projects/status/github/catdad/grandma?branch=master&svg=true
-[13]: https://ci.appveyor.com/project/catdad/grandma
+[appveyor.svg]: https://ci.appveyor.com/api/projects/status/github/catdad/grandma?branch=master&svg=true
+[appveyor]: https://ci.appveyor.com/project/catdad/grandma
 
-[14]: https://www.bithound.io/github/catdad/grandma/badges/score.svg
-[15]: https://www.bithound.io/github/catdad/grandma
+[bithound.svg]: https://www.bithound.io/github/catdad/grandma/badges/score.svg
+[bithound]: https://www.bithound.io/github/catdad/grandma
 
 This is a load testing library and CLI tool. It is inspired by the good parts of [Vegeta](https://github.com/tsenart/vegeta) and [JMeter](http://jmeter.apache.org/), but hopefully leaves out the bad parts of both.
 
