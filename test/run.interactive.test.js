@@ -185,7 +185,7 @@ describe('[run:interactive]', function() {
                 // rate is less scientific, so just make
                 // sure it's more than the small amount previous
                 // tests got
-                expect(count).to.be.at.least(30);
+                expect(count).to.be.at.least(28);
                 expect(task).to.have.property('rate')
                     .and.to.equal(FINAL_RATE);
                 
