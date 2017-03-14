@@ -25,7 +25,7 @@ describe('[run:interactive]', function() {
     }
 
     describe('concurrent mode', function() {
-        it('can have concurrency changed at runtime', function(done) {
+        it.only('can have concurrency changed at runtime', function(done) {
             increaseTimeout(this);
 
             var INIT_C = 1;
@@ -35,7 +35,7 @@ describe('[run:interactive]', function() {
             var output = through.obj();
 
             var opts = {
-                duration: 50,
+                duration: 100,
                 concurrent: INIT_C,
                 test: CONCURRENT_TEST,
                 output: output
@@ -49,6 +49,7 @@ describe('[run:interactive]', function() {
                 expect(count).to.be.at.least(FINAL_C);
                 expect(task).to.have.property('concurrent')
                     .and.to.equal(FINAL_C);
+                
                 done();
             });
 
