@@ -9,6 +9,7 @@ var _ = require('lodash');
 var unstyle = require('unstyle');
 
 var DATA = require('./data/testdata.js');
+var tableRegex = require('./data/testexpectations.js').tableRegex;
 
 var diff = require('../').diff;
 
@@ -49,11 +50,6 @@ function objToArr(obj) {
     return _.map(obj, function(item) {
         return item;
     });
-}
-
-function tableRegex() {
-    var str = [].slice.call(arguments).join('\\s+?');
-    return new RegExp(str);
 }
 
 describe('[diff]', function() {
