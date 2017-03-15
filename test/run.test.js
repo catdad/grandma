@@ -96,7 +96,7 @@ describe('[run]', function() {
         increaseTimeout(this);
         
         var opts = {
-            duration: 50,
+            duration: 80,
             concurrent: 2,
             test: {
                 path: path.resolve(__dirname, '../fixtures/test.concurrent.js'),
@@ -111,7 +111,8 @@ describe('[run]', function() {
 
             var lines = getLines(data);
             
-            expect(lines).to.be.an('array').and.to.have.length(5);
+            expect(lines).to.be.an('array')
+                .and.to.have.length.within(5, 10);
 
             var header = lines.shift();
 
