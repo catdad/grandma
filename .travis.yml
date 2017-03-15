@@ -1,16 +1,22 @@
 language: node_js
 
 node_js:
-  - "node"
-  - "7.2"
-  - "6.9"
-  - "5.10"
-  - "4.4"
-  - "iojs"
-  - "0.12"
+  - 'node'
+  - '7.2'
+  - '6.9'
+  - '5.10'
+  - '4.4'
+  - 'iojs'
+  - '0.12'
 
 script:
+  # run tests with the version of node from the matrix
   - npm test
+  # install version 6 in order to perform linting
+  - nvm install 6
+  - nvm use 6
+  - echo "node `node -v`"
+  - echo "npm `npm -v`"
   - npm run lint
 
 addons:

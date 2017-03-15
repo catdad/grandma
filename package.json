@@ -5,6 +5,7 @@
   "scripts": {
     "test": "mocha -R spec",
     "coverage": "istanbul cover --dir coverage node_modules/mocha/bin/_mocha -x \"fixtures/**\"",
+    "cov-report": "codeclimate-test-reporter < coverage/lcov.info",
     "grandma": "node bin/_cli",
     "eslint": "eslint",
     "lint": "eslint index.js lib/** test/**/*.js bin/**"
@@ -38,7 +39,7 @@
     "chai": "^3.5.0",
     "codeclimate-test-reporter": "^0.4.0",
     "del": "^2.2.2",
-    "eslint": "^2.11.0",
+    "eslint": "^3.17.1",
     "event-stream": "^3.3.2",
     "gulp": "^3.9.1",
     "gulp-util": "^3.0.7",

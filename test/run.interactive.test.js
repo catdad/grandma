@@ -35,7 +35,7 @@ describe('[run:interactive]', function() {
             var output = through.obj();
 
             var opts = {
-                duration: 50,
+                duration: 100,
                 concurrent: INIT_C,
                 test: CONCURRENT_TEST,
                 output: output
@@ -49,6 +49,7 @@ describe('[run:interactive]', function() {
                 expect(count).to.be.at.least(FINAL_C);
                 expect(task).to.have.property('concurrent')
                     .and.to.equal(FINAL_C);
+                
                 done();
             });
 
@@ -165,12 +166,12 @@ describe('[run:interactive]', function() {
 
             var output = through.obj();
             var INIT_RATE = 1000 / 10 * 2;
-            var FINAL_RATE = 30000;
+            var FINAL_RATE = 3000;
 
             var opts = {
                 // we expect this to execute exactly 3 times
                 // without changing the rate at runtime
-                duration: '20ms',
+                duration: '100ms',
                 rate: INIT_RATE,
                 test: RATE_TEST,
                 output: output
@@ -184,9 +185,10 @@ describe('[run:interactive]', function() {
                 // rate is less scientific, so just make
                 // sure it's more than the small amount previous
                 // tests got
-                expect(count).to.be.at.least(30);
+                expect(count).to.be.at.least(28);
                 expect(task).to.have.property('rate')
                     .and.to.equal(FINAL_RATE);
+                
                 done();
             });
             
