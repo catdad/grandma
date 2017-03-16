@@ -34,6 +34,7 @@ after_test:
   - npm run report-codeclimate
   - npm run report-coveralls
   - node -e "console.log(process.env)"
+  - node -e "require('coveralls').getOptions(console.log)"
 
 # Don't actually build.
 # No idea what this does, but it was in the example file
