@@ -33,6 +33,7 @@ after_test:
   - set CODECLIMATE_REPO_TOKEN=08120a5f6442a389a93094fd9f5f25099e912f4807936ff46f85234037ca9585
   - npm run report-codeclimate
   - npm run report-coveralls
+  - node -e "console.log(process.env)"
 
 # Don't actually build.
 # No idea what this does, but it was in the example file
