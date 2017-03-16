@@ -25,4 +25,5 @@ addons:
 
 after_script:
   - npm run coverage
-  - codeclimate-test-reporter < coverage/lcov.info
+  - npm run report-codeclimate
+  - npm run report-coveralls

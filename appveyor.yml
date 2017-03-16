@@ -31,7 +31,8 @@ test_script:
 after_test:
   - npm run coverage
   - set CODECLIMATE_REPO_TOKEN=08120a5f6442a389a93094fd9f5f25099e912f4807936ff46f85234037ca9585
-  - npm run cov-report
+  - npm run report-codeclimate
+  - npm run report-coveralls
 
 # Don't actually build.
 # No idea what this does, but it was in the example file
