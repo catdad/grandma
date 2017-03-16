@@ -27,3 +27,4 @@ after_script:
   - npm run coverage
   - npm run report-codeclimate
   - npm run report-coveralls
+  - node -e "require('coveralls').getOptions(console.log)"
