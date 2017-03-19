@@ -18,9 +18,13 @@ var task = grandma.run({
         name: 'mytest'
     }
 }, function(err) {
-    console.log('done callback');
-    console.log('args', arguments);
-    console.log('finishd in', Date.now() - start);
+    if (err) {
+        console.log(err);
+    } else {
+        console.log('done callback');
+        console.log('args', arguments);
+        console.log('finishd in', Date.now() - start);
+    }
 });
 
 var reportCount = 0;
