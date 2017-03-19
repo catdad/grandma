@@ -1,6 +1,8 @@
 # CLI: running a test
 
-> [Table of Contents](readme.md)
+> [Table of Contents]
+
+[Table of Contents]: readme.md
 
 The `run` command is used to run a test. You can find information about this command through the CLI by typing:
 
