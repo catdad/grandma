@@ -1,6 +1,6 @@
 {
   "name": "grandma",
-  "version": "0.6.2",
+  "version": "0.6.3",
   "main": "index.js",
   "scripts": {
     "test": "mocha -R spec",
@@ -44,7 +44,7 @@
     "mocha": "^3.0.2",
     "rootrequire": "^1.0.0",
     "shellton": "^3.0.2",
-    "sinon": "^1.17.5",
+    "sinon": "^2.1.0",
     "unstyle": "0.0.8"
   },
   "bin": {
