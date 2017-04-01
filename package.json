@@ -29,6 +29,7 @@
     "mkdirp": "^0.5.1",
     "plain-text-box-plot": "0.0.1",
     "rc": "^1.1.6",
+    "sinon": "^2.1.0",
     "through2": "^2.0.1",
     "yargs": "^5.0.0"
   },
