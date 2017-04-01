@@ -72,3 +72,10 @@ module.exports = {
         }
     }
 };
+
+Object.defineProperty(module.exports, 'tableRegex', {
+    configurable: false,
+    enumerable: false,
+    writable: false,
+    value: tableRegex
+});

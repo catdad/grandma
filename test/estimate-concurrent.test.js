@@ -2,19 +2,11 @@
 /* eslint-disable no-unused-expressions, max-len, max-nested-callbacks */
 
 var expect = require('chai').expect;
+
 var estimate = require('../lib/estimate-concurrent.js');
+var record = require('./_fixtures/record.js');
 
 describe('[estimate-concurrent]', function() {
-    function record(start, end) {
-        return {
-            report: {
-                fullTest: {
-                    start: start,
-                    end: end
-                }
-            }
-        };
-    }
     
     it('is a method returning an object', function() {
         expect(estimate).to.be.a('function');
