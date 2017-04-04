@@ -39,7 +39,7 @@ grandma report pineapples.log
 In some cases, like when you need to run `grandma` on multiple clients in order to test a very large cluster, you will have multiple files that contain reports. You can define a glob in order to read all of them and output a combined report:
 
 ```bash
-grandma report fruits/*.log
+grandma report "fruits/*.log"
 ```
 
 Sometimes, when doing quick tests, you may not even want to deal with files (I know I don't). In those cases, you can use `grandma` ability read and write to/from standard io, in order to run a test and output a report all in one command:

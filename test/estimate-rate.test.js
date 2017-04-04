@@ -5,18 +5,9 @@ var expect = require('chai').expect;
 var _ = require('lodash');
 
 var estimate = require('../lib/estimate-rate.js');
+var record = require('./_fixtures/record.js');
 
 describe('[estimate-rate]', function() {
-    function record(start, end) {
-        return {
-            report: {
-                fullTest: {
-                    start: start,
-                    end: end
-                }
-            }
-        };
-    }
     
     it('is a method returning an object', function() {
         expect(estimate).to.be.a('function');
