@@ -23,7 +23,7 @@ var task = grandma.run({
     output: output,
     test: {
         path: path.resolve(__dirname, '../fixtures/full.js'),
-        name: 'mytest'
+        name: 'runtime adjustment custom tags'
     }
 }, function(err) {
     if (err) {
