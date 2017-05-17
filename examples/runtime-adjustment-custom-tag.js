@@ -62,5 +62,7 @@ output.pipe(through.obj(function onData(obj, enc, cb) {
     
     cb();
 })).pipe(fs.createWriteStream(
+    // write out to a file, so that we can use grandma to create
+    // reports
     path.resolve('.', 'runtime-adjustment-custom-tag.log')
 ));
