@@ -1,9 +1,16 @@
 # From gitignore
 node_modules/
 npm-debug.log
-.grandmarc
 *.cmd
 *.log
+
+# rc files and shit
+.grandmarc
+.bithoundrc
+.codeclimate.yml
+.travis.yml
+.brackets.json
+appveyor.yml
 
 # Specific to NPM
 fixtures/
