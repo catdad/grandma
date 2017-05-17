@@ -1,5 +1,6 @@
 /* eslint-disable no-console */
 
+var util = require('util');
 var path = require('path');
 var fs = require('fs');
 
@@ -8,8 +9,11 @@ var through = require('through2');
 var grandma = require('../');
 
 var output = through.obj();
-
 var start = Date.now();
+
+function log(msg) {
+    console.log(msg, util.format('at %s ms', Date.now() - start));
+}
 
 var task = grandma.run({
     duration: '30s',
@@ -23,15 +27,17 @@ var task = grandma.run({
     if (err) {
         console.log(err);
     } else {
-        console.log('done callback');
-        console.log('args', arguments);
-        console.log('finishd in', Date.now() - start);
+        log('done callback');
     }
 });
 
 var reportCount = 0;
 
 output.pipe(through.obj(function onData(obj, enc, cb) {
+    if (reportCount === 0) {
+        log('first message received');
+    }
+    
     reportCount += 1;
     
     // the first object will be the header, which does not
@@ -40,26 +46,19 @@ output.pipe(through.obj(function onData(obj, enc, cb) {
         obj.categories.push('concurrency-group-' + task.concurrent);
     }
     
+    // some arbitrary logic...
     // increase concurrency by 2 at every 300 reports
     if (reportCount % 300 === 0) {
         task.concurrent += 2;
         
-        console.log(
-            'increased concurrency to %s at %s ms',
-            task.concurrent,
-            Date.now() - start
-        );
+        log(util.format('increased concurrency to %s', task.concurrent));
     }
     
     // serialize the objects so that we can write to a
     // grandma log file
     cb(null, JSON.stringify(obj) + '\n');
 }, function onFlush(cb) {
-    console.log(
-        'output end with %s reports in %s milliseconds',
-        reportCount,
-        Date.now() - start
-    );
+    console.log(util.format('output end with %s reports', reportCount));
     
     cb();
 })).pipe(fs.createWriteStream(
