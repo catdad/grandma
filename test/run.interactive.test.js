@@ -23,8 +23,34 @@ describe('[run:interactive]', function() {
     function increaseTimeout(that) {
         that.timeout(1000 * 5);
     }
-
+    
     describe('concurrent mode', function() {
+        it('exposes the correct API', function(done) {
+            var api = run({
+                duration: 1,
+                concurrent: 1,
+                test: CONCURRENT_TEST,
+                output: through.obj()
+            }, function(err) {
+                if (err) {
+                    return done(err);
+                }
+                
+                expect(api).to.have.all.keys([
+                    'concurrent',
+                    'stop',
+                    'pause',
+                    'resume'
+                ]);
+                
+                [api.stop, api.resume, api.pause].forEach(function(val) {
+                    expect(val).to.be.a('function');
+                });
+                
+                done();
+            });
+        });
+        
         it('can have concurrency changed at runtime', function(done) {
             increaseTimeout(this);
 
@@ -158,6 +184,31 @@ describe('[run:interactive]', function() {
     });
     
     describe('rate mode', function() {
+        it('exposes the correct API', function(done) {
+            var api = run({
+                duration: 1,
+                rate: 1,
+                test: RATE_TEST,
+                output: through.obj()
+            }, function(err) {
+                if (err) {
+                    return done(err);
+                }
+                
+                expect(api).to.have.all.keys([
+                    'rate',
+                    'stop',
+                    'pause',
+                    'resume'
+                ]);
+                
+                [api.stop, api.resume, api.pause].forEach(function(val) {
+                    expect(val).to.be.a('function');
+                });
+                
+                done();
+            });
+        });
         
         it('can have rate changed at runtime', function(done) {
             increaseTimeout(this);
