@@ -245,8 +245,8 @@ describe('[run:interactive]', function() {
     describe('rate mode', function() {
         it('exposes the correct API', function(done) {
             var api = run({
-                duration: 1,
-                rate: 1,
+                duration: 10,
+                rate: 100,
                 test: RATE_TEST,
                 output: through.obj()
             }, function(err) {
