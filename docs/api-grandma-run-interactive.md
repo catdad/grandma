@@ -128,3 +128,59 @@ output.on('data', function(report) {
     }
 });
 ```
+
+### Pausing and resuming the test
+
+Sometimes, you may wantt to pause the tests for a little while. This is sometimes necessary if you are load testing a server and want the server to get to an idle state before increasing rate or concurrency. _It is worth noting, however, that you should carefully consider whether pausing the test is really more appropriate than just running multiple tests at multiple rates or concurrencies. I leave that one up to you though._
+
+You can do so through the `pause` and `resume` methods on the task object returned from `grandma.run`:
+
+```javascript
+var grandma = require('grandma');
+var through = require('through2');
+var path = require('path');
+
+var output = through.obj();
+
+var options = {
+    duration: '1d',
+    concurrent: 10,
+    output: output,
+    test: {
+        path: path.resolve('path/to/mytest.js'),
+        name: 'mytest'
+    }
+};
+
+function done(err) {
+    if (err) {
+        return console.error('something went wrong', err);
+    }
+    
+    console.log('done!');
+}
+
+var task = grandma.run(options, done);
+var count = 0;
+
+output.on('data', function(report) {
+    if (report.report) {
+        // this sumarizes the data when a test is done
+        count += 1;
+    }
+    
+    // pause for 10 seconds after we have reached 500 tests
+    if (count === 500) {
+        task.pause();
+        
+        setTimeout(function () {
+            task.resume();
+        }, 10 * 1000);
+    }
+    
+    // stop the task after we have reached 1000 tests
+    if (count === 1000) {
+        task.stop();
+    }
+});
+```
