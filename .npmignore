@@ -2,9 +2,16 @@
 node_modules/
 npm-debug.log
 .nyc_output
-.grandmarc
 *.cmd
 *.log
+
+# rc files and shit
+.grandmarc
+.bithoundrc
+.codeclimate.yml
+.travis.yml
+.brackets.json
+appveyor.yml
 
 # Specific to NPM
 fixtures/

@@ -9,13 +9,34 @@ var _ = require('lodash');
 var unstyle = require('unstyle');
 
 var DATA = require('./data/testdata.js');
+var tableRegex = require('./data/testexpectations.js').tableRegex;
 
 var diff = require('../').diff;
 
 function writeData(stream, data) {
-    setTimeout(function() {
+    setImmediate(function() {
         stream.end(_.map(data, JSON.stringify).join('\n'));
     });
+    
+    return stream;
+}
+
+function writeDataSlow(stream, data) {
+    var chunks = data.slice();
+    
+    function writeToEnd() {
+        if (chunks.length) {
+            return setTimeout(function() {
+                stream.write(JSON.stringify(chunks.shift()) + '\n');
+                
+                writeToEnd();
+            }, 1);
+        }
+        
+        stream.end();
+    }
+    
+    writeToEnd();
     
     return stream;
 }
@@ -51,9 +72,21 @@ function objToArr(obj) {
     });
 }
 
-function tableRegex() {
-    var str = [].slice.call(arguments).join('\\s+?');
-    return new RegExp(str);
+function assertOrder(data, tests) {
+    var indices = tests.map(function(name) {
+        return data.indexOf(name);
+    });
+    
+    // make sure that all results are above 0
+    indices.forEach(function(i) {
+        expect(i).to.be.above(0);
+    });
+    
+    var sorted = indices.slice().sort(function(a, b) {
+        return a - b;
+    });
+    
+    expect(indices).to.deep.equal(sorted);
 }
 
 describe('[diff]', function() {
@@ -75,6 +108,30 @@ describe('[diff]', function() {
         });
     });
     
+    it('prints an array of input streams in the same order when reporting', function(done) {
+        function namedData(name) {
+            var data = _.cloneDeep(DATA.test);
+            
+            data[0].name = name;
+            
+            return data;
+        }
+        
+        getReport([
+            writeData(through(), namedData('testone')),
+            writeDataSlow(through(), namedData('testtwo')),
+            writeData(through(), namedData('testthree'))
+        ], {}, function(err, data) {
+            if (err) {
+                return done(err);
+            }
+            
+            assertOrder(data.toString(), ['testone', 'testtwo', 'testthree']);
+            
+            done();
+        });
+    });
+    
     it('takes an object hash of input streams and writes output', function(done) {
         getReport({
             one: writeData(through(), DATA.test),
@@ -88,6 +145,22 @@ describe('[diff]', function() {
             
             expect(data).to.be.a('string').and.to.have.length.above(1);
             expect(hasColors(data)).to.equal(false);
+            
+            done();
+        });
+    });
+    
+    it('prints an object hash of input streams in the same order when reporting', function(done) {
+        getReport({
+            testone: writeData(through(), DATA.test),
+            testtwo: writeDataSlow(through(), DATA.test),
+            testthree: writeData(through(), DATA.test)
+        }, {}, function(err, data) {
+            if (err) {
+                return done(err);
+            }
+            
+            assertOrder(data.toString(), ['testone', 'testtwo', 'testthree']);
             
             done();
         });

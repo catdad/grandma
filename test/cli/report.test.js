@@ -17,37 +17,30 @@ function data(name) {
 }
 
 describe('[report cli]', function() {
+    function textTestAssertions(done) {
+        return function(err, stdout, stderr) {
+            if (err) {
+                return done(err);
+            }
+
+            expect(stdout).to.be.a('string')
+                .and.to.have.length.above(1);
+
+            expectations.text.test(stdout);
+
+            done();
+        };
+    }
+    
     describe('#default', function() {
         it('prints out text to standard out', function(done) {
-            grandma('report', data(), function(err, stdout, stderr) {
-                if (err) {
-                    return done(err);
-                }
-                
-                expect(stdout).to.be.a('string')
-                    .and.to.have.length.above(1);
-                
-                expectations.text.test(stdout);
-                
-                done();
-            });
+            grandma('report', data(), textTestAssertions(done));
         });
     });
     
     describe('#text', function() {
         it('prints out text to standard out', function(done) {
-            grandma('report --type text', data(), function(err, stdout, stderr) {
-                if (err) {
-                    return done(err);
-                }
-                
-                expect(stdout).to.be.a('string')
-                    .and.to.have.length.above(1);
-                
-                expectations.text.test(stdout);
-
-                done();
-            });
+            grandma('report --type text', data(), textTestAssertions(done));
         });
     });
     

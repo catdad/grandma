@@ -29,39 +29,28 @@ describe('[run-rate-values]', function() {
         }
     }
     
+    function estimateTest(description) {
+        return function(val) {
+            it(description + ': ' + val, function() {
+                var estimate = rrv(val);
+                expectAdjustment(val, estimate);
+            });
+        };
+    }
+    
     _.map(new Array(20), function(val, idx) {
         return (61 + (idx * 2)) / 60;
-    }).concat([2.56, 3.14]).forEach(function(val) {
-        it('estimates a close-enough rate for small value: ' + val, function() {
-            var estimate = rrv(val);
-            expectAdjustment(val, estimate);
-        });
-    });
+    }).concat([2.56, 3.14]).forEach(estimateTest('estimates a close-enough rate for small value'));
     
     _.map(new Array(10), function(val, idx) {
         return (idx + 1) * 9 / 99;
-    }).forEach(function(val) {
-        it('estimates a decimal less than 1 of value: ' + val, function() {
-            var estimate = rrv(val);
-            expectAdjustment(val, estimate);
-        });
-    });
+    }).forEach(estimateTest('estimates a decimal less than 1 of value'));
 
     _.map(new Array(30), function(val, idx) {
         return (idx + 1) * 9 / 10;
-    }).forEach(function(val) {
-        it('estimates larger decimal of value: ' + val, function() {
-            var estimate = rrv(val);
-            expectAdjustment(val, estimate);
-        });
-    });
+    }).forEach(estimateTest('estimates larger decimal of value'));
     
     _.map(new Array(20), function(val, idx) {
         return (idx + 1) * 3917;
-    }).forEach(function(val) {
-        it('estimates very large irregular number of value: ' + val, function() {
-            var estimate = rrv(val);
-            expectAdjustment(val, estimate);
-        });
-    });
+    }).forEach(estimateTest('estimates very large irregular number of value'));
 });
