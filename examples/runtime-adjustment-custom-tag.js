@@ -16,12 +16,14 @@ function log(msg) {
 }
 
 var task = grandma.run({
-    duration: '30s',
+    // set a really long time, so we can control
+    // this manually
+    duration: '1d',
     concurrent: 2,
     output: output,
     test: {
         path: path.resolve(__dirname, '../fixtures/full.js'),
-        name: 'mytest'
+        name: 'runtime adjustment custom tags'
     }
 }, function(err) {
     if (err) {
@@ -32,6 +34,36 @@ var task = grandma.run({
 });
 
 var reportCount = 0;
+
+function startRound(count) {
+    if (count === 0) {
+        task.stop();
+        return;
+    }
+    
+    // each round will be 10 seconds
+    setTimeout(function() {
+        log('pausing');
+        task.pause();
+        
+        // take a break... this theoretically allows
+        // a server to get to an idle state again... or
+        // some similar logic you may want
+        setTimeout(function() {
+            // double the rate each round
+            task.concurrent *= 2;
+            
+            log(util.format('resuming at %s concurrency', task.concurrent));
+            
+            startRound(count - 1);
+
+            task.resume();
+        }, 1000 * 5);
+        
+    }, 1000 * 10);
+}
+
+startRound(5);
 
 output.pipe(through.obj(function onData(obj, enc, cb) {
     if (reportCount === 0) {
@@ -44,14 +76,6 @@ output.pipe(through.obj(function onData(obj, enc, cb) {
     // have categories
     if (Array.isArray(obj.categories)) {
         obj.categories.push('concurrency-group-' + task.concurrent);
-    }
-    
-    // some arbitrary logic...
-    // increase concurrency by 2 at every 300 reports
-    if (reportCount % 300 === 0) {
-        task.concurrent += 2;
-        
-        log(util.format('increased concurrency to %s', task.concurrent));
     }
     
     // serialize the objects so that we can write to a

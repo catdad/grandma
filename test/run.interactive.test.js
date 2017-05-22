@@ -23,8 +23,82 @@ describe('[run:interactive]', function() {
     function increaseTimeout(that) {
         that.timeout(1000 * 5);
     }
+    
+    function pauseResumeTest(task, stream) {
+        var isFirstWrite = true;
+        var epoch;
+        var pausedAt;
+        var resumedAt;
 
+        function kickoff() {
+            setTimeout(function() {
+                pausedAt = Date.now();
+                task.pause();
+            }, 20);
+
+            setTimeout(function() {
+                resumedAt = Date.now();
+                task.resume();
+            }, 50);
+
+            setTimeout(function() {
+                task.stop();
+            }, 60);
+        }
+
+        stream.on('data', function(data) {
+            if (data.type === 'header') {
+                epoch = data.epoch;
+
+                return;
+            }
+
+            if (isFirstWrite && data.type === 'report') {
+                kickoff();
+                isFirstWrite = false;
+
+                return;
+            }
+
+            if (pausedAt && !resumedAt) {
+                // this is data during a pause, make sure it
+                // is from a test that started before the pause
+                expect(data.report.fullTest.start + epoch).to.be.below(pausedAt);
+            }
+
+            if (resumedAt) {
+                expect(data.report.fullTest.start + epoch).to.not.be.within(pausedAt, resumedAt);
+            }
+        });
+    }
+    
     describe('concurrent mode', function() {
+        it('exposes the correct API', function(done) {
+            var api = run({
+                duration: 1,
+                concurrent: 1,
+                test: CONCURRENT_TEST,
+                output: through.obj()
+            }, function(err) {
+                if (err) {
+                    return done(err);
+                }
+                
+                expect(api).to.have.all.keys([
+                    'concurrent',
+                    'stop',
+                    'pause',
+                    'resume'
+                ]);
+                
+                [api.stop, api.resume, api.pause].forEach(function(val) {
+                    expect(val).to.be.a('function');
+                });
+                
+                done();
+            });
+        });
+        
         it('can have concurrency changed at runtime', function(done) {
             increaseTimeout(this);
 
@@ -154,10 +228,46 @@ describe('[run:interactive]', function() {
             task.stop();
         });
 
-        
+        it('can be paused and resumed', function(done) {
+            var output = through.obj();
+            
+            var task = run({
+                duration: 5000,
+                concurrent: 10,
+                test: CONCURRENT_TEST,
+                output: output
+            }, done);
+            
+            pauseResumeTest(task, output);
+        });
     });
     
     describe('rate mode', function() {
+        it('exposes the correct API', function(done) {
+            var api = run({
+                duration: 10,
+                rate: 100,
+                test: RATE_TEST,
+                output: through.obj()
+            }, function(err) {
+                if (err) {
+                    return done(err);
+                }
+                
+                expect(api).to.have.all.keys([
+                    'rate',
+                    'stop',
+                    'pause',
+                    'resume'
+                ]);
+                
+                [api.stop, api.resume, api.pause].forEach(function(val) {
+                    expect(val).to.be.a('function');
+                });
+                
+                done();
+            });
+        });
         
         it('can have rate changed at runtime', function(done) {
             increaseTimeout(this);
@@ -297,6 +407,19 @@ describe('[run:interactive]', function() {
             task.stop();
         });
 
+        it('can be paused and resumed', function(done) {
+            var output = through.obj();
+            
+            var task = run({
+                duration: 5000,
+                rate: 100,
+                test: RATE_TEST,
+                output: output
+            }, done);
+            
+            pauseResumeTest(task, output);
+        });
+        
     });
     
 });

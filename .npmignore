@@ -11,6 +11,10 @@ npm-debug.log
 .travis.yml
 .brackets.json
 appveyor.yml
+_config.yml
+.editorconfig
+.eslintrc*
+.gitattributes
 
 # Specific to NPM
 fixtures/
