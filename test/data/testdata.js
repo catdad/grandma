@@ -46,6 +46,15 @@ var TESTERRDATA = [
     {"type":"report","report":{"fullTest":{"start":10.741143000000001,"end":10.833962,"duration":0.09281899999999865,"status":"success"}},"id":0}
 ];
 
+// Test data using custom timers with non-js variable names
+var TESTDATA_FUNNY_METRICS = [
+    {"type":"header","epoch":1495566818976,"duration":1000,"rate":null,"concurrent":1,"targetCount":null,"name":"metrics"},
+    {"type":"report","report":{"fullTest":{"start":8.235657,"end":28.625419,"duration":20.389762,"status":"success"},"one-timer":{"start":8.532084,"end":12.493397,"duration":3.9613130000000005,"status":"success"},"two-timer#()":{"start":8.943821,"end":15.493889,"duration":6.550068,"status":"success"}},"categories":[],"id":0},
+    {"type":"report","report":{"fullTest":{"start":32.958926,"end":51.453005,"duration":18.494079,"status":"success"},"one-timer":{"start":32.986697,"end":37.431893,"duration":4.445196000000003,"status":"success"},"two-timer#()":{"start":33.022921,"end":39.429001,"duration":6.406080000000003,"status":"success"}},"categories":[],"id":0},
+    {"type":"report","report":{"fullTest":{"start":53.898376,"end":69.449618,"duration":15.551242000000002,"status":"success"},"one-timer":{"start":53.923732,"end":56.514298,"duration":2.5905659999999955,"status":"success"},"two-timer#()":{"start":54.371995,"end":59.433288,"duration":5.061292999999999,"status":"success"}},"categories":[],"id":0},
+    {"type":"report","report":{"fullTest":{"start":72.847962,"end":91.556966,"duration":18.709004000000007,"status":"success"},"one-timer":{"start":72.874224,"end":76.463646,"duration":3.589421999999999,"status":"success"},"two-timer#()":{"start":72.899279,"end":79.465345,"duration":6.566065999999992,"status":"success"}},"categories":[],"id":0}
+];
+
 var TESTRESULTS = {
     "info": {
         "count": 3,
@@ -134,6 +143,7 @@ _.forEach({
     testcategories: TESTDATACATEGORIES,
     test2: TESTDATA2,
     test_outlier: TESTDATA_OUTLIER,
+    test_funny_metrics: TESTDATA_FUNNY_METRICS,
     testerr: TESTERRDATA,
     results: TESTRESULTS,
     resultserr: TESTERRRESULTS
