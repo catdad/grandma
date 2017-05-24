@@ -21,5 +21,5 @@ grandma diff --logs one.log two.log three.log
 Diff multiple groups of log files, for example, when a single test run was split up across multiple clients, to generate higher traffic than is possible with one client. In this example, we assume that names follow the patter of `one.1.log`, `one.2.log`, `one.3.log`.
 
 ```bash
-grandma diff --logs one.*.log two.*.log
+grandma diff --logs "one.*.log" "two.*.log"
 ```
