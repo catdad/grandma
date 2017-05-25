@@ -10,6 +10,9 @@ window.addEventListener('load', function() {
     var buttons = document.querySelector('#line-graph-buttons');
     var link = document.querySelector('#line-graph-download');
     
+    var TEST = 'fullTest';
+    var TESTERR = TEST + '_Err';
+    
     // initialize the download button
     (function(download) {
         download.innerHTML = 'Download PNG';
@@ -79,19 +82,31 @@ window.addEventListener('load', function() {
 
         var dataLabels;
         var data = (function(dirtyData, labels) {
-            dataLabels = ['Start'].concat(labels);
-
+            dataLabels = ['Start', TESTERR].concat(labels.filter(function(name) {
+                return name !== TESTERR;
+            }));
+            
+            function idx(label) {
+                return dataLabels.indexOf(label);
+            }
+            
             return dirtyData
 
                 // build individual record arrays
                 .reduce(function(memo, val) {
                     memo[val.id] = memo[val.id] || [];
 
-                    if (['fullTest', 'fullTest_Err'].includes(val.name)) {
+                    if ([TEST, TESTERR].includes(val.name)) {
                         memo[val.id][0] = val.x;
                     }
+                
+                    if (val.name === TEST) {
+                        memo[val.id][idx(TESTERR)] = null;
+                    } else if (val.name === TESTERR) {
+                        memo[val.id][idx(TEST)] = null;
+                    }
 
-                    memo[val.id][dataLabels.indexOf(val.name)] = val.y;
+                    memo[val.id][idx(val.name)] = val.y;
 
                     return memo;
                 }, [])
@@ -113,6 +128,9 @@ window.addEventListener('load', function() {
             window.DATA,
             window.LABELS
         ));
+        
+        console.log(dataLabels);
+        console.log(data);
 
         var plot = new Dygraph(
             plotDiv,
