@@ -126,9 +126,6 @@ window.addEventListener('load', function() {
             window.LABELS
         ));
         
-        console.log(dataLabels);
-        console.log(data);
-
         var plot = new Dygraph(
             plotDiv,
             data,
