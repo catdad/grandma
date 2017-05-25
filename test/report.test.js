@@ -639,7 +639,21 @@ describe('[report]', function() {
             });
         });
         
-        testNoData('plot');
+        it('handles non-js name custom metrics', function(done) {
+            getReport({
+                type: 'html'
+            }, DATA.test_funny_metrics, function(err, content) {
+                expect(err).to.not.be.ok;
+                expect(content).to.be.ok;
+                
+                expect(content.toString()).to.be.a('string')
+                    .and.to.have.length.above(100);
+                
+                done();
+            });
+        });
+        
+        testNoData('html');
     });
     
     describe('#box', function() {
