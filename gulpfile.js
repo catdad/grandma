@@ -1,5 +1,3 @@
-/* eslint-disable no-console */
-
 var util = require('util');
 
 var gulp = require('gulp');
