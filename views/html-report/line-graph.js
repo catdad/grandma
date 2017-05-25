@@ -1,9 +1,6 @@
 /* eslint-env browser */
 /* globals Dygraph, html2canvas */
 
-(function(window) {
-}(window));
-
 window.addEventListener('load', function() {
     var container = document.querySelector('#line-graph-container');
     var plotDiv = document.querySelector('#line-graph');
