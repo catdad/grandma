@@ -6,9 +6,15 @@
     
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/rickshaw/1.5.1/rickshaw.min.css">
     
+    <!-- used for the scatter plot -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.3.11/d3.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/rickshaw/1.5.1/rickshaw.min.js"></script>
+    
+    <!-- used for the line graph-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/buttons.css">
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/dygraph/1.1.1/dygraph-combined.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.5.0-beta4/html2canvas.js"></script>
     
     <style>
         /*=include style.css*/
@@ -17,6 +23,13 @@
     <script>
         (function(data) {
             window.DATA = data;
+            window.LABELS = data.reduce(function(memo, val) {
+                if (!memo.includes(val.name)) {
+                    memo.push(val.name);
+                }
+                
+                return memo;
+            }, []);
         }(
             JSON.parse('{{data}}')
         ));
@@ -24,11 +37,23 @@
 </head>
 <body>
     <menu type="toolbar" class="">
-        <menuitem label="plot" class="selected" x-for="plot-section">Plot</menuitem>
+        <menuitem label="line" class="selected" x-for="line-graph-section">Line Graph</menuitem>
+        <menuitem label="plot" x-for="plot-section">Scatter Plot (alpha)</menuitem>
         <menuitem label="stats" x-for="stats-section">Stats</menuitem>
     </menu>
     
-    <section id="plot-section">
+    <section id="line-graph-section">
+        <div id="line-graph-container">
+            <div id="line-graph"></div>
+        </div>
+        <div id="line-graph-buttons">
+            <p>Toggle Series</p>
+        </div>
+
+        <a href="" id="line-graph-download"></a>
+    </section>
+    
+    <section id="plot-section" class="hide">
         <div id="chart-container">
             <div id="y_axis"></div>
             <div id="chart"></div>
@@ -52,6 +77,9 @@
     
     <script>
         //=include chart.js
+    </script>
+    <script>
+        //=include line-graph.js
     </script>
     <script>
         //=include nav.js
