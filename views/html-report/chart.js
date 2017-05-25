@@ -199,7 +199,6 @@ window.addEventListener('load', function() {
             name: key
         };
     });
-
     
     var createdOnce = false;
     window.SCATTER_PLOT_INIT = function() {
