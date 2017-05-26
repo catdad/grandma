@@ -30,7 +30,7 @@
     "mkdirp": "^0.5.1",
     "plain-text-box-plot": "0.0.1",
     "rc": "^1.1.6",
-    "read-vinyl-file-stream": "^1.1.0",
+    "read-vinyl-file-stream": "^2.0.3",
     "through2": "^2.0.1",
     "vinyl-fs": "^2.4.4",
     "yargs": "^5.0.0"
