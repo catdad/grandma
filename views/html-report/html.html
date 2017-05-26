@@ -21,7 +21,7 @@
     </style>
     
     <script>
-        (function(data) {
+        (function(data, title) {
             window.DATA = data;
             window.LABELS = data.reduce(function(memo, val) {
                 if (!memo.includes(val.name)) {
@@ -30,8 +30,9 @@
                 
                 return memo;
             }, []);
+            window.TITLE = title;
         }(
-            JSON.parse('{{data}}')
+            JSON.parse('{{data}}'), '{{testname}}'
         ));
     </script>
 </head>

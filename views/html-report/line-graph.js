@@ -130,7 +130,7 @@ window.addEventListener('load', function() {
             plotDiv,
             data,
             {
-                title: '{{testname}}',
+                title: window.TITLE,
                 showRoller: true,
                 rollPeriod: 1,
                 ylabel: 'milliseconds',
