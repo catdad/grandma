@@ -11,5 +11,8 @@
         "markdown": {
             "wordWrap": true
         }
+    },
+    "language.fileNames": {
+        ".bithoundrc": "json"
     }
 }
