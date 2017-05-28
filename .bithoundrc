@@ -1,6 +1,7 @@
 {
   "dependencies": {
     "mute": [
+      "chai",
       "gulp",
       "yargs"
     ]
