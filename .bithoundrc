@@ -1,10 +1,6 @@
 {
   "dependencies": {
-    "mute": [
-      "chai",
-      "gulp",
-      "yargs"
-    ]
+    "mute": []
   },
   "ignore": [
     "fixtures/**"
