@@ -13,6 +13,7 @@
         }
     },
     "language.fileNames": {
-        ".bithoundrc": "json"
+        ".bithoundrc": "json",
+        ".grandmarc": "json"
     }
 }
