@@ -10,6 +10,10 @@ environment:
     - nodejs_version: "0.12"
     # io.js
     - nodejs_version: "1"
+    
+# Cache some things so that the build runs faster
+cache:
+  - node_modules
 
 # Install scripts. (runs after repo cloning)
 install:
@@ -17,6 +21,8 @@ install:
   - ps: Install-Product node $env:nodejs_version
   # install modules
   - npm install
+  # run an upgrade, since we are now caching
+  - npm upgrade
   
 # Post-install test scripts.
 test_script:
