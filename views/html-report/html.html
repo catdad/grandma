@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Grandma Report</title>
+    
+    <!-- used for the scatter plot -->
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/rickshaw/1.5.1/rickshaw.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.3.11/d3.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/rickshaw/1.5.1/rickshaw.min.js"></script>
+    
+    <!-- used for the line graph -->
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/buttons.css">
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/dygraph/1.1.1/dygraph-combined.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.5.0-beta4/html2canvas.js"></script>
+    
+    <style>
+        /*=include style.css*/
+    </style>
+    
+    <script>
+        (function(data, title) {
+            window.DATA = data;
+            window.LABELS = data.reduce(function(memo, val) {
+                if (!memo.includes(val.name)) {
+                    memo.push(val.name);
+                }
+                
+                return memo;
+            }, []);
+            window.TITLE = title;
+        }(
+            JSON.parse('{{data}}'), '{{testname}}'
+        ));
+    </script>
+</head>
+<body>
+    <menu type="toolbar" class="">
+        <menuitem label="line" class="selected" x-for="line-graph-section" x-init="LINE_GRAPH_INIT">Line Graph</menuitem>
+        <menuitem label="plot" x-for="plot-section" x-init="SCATTER_PLOT_INIT">Scatter Plot (alpha)</menuitem>
+        <menuitem label="stats" x-for="stats-section">Stats</menuitem>
+    </menu>
+    
+    <section id="line-graph-section">
+        <div id="line-graph-container">
+            <div id="line-graph"></div>
+        </div>
+        <div id="line-graph-buttons">
+            <p>Toggle Series</p>
+        </div>
+
+        <a href="" id="line-graph-download"></a>
+    </section>
+    
+    <section id="plot-section" class="hide">
+        <div id="chart-container">
+            <div id="y_axis"></div>
+            <div id="chart"></div>
+        </div>
+        
+        <div class="sidebar_container">
+            <div id="legend"></div>
+        </div>
+
+        <a href="" id="scatter-plot-download"></a>
+    </section>
+    
+    <section id="stats-section" class="hide">
+        <pre>{{textStats}}</pre>
+    </section>
+    
+    <script>
+        //=include scatter-plot.js
+    </script>
+    <script>
+        //=include line-graph.js
+    </script>
+    <script>
+        //=include nav.js
+    </script>
+</body>
+</html>

@@ -26,6 +26,10 @@ This will generate a plain text box plot, showing you the distribution of result
 
 This is a special report, because it really should be printed to the terminal. This report generates an HTML page that will contain an interactive graph of the results. Use this with the `--out` flag or redirect it to a file, so that you can view it in your browser.
 
+#### `html` (beta)
+
+This is an improvement over the previous `plot` reporter, and it is still under development. It still generates an HTML page, though it will show more visualizations of the data and overall try to be more useful. This report will evolve over time. Use this with the `--out` flag or redirect it to a file, so that you can view it in your browser.
+
 ### Input data
 
 There are two options for input data. You can either provide a single file name or file glob, or you can pipe the data into `stdin`.

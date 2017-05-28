@@ -621,6 +621,41 @@ describe('[report]', function() {
         testNoData('plot');
     });
     
+    describe('#html', function() {
+        it('provides an html page', function(done) {
+            getReport({
+                type: 'html'
+            }, DATA.test, function(err, content) {
+                expect(err).to.not.be.ok;
+                expect(content).to.be.ok;
+                
+                var str = content.toString();
+                
+                // what the hell do I test here?
+                expect(str).to.match(/<html/);
+                expect(str).to.match(/<\/html\>/);
+                
+                done();
+            });
+        });
+        
+        it('handles non-js name custom metrics', function(done) {
+            getReport({
+                type: 'html'
+            }, DATA.test_funny_metrics, function(err, content) {
+                expect(err).to.not.be.ok;
+                expect(content).to.be.ok;
+                
+                expect(content.toString()).to.be.a('string')
+                    .and.to.have.length.above(100);
+                
+                done();
+            });
+        });
+        
+        testNoData('html');
+    });
+    
     describe('#box', function() {
         // Since we are using a lib for this, we really only need to test
         // the relevant parts, namely that it will read the input and
