@@ -40,6 +40,7 @@
         <menuitem label="line" class="selected" x-for="line-graph-section" x-init="LINE_GRAPH_INIT">Line Graph</menuitem>
         <menuitem label="plot" x-for="plot-section" x-init="SCATTER_PLOT_INIT">Scatter Plot (alpha)</menuitem>
         <menuitem label="stats" x-for="stats-section">Stats</menuitem>
+        <menuitem label="stats" x-for="metadata-section">Metadata</menuitem>
     </menu>
     
     <section id="line-graph-section">
@@ -70,11 +71,18 @@
         <pre>{{textStats}}</pre>
     </section>
     
+    <section id="metadata-section" class="hide">
+        <pre>{{metadata}}</pre>
+    </section>
+    
     <script>
         //=include scatter-plot.js
     </script>
     <script>
         //=include line-graph.js
+    </script>
+    <script>
+        //=include metadata.js
     </script>
     <script>
         //=include nav.js

@@ -10,6 +10,8 @@ The CLI has the following options:
 
 - **`out`** - The path to an output file to write the results to. Defaults to writing to standard output. You can also specify `stdout` if you wish to write to standard output explicitly.
 
+- **`metadata`** - Used only with the `html` reporter. This is a convenience way to provide extra metadata to be included in the report. It will be embedded as plain text, and just be available for you so that you remember the what you ran when you inevitably generate that folder with 47 reports in it.
+
 #### `text`
 
 This is a plain text report designed to be printed to and read in your terminal. It will contain some metadata about the test task, as well as statistics about the results. This is the default report if you do not specify one.
@@ -50,4 +52,11 @@ Sometimes, when doing quick tests, you may not even want to deal with files (I k
 
 ```bash
 grandma run pineapples -d 10s -r 500 | grandma report
+```
+
+You may want to print to print all environment variables or include an extra config file when generating a report, so that you can have that extra context:
+
+```bash
+grandma report pineapples.log --type html --out pineapples.html --metadata "`printenv`"
+grandma report pineapples.log --type html --out pineapples.html --metadata "`cat myConfig.json`"
 ```
