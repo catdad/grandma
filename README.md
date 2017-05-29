@@ -130,7 +130,7 @@ grandma report pineapples.log
 You can also create an HTML page containing an interactive graph of the results:
 
 ```bash
-grandma report pineapples.log --type plot --out pineapples.html
+grandma report pineapples.log --type html --out pineapples.html
 ```
 
 By default, all reports will print to standard output, unless you specify a file in the `--out` flag.
