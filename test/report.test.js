@@ -653,6 +653,40 @@ describe('[report]', function() {
             });
         });
         
+        it('inserts `metadata` into the body in a pre tag', function(done) {
+            getReport({
+                type: 'html',
+                metadata: 'pineapples'
+            }, DATA.test_funny_metrics, function(err, content) {
+                expect(err).to.not.be.ok;
+                expect(content).to.be.ok;
+                
+                expect(content.toString()).to.be.a('string')
+                    .and.to.have.length.above(100);
+                
+                expect(content.toString()).to.have.string('<pre>pineapples</pre>');
+                
+                done();
+            });
+        });
+        
+        it('escaped unsafe html values', function(done) {
+            getReport({
+                type: 'html',
+                metadata: '<script>alert("thing");</script>'
+            }, DATA.test_funny_metrics, function(err, content) {
+                expect(err).to.not.be.ok;
+                expect(content).to.be.ok;
+                
+                expect(content.toString()).to.be.a('string')
+                    .and.to.have.length.above(100);
+                
+                expect(content.toString()).to.have.string('&lt;script&gt;alert(&quot;thing&quot;);&lt;/script&gt;');
+                
+                done();
+            });
+        });
+        
         testNoData('html');
     });
     
