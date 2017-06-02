@@ -146,13 +146,13 @@ pre {
     position: absolute;
 }
 
-.sidebar_container {
+.scatter-plot-legend-container {
     position: relative;
     margin: 20px 20px;
     background: rgba(0,0,0,.5);
     border-radius: 2px;
 }
 
-.sidebar_container * {
+.scatter-plot-legend-container * {
     background: none;
 }
