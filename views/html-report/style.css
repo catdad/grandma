@@ -132,6 +132,12 @@ pre {
     display: inline-block;
 }
 
+#scatter-plot-title {
+    font-size: 1.3em;
+    text-align: center;
+    padding-bottom: 10px;
+}
+
 #y_axis {
     width: 40px;
     left: -40px;
