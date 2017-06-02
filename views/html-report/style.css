@@ -138,7 +138,7 @@ pre {
     padding-bottom: 10px;
 }
 
-#y_axis {
+#scatter-plot-y-axis {
     width: 40px;
     left: -40px;
     height: 500px;
