@@ -109,10 +109,6 @@ pre {
     font-weight: bold;
 }
 
-#download, .btn-no-show {
-    display: none;
-}
-
 #line-graph-buttons .button-active {
     background: #1CB841;
     color: white;
