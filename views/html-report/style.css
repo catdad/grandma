@@ -119,7 +119,7 @@ pre {
 }
 
 /* scatter plot style */
-#chart-container {
+#scatter-plot-container {
     width: 90%;
     display: block;
     position: relative;
