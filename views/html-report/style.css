@@ -126,7 +126,7 @@ pre {
     margin: 0 auto;
 }
 
-#chart {
+#scatter-plot {
     height: 500px;
     width: 100%;
     display: inline-block;

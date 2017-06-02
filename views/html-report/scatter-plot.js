@@ -4,7 +4,7 @@
 
 window.addEventListener('load', function() {
     var chartContainerElem = document.querySelector('#scatter-plot-container');
-    var chartElem = document.querySelector('#chart');
+    var chartElem = document.querySelector('#scatter-plot');
     var yAxisElem = document.querySelector('#scatter-plot-y-axis');
     var titleElem = document.querySelector('#scatter-plot-title');
     
