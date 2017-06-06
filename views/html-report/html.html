@@ -38,7 +38,7 @@
 <body>
     <menu type="toolbar" class="">
         <menuitem label="line" class="selected" x-for="line-graph-section" x-init="LINE_GRAPH_INIT">Line Graph</menuitem>
-        <menuitem label="plot" x-for="plot-section" x-init="SCATTER_PLOT_INIT">Scatter Plot (alpha)</menuitem>
+        <menuitem label="plot" x-for="scatter-plot-section" x-init="SCATTER_PLOT_INIT">Scatter Plot (alpha)</menuitem>
         <menuitem label="stats" x-for="stats-section">Stats</menuitem>
         <menuitem label="stats" x-for="metadata-section">Metadata</menuitem>
     </menu>
@@ -54,14 +54,14 @@
         <a href="" id="line-graph-download"></a>
     </section>
     
-    <section id="plot-section" class="hide">
+    <section id="scatter-plot-section" class="hide">
         <div id="scatter-plot-title"></div>
-        <div id="chart-container">
-            <div id="y_axis"></div>
-            <div id="chart"></div>
+        <div id="scatter-plot-container">
+            <div id="scatter-plot-y-axis"></div>
+            <div id="scatter-plot"></div>
         </div>
         
-        <div class="sidebar_container">
+        <div class="scatter-plot-legend-container">
             <div id="legend"></div>
         </div>
 

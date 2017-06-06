@@ -3,9 +3,9 @@
 /* globals Rickshaw, DATA */
 
 window.addEventListener('load', function() {
-    var chartContainerElem = document.querySelector('#chart-container');
-    var chartElem = document.querySelector('#chart');
-    var yAxisElem = document.querySelector('#y_axis');
+    var chartContainerElem = document.querySelector('#scatter-plot-container');
+    var chartElem = document.querySelector('#scatter-plot');
+    var yAxisElem = document.querySelector('#scatter-plot-y-axis');
     var titleElem = document.querySelector('#scatter-plot-title');
     
     titleElem.appendChild(document.createTextNode(window.TITLE));
