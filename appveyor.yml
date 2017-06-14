@@ -3,6 +3,7 @@ version: '{branch} #{build}'
 environment:
   matrix:
     # node.js
+    - nodejs_version: "8"
     - nodejs_version: "7.2"
     - nodejs_version: "6.9"
     - nodejs_version: "5.12"
