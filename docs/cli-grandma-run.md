@@ -18,6 +18,8 @@ The `run` command has the following options:
   - `d` - day
   - `w` - week
 
+  There is a special case when using a 0 with any unit -- such as `0s` or `0m` -- which will allow the tests to run indefinitely, until they are stopped manually.
+
 - **`rate`** - The rate at which the tests will run. Written as a number, representing number of tests per second.
   - Cannot be used with `concurrent`.
   - Either `rate` or `concurrent` is required.
