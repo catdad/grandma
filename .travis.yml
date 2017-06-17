@@ -2,6 +2,7 @@ language: node_js
 
 node_js:
   - 'node'
+  - '8'
   - '7.2'
   - '6.9'
   - '5.10'
@@ -27,3 +28,18 @@ after_script:
   - npm run coverage
   - codeclimate-test-reporter < coverage/lcov.info
   - npm run nyccov
+
+jobs:
+  include:
+    - stage: npm release
+      node_js: '6.9'
+      script: echo "Deploying to npm ..."
+      after_script: skip
+      deploy:
+        provider: npm
+        email: vatev.1+npm@gmail.com
+        api_key:
+          secure: RjzxzYR+GtzaMN73t+++oEjnPgpBlESiT2uLySvKHUJvqBOOXkynoBEHvuUWY6CN5kmHxGlwpJnN4b3eMnS290JX1/qzyFLAkHIqru89ji6e2PeSlg/BG9LT+f3sXQUjZZ91YsrBsHLvz0MfTGSTaGdarOVjKAJhTyPOKYZCeE8m4IyXrumg+30/6ly9uQB2Iwwku+nN2imhqxZavxZ++BJBX/i7betjnczcV+iuuuntlWQ0icg+KlOMk14xC6CZickcG7g2Z04WCeAyB0fc4jMeYb3sebBzTrEm/bIFjn+QvJ9ZSH5v/hqpuPmSbogXdf6eDdTpXloAMTNu1nz9Ruo9bU8SWk6a89u8Snidhhdndr5hLnWx0xeb7ZF4t36sNEcX/gkRUBlb8Fv7jkkUxpBXyEDYoyeon4SbnTdW5e0280kcpnQwJUR5K8aS4/jk7bmy686+ajQDuHmABnIuij8qNSpcUdEfXHLWq9IggSPZVtpNanlzBcgDKhycQOuYaS16MxXCcQumG+xR1FJEjn/sUgecNYZHRlsvStDt54QRv02cVawAloEbg9VBn6xJCgCpcbKuSU+14z24OwN4me5Eak7TWqWLWK9XDihOlr9Q02HWg9ztLk+x2jHDdJxRFpDLHIHgzGOJ8Sv/gVteCqtGkyATo1fNIYWwDqG0GCg=
+        on:
+          tags: true
+          repo: catdad/grandma

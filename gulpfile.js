@@ -1,11 +1,15 @@
-/* eslint-disable no-console */
+var util = require('util');
 
 var gulp = require('gulp');
 var shellton = require('shellton');
 var gutil = require('gulp-util');
 var del = require('del');
+
 var argv = require('yargs')
     .array('pattern')
+    .alias('input', 'i')
+    .alias('output', 'o')
+    .alias('type', 't')
     .argv;
 
 gulp.task('clean', function() {
@@ -36,4 +40,17 @@ gulp.task('watch', function() {
     gutil.log('watching:', gutil.colors.magenta(argv.pattern));
     
     gulp.watch(argv.pattern, ['exec']);
+});
+
+gulp.task('watch-report', function() {
+    argv.pattern = ['lib/**', 'views/**'];
+    argv.exec = util.format(
+        'grandma report %s --type %s --out %s',
+        argv.input || 'file.log',
+        argv.type || 'html',
+        argv.output || 'file.html'
+    );
+    
+    gulp.start('exec');
+    gulp.start('watch');
 });

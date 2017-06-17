@@ -344,6 +344,21 @@ describe('[report]', function() {
             });
         });
         
+        it('handles non-js name custom metrics', function(done) {
+            getReport({
+                type: 'json'
+            }, DATA.test_funny_metrics, function(err, content) {
+                expect(err).to.not.be.ok;
+                expect(content).to.be.ok;
+                
+                var jsonData = JSON.parse(content.toString());
+                
+                expect(jsonData).to.be.an('object');
+                
+                done();
+            });
+        });
+        
         it('provides an object as the second callback parameter when successful', function(done) {
             var input = through();
             var output = through();
@@ -554,6 +569,20 @@ describe('[report]', function() {
             });
         });
         
+        it('handles non-js name custom metrics', function(done) {
+            getReport({
+                type: 'text'
+            }, DATA.test_funny_metrics, function(err, content) {
+                expect(err).to.not.be.ok;
+                expect(content).to.be.ok;
+                
+                expect(content.toString()).to.be.a('string')
+                    .and.to.have.length.above(100);
+                
+                done();
+            });
+        });
+        
         testNoData('text');
     });
 
@@ -575,7 +604,90 @@ describe('[report]', function() {
             });
         });
         
+        it('handles non-js name custom metrics', function(done) {
+            getReport({
+                type: 'plot'
+            }, DATA.test_funny_metrics, function(err, content) {
+                expect(err).to.not.be.ok;
+                expect(content).to.be.ok;
+                
+                expect(content.toString()).to.be.a('string')
+                    .and.to.have.length.above(100);
+                
+                done();
+            });
+        });
+        
         testNoData('plot');
+    });
+    
+    describe('#html', function() {
+        it('provides an html page', function(done) {
+            getReport({
+                type: 'html'
+            }, DATA.test, function(err, content) {
+                expect(err).to.not.be.ok;
+                expect(content).to.be.ok;
+                
+                var str = content.toString();
+                
+                // what the hell do I test here?
+                expect(str).to.match(/<html/);
+                expect(str).to.match(/<\/html\>/);
+                
+                done();
+            });
+        });
+        
+        it('handles non-js name custom metrics', function(done) {
+            getReport({
+                type: 'html'
+            }, DATA.test_funny_metrics, function(err, content) {
+                expect(err).to.not.be.ok;
+                expect(content).to.be.ok;
+                
+                expect(content.toString()).to.be.a('string')
+                    .and.to.have.length.above(100);
+                
+                done();
+            });
+        });
+        
+        it('inserts `metadata` into the body in a pre tag', function(done) {
+            getReport({
+                type: 'html',
+                metadata: 'pineapples'
+            }, DATA.test_funny_metrics, function(err, content) {
+                expect(err).to.not.be.ok;
+                expect(content).to.be.ok;
+                
+                expect(content.toString()).to.be.a('string')
+                    .and.to.have.length.above(100);
+                
+                expect(content.toString()).to.have.string('<pre>pineapples</pre>');
+                
+                done();
+            });
+        });
+        
+        it('escaped unsafe html values', function(done) {
+            getReport({
+                type: 'html',
+                metadata: '<script>alert("thing");</script>'
+            }, DATA.test_funny_metrics, function(err, content) {
+                expect(err).to.not.be.ok;
+                expect(content).to.be.ok;
+                
+                expect(content.toString()).to.be.a('string')
+                    .and.to.have.length.above(100);
+                
+                expect(content.toString()).to.have.string('&lt;script&gt;alert(&quot;thing&quot;);&lt;/script&gt;');
+                
+                done();
+            });
+        });
+        
+        testNoData('html');
     });
     
     describe('#box', function() {
@@ -679,6 +791,20 @@ describe('[report]', function() {
                 plots.forEach(function(arr) {
                     expectations.box.isValid(arr.join('\n'));
                 });
+                
+                done();
+            });
+        });
+        
+        it('handles non-js name custom metrics', function(done) {
+            getReport({
+                type: 'box'
+            }, DATA.test_funny_metrics, function(err, content) {
+                expect(err).to.not.be.ok;
+                expect(content).to.be.ok;
+                
+                expect(content.toString()).to.be.a('string')
+                    .and.to.have.length.above(100);
                 
                 done();
             });

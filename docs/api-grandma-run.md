@@ -11,6 +11,7 @@ The run command takes an options object and a callback. It will trigger a test t
 The following options are available for running a test:
 
 - **`duration`** _{string|number}_ - the amount of time that the test should run for. This is the minimum amount of time that `grandma` will continue starting new tests. However, the actual full run might be longer, if tests take a while to finish. This can be one of the following:
+  - The number `0`, which specifies that the tests should run indefinitely, without a time limit
   - A number in milliseconds
   - A string written as any combinartion of a number an ending of:
     - `ms` (milliseconds)

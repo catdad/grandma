@@ -1,8 +1,6 @@
 {
   "dependencies": {
-    "mute": [
-      "yargs"
-    ]
+    "mute": []
   },
   "ignore": [
     "fixtures/**"

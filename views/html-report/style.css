@@ -1,0 +1,154 @@
+/* Start Reset CSS */
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video { margin: 0; padding: 0; border: 0; font-size: 100%; font: inherit; vertical-align: baseline; }
+article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section { display: block; }
+ol, ul { list-style: none; }
+blockquote, q { quotes: none; }
+blockquote:before, blockquote:after, q:before, q:after { content: ''; content: none; }
+table { border-collapse: collapse; border-spacing: 0; }
+
+* { outline: none; }
+/* End Reset CSS */
+
+/* general body stuff */
+html, body {
+    font-family: sans-serif;
+    margin: 0;
+    padding: 0;
+    background: #e5e5e5;
+    color: #333;
+}
+
+menu {
+    display: block;
+    padding: 0;
+    margin: 0;
+    background: #555;
+    color: #e5e5e5;
+    font-weight: bold;
+    font-size: 0.9em;
+}
+
+menuitem {
+    display: inline-block;
+    padding: .8em 20px;
+    margin: 0;
+    cursor: pointer;
+}
+
+menuitem.selected {
+    background: #e5e5e5;
+    color: #555;
+}
+
+menuitem:hover {
+    background: #d3d3d3;
+    color: #555;
+}
+
+section {
+    position: absolute;
+    display: block;
+    width: 100%;
+    padding-top: 3em;
+}
+
+pre {
+    font-family: monospace;
+    margin: 20px;
+    padding: 10px;
+    background: white;
+
+    border: 1px solid #d6d6d6;
+    border-radius: 4px;
+    
+    overflow: auto;
+}
+
+.hide {
+    display: none;
+}
+
+.right {
+    float: right;
+}
+
+/* line graph style */
+#line-graph-container {
+    width: 100%;
+    height: 600px;
+}
+
+#line-graph-container, #line-graph-buttons {
+    padding: 8px;
+    box-sizing: border-box;
+}
+
+#line-graph {
+    width: 100%;
+    height: 100%;
+}
+
+.dygraph-legend {
+    width: 50% !important;
+    text-align: right !important;
+    left: auto !important;
+    right: 8px;
+    background: none !important;
+    top: 10px !important;
+    z-index: 9 !important;
+}
+
+#line-graph-buttons button {
+    margin: 3px;
+    box-sizing: border-box;
+}
+
+#line-graph-buttons p {
+    margin: 0;
+    padding: 0.5em 0;
+    font-weight: bold;
+}
+
+#line-graph-buttons .button-active {
+    background: #1CB841;
+    color: white;
+}
+
+/* scatter plot style */
+#scatter-plot-container {
+    width: 90%;
+    display: block;
+    position: relative;
+    margin: 0 auto;
+}
+
+#scatter-plot {
+    height: 500px;
+    width: 100%;
+    display: inline-block;
+}
+
+#scatter-plot-title {
+    font-size: 1.3em;
+    text-align: center;
+    padding-bottom: 10px;
+}
+
+#scatter-plot-y-axis {
+    width: 40px;
+    left: -40px;
+    height: 500px;
+    display: inline-block;
+    position: absolute;
+}
+
+.scatter-plot-legend-container {
+    position: relative;
+    margin: 20px 20px;
+    background: rgba(0,0,0,.5);
+    border-radius: 2px;
+}
+
+.scatter-plot-legend-container * {
+    background: none;
+}

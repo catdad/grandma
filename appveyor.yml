@@ -3,6 +3,7 @@ version: '{branch} #{build}'
 environment:
   matrix:
     # node.js
+    - nodejs_version: "8"
     - nodejs_version: "7.2"
     - nodejs_version: "6.9"
     - nodejs_version: "5.12"
@@ -10,13 +11,22 @@ environment:
     - nodejs_version: "0.12"
     # io.js
     - nodejs_version: "1"
+    
+# Cache some things so that the build runs faster
+cache:
+  - node_modules
 
 # Install scripts. (runs after repo cloning)
 install:
   # Get the latest stable version of Node.js or io.js
   - ps: Install-Product node $env:nodejs_version
-  # install modules
+  # install modules -- this won't do much on cached builds
   - npm install
+  # prune stuff that is not needed, in case no-longer-used
+  # cache files are available
+  - npm prune
+  # run an upgrade, to update outdated cached libs
+  - npm upgrade
   
 # Post-install test scripts.
 test_script:
