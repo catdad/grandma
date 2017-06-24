@@ -78,6 +78,35 @@ describe('[run-mode-concurrent]', function() {
         }, task.stop);
     });
     
+    it('can run indefinitely when using a value of 0', function(done) {
+        var opts = runOpts({
+            opts: {
+                duration: 0
+            }
+        });
+        
+        var task = rmc(opts);
+        
+        var count = 0;
+        
+        task._start({}, function() {
+            expect(count).to.equal(5);
+            done();
+        });
+        
+        var interval = setInterval(function() {
+            if (count === 5) {
+                clearInterval(interval);
+                task.stop();
+                
+                return;
+            }
+            
+            count += 1;
+            opts.repeater.emit('tick');
+        }, 2);
+    });
+    
     it('waits for all tests to finish running when the duration is reached');
     
     it('calls the debug method with concurrency information');

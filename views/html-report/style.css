@@ -109,30 +109,32 @@ pre {
     font-weight: bold;
 }
 
-#download, .btn-no-show {
-    display: none;
-}
-
 #line-graph-buttons .button-active {
     background: #1CB841;
     color: white;
 }
 
 /* scatter plot style */
-#chart-container {
+#scatter-plot-container {
     width: 90%;
     display: block;
     position: relative;
     margin: 0 auto;
 }
 
-#chart {
+#scatter-plot {
     height: 500px;
     width: 100%;
     display: inline-block;
 }
 
-#y_axis {
+#scatter-plot-title {
+    font-size: 1.3em;
+    text-align: center;
+    padding-bottom: 10px;
+}
+
+#scatter-plot-y-axis {
     width: 40px;
     left: -40px;
     height: 500px;
@@ -140,13 +142,13 @@ pre {
     position: absolute;
 }
 
-.sidebar_container {
+.scatter-plot-legend-container {
     position: relative;
     margin: 20px 20px;
     background: rgba(0,0,0,.5);
     border-radius: 2px;
 }
 
-.sidebar_container * {
+.scatter-plot-legend-container * {
     background: none;
 }

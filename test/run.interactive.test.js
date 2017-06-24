@@ -72,6 +72,85 @@ describe('[run:interactive]', function() {
         });
     }
     
+    it('runs tests indefinitely with a duration of 0', function(done) {
+        increaseTimeout(this);
+        
+        var output = through.obj();
+
+        var opts = {
+            duration: 0,
+            rate: 50,
+            test: RATE_TEST,
+            output: output
+        };
+
+        var lines = [];
+
+        var task = run(opts, function(err) {
+            if (err) {
+                return done(err);
+            }
+
+            var header = lines[0];
+
+            expect(header)
+                .to.have.property('type')
+                .and.to.equal('header');
+            expect(header)
+                .to.have.property('targetCount')
+                .and.to.equal(null);
+
+            done();
+        });
+
+        output.on('data', function(line) {
+            lines.push(line);
+
+            if (lines.length === 5) {
+                task.stop();
+            }
+        });
+    });
+    
+    it('runs tests indefinitely with a duration string of 0s', function(done) {
+        increaseTimeout(this);
+        
+        var output = through.obj();
+        var lines = [];
+        
+        var opts = {
+            duration: '0s',
+            concurrent: 2,
+            test: CONCURRENT_TEST,
+            output: output
+        };
+        
+        var task = run(opts, function(err) {
+            if (err) {
+                return done(err);
+            }
+
+            var header = lines[0];
+
+            expect(header)
+                .to.have.property('type')
+                .and.to.equal('header');
+            expect(header)
+                .to.have.property('targetCount')
+                .and.to.equal(null);
+
+            done();
+        });
+
+        output.on('data', function(line) {
+            lines.push(line);
+
+            if (lines.length === 5) {
+                task.stop();
+            }
+        });
+    });
+    
     describe('concurrent mode', function() {
         it('exposes the correct API', function(done) {
             var api = run({
