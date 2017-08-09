@@ -8,7 +8,14 @@ var sinon = require('sinon');
 var _ = require('lodash');
 var async = require('async');
 
-var rmc = require('../lib/run-mode-concurrent.js');
+// TODO temp, while I am updating this API
+// this will need a ton of cleanup
+var rmc = function(opts) {
+    var api = opts.repeater;
+    api.debug = opts.debug;
+    
+    return require('../lib/run-mode-concurrent.js')(opts, api);
+};
 
 function runOpts(opts) {
     var o = _.extend({
