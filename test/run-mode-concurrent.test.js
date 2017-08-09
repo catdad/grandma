@@ -14,6 +14,10 @@ var rmc = function(opts) {
     var api = opts.repeater;
     api.debug = opts.debug;
     
+    api.on('task:run:internal', function(context) {
+        opts.runTest(context);
+    });
+    
     return require('../lib/run-mode-concurrent.js')(opts, api);
 };
 
