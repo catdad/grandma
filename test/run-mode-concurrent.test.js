@@ -28,7 +28,7 @@ var rmc = function(opts) {
         }
     });
     
-    return require('../lib/run-mode-concurrent.js')(opts, api);
+    return require('../lib/run-mode-concurrent.js')(api);
 };
 
 function runOpts(opts) {

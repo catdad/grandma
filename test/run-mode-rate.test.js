@@ -25,7 +25,7 @@ var rmr = function(opts) {
         }
     });
     
-    return require('../lib/run-mode-rate.js')(opts, api);
+    return require('../lib/run-mode-rate.js')(api);
 };
 
 function runOpts(opts) {
