@@ -15,6 +15,14 @@ var rmr = function(opts) {
         opts.runTest(context);
     });
     
+    Object.defineProperties(api, {
+        runningCount: {
+            get: function() {
+                return opts.getRunningCount();
+            }
+        }
+    });
+    
     return require('../lib/run-mode-rate.js')(opts, api);
 };
 

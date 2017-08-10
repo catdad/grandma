@@ -18,6 +18,14 @@ var rmc = function(opts) {
         opts.runTest(context);
     });
     
+    Object.defineProperties(api, {
+        runningCount: {
+            get: function() {
+                return opts.getRunningCount();
+            }
+        }
+    });
+    
     return require('../lib/run-mode-concurrent.js')(opts, api);
 };
 
