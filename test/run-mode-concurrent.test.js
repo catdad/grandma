@@ -13,6 +13,7 @@ var async = require('async');
 var rmc = function(opts) {
     var api = opts.repeater;
     api.debug = opts.debug;
+    api.writeOutput = opts.writeOutput;
     
     api.on('task:run:internal', function(context) {
         opts.runTest(context);
