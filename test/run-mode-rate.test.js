@@ -7,7 +7,16 @@ var expect = require('chai').expect;
 var sinon = require('sinon');
 var _ = require('lodash');
 
-var rmr = require('../lib/run-mode-rate.js');
+var rmr = function(opts) {
+    var api = opts.repeater;
+    api.debug = opts.debug;
+    
+    api.on('task:run:internal', function(context) {
+        opts.runTest(context);
+    });
+    
+    return require('../lib/run-mode-rate.js')(opts, api);
+};
 
 function runOpts(opts) {
     var o = _.extend({
