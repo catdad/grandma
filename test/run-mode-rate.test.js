@@ -7,25 +7,11 @@ var expect = require('chai').expect;
 var sinon = require('sinon');
 var _ = require('lodash');
 
+// TODO temp, while I am updating this API
+// this will need a ton of cleanup
+var helper = require('./run-mode-helper.temp.js');
 var rmr = function(opts) {
-    var api = opts.repeater;
-    api.debug = opts.debug;
-    api.writeOutput = opts.writeOutput;
-    api.options = opts.options;
-   
-    api.on('task:run:internal', function(context) {
-        opts.runTest(context);
-    });
-    
-    Object.defineProperties(api, {
-        runningCount: {
-            get: function() {
-                return opts.getRunningCount();
-            }
-        }
-    });
-    
-    return require('../lib/run-mode-rate.js')(api);
+    return helper(require('../lib/run-mode-rate.js'))(opts);
 };
 
 function runOpts(opts) {
