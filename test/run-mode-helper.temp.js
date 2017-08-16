@@ -14,6 +14,19 @@ module.exports = function(lib) {
                 get: function() {
                     return opts.getRunningCount();
                 }
+            },
+            expectedCount: {
+                enumerable: true,
+                configurable: false,
+                get: function() {
+                    if (!opts.rate) {
+                        return null;
+                    }
+
+                    return opts.duration === 0 ?
+                        null :
+                        Math.floor(opts.rate * (opts.duration / 1000));
+                }
             }
         });
 
