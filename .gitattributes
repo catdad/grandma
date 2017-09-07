@@ -11,6 +11,7 @@
 *.scss   text eol=lf
 *.sass   text eol=lf
 *.svg    text eol=lf
+bin/     test eol=lf
 
 # Custom for Visual Studio
 *.cs     diff=csharp
