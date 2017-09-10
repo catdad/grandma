@@ -89,6 +89,35 @@ describe('[runner]', function() {
             expect(count).to.equal(opts.options.concurrent);
         });
 
+        test('runs the tests an expected number of times', function(clock) {
+            var ITERATIONS = 8;
+            var opts = getOpts();
+
+            opts.options.concurrent = 5;
+            opts.options.duration = 1000;
+
+            var count = 0;
+            var api = lib(opts);
+
+            function runTest() {
+                api.emit(api.EVENTS.COMPLETE);
+            }
+
+            function onRun(ev) {
+                count += 1;
+
+                setTimeout(runTest, opts.options.duration / ITERATIONS);
+            }
+
+            api.on(api.EVENTS.RUN, onRun);
+
+            api._start({}, sinon.spy());
+
+            clock.tick(opts.options.duration);
+
+            expect(count).to.equal(ITERATIONS * opts.options.concurrent);
+        });
+
         sharedTests(getOpts);
     });
 
