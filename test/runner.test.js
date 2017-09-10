@@ -9,6 +9,51 @@ var lib = require('../lib/runner.js');
 
 function sharedTests(getOpts) {
     test('does not run anything until _start is called');
+
+    test('writes a header once _start is called', function(clock) {
+        var opts = getOpts();
+        opts.writeOutput = sinon.spy();
+
+        var api = lib(opts);
+
+        expect(opts.writeOutput).to.have.property('callCount').and.to.equal(0);
+
+        api._start({}, sinon.spy());
+
+        expect(opts.writeOutput).to.have.property('callCount').and.to.equal(1);
+
+        var args = opts.writeOutput.firstCall.args;
+
+        expect(args).to.be.an('array')
+            .and.to.have.lengthOf(1)
+            .and.to.have.property(0)
+            .and.to.deep.equal({
+                type: 'header',
+                epoch: 0,
+                duration: opts.options.duration,
+                targetCount: opts.mode === 'rate' ?
+                    Math.floor(opts.options.rate * (opts.options.duration / 1000)) :
+                    null,
+                name: null,
+                rate: opts.options.rate || null,
+                concurrent: opts.options.concurrent || null
+            });
+    });
+
+    test('writes to the debug stream with runner info', function(clock) {
+        var opts = getOpts();
+        opts.debug = sinon.spy();
+
+        var api = lib(opts);
+
+        expect(opts.debug).to.have.property('callCount').and.to.equal(0);
+
+        api._start({}, sinon.spy());
+
+        expect(opts.debug).to.have.property('callCount').and.to.equal(1);
+
+        // TODO test params too?
+    });
 }
 
 describe('[runner]', function() {
