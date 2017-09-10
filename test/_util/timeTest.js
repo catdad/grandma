@@ -1,14 +1,49 @@
+/* eslint-env mocha */
+
 var sinon = require('sinon');
 
-module.export = function timeTest(testFunc) {
-    
-    return function mochaFunction(mochaDone) {
-        var clock = sinon.useFakeTimers(Date.now());
+function fakeTimeTest(name, testFunc, itFunc) {
+    var clock;
 
-        testFunc(clock, function(err) {
+    if (!testFunc) {
+        return itFunc(name);
+    }
+
+    var isAsync = testFunc.length > 1;
+
+    itFunc(name, function(done) {
+        if (clock) {
             clock.restore();
-            
-            mochaDone(err);
-        });
-    };
+            clock = null;
+        }
+
+        clock = sinon.useFakeTimers();
+
+        function onDone(err) {
+            clock.restore();
+            clock = null;
+
+            done(err);
+        }
+
+        if (isAsync) {
+            return testFunc(clock, onDone);
+        }
+
+        try {
+            testFunc(clock);
+        } catch(e) {
+            return onDone(e);
+        }
+
+        onDone();
+    });
+}
+
+module.exports = function test(name, testFunc) {
+    return fakeTimeTest(name, testFunc, it);
+};
+
+module.exports.only = function testOnly(name, testFunc) {
+    return fakeTimeTest(name, testFunc, it.only);
 };
