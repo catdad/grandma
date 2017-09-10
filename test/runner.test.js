@@ -124,6 +124,30 @@ describe('[runner]', function() {
             expect(count).to.equal(opts.options.rate);
         });
 
+        test('runs the tests an expected number of times', function(clock) {
+            var ITERATIONS = 8;
+            var opts = getOpts();
+
+            opts.options.rate = 10;
+            opts.options.duration = 1000 * ITERATIONS;
+
+            var count = 0;
+
+            function onRun(ev) {
+                count += 1;
+            }
+
+            var api = lib(opts);
+
+            api.on(api.EVENTS.RUN, onRun);
+
+            api._start({}, sinon.spy());
+
+            clock.tick(opts.options.duration);
+
+            expect(count).to.equal(ITERATIONS * opts.options.rate);
+        });
+
         sharedTests(getOpts);
     });
 });
