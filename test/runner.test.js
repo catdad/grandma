@@ -54,6 +54,12 @@ function sharedTests(getOpts) {
 
         // TODO test params too?
     });
+
+    test('can be paused and resumed');
+
+    test('can be stopped');
+
+    test('emits a run event when it is time to start a new test');
 }
 
 describe('[runner]', function() {
