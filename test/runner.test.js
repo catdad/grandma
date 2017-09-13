@@ -16,11 +16,11 @@ function sharedTests(getOpts) {
 
         var api = lib(opts);
 
-        expect(opts.writeOutput).to.have.property('callCount').and.to.equal(0);
+        expect(opts.writeOutput.callCount).to.equal(0);
 
         api._start({}, sinon.spy());
 
-        expect(opts.writeOutput).to.have.property('callCount').and.to.equal(1);
+        expect(opts.writeOutput.callCount).to.equal(1);
 
         var args = opts.writeOutput.firstCall.args;
 
@@ -46,11 +46,11 @@ function sharedTests(getOpts) {
 
         var api = lib(opts);
 
-        expect(opts.debug).to.have.property('callCount').and.to.equal(0);
+        expect(opts.debug.callCount).and.to.equal(0);
 
         api._start({}, sinon.spy());
 
-        expect(opts.debug).to.have.property('callCount').and.to.equal(1);
+        expect(opts.debug.callCount).and.to.equal(1);
 
         // TODO test params too?
     });
