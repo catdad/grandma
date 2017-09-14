@@ -145,6 +145,8 @@ function sharedTests(getOpts) {
     test('waits for outstanding tests to finish after it is stopped');
 
     test('emits a run event when it is time to start a new test');
+
+    test('exposes the count of tests currently running');
 }
 
 describe('[runner]', function() {
