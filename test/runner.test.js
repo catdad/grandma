@@ -118,7 +118,7 @@ function sharedTests(getOpts) {
         expect(doneSpy.callCount).to.equal(1);
     });
 
-    test('can be stopped', function(clock) {
+    test('can be stopped after it has been started', function(clock) {
         var opts = getOpts();
 
         var api = lib(opts);
@@ -129,6 +129,10 @@ function sharedTests(getOpts) {
         api.stop();
         expect(doneSpy.callCount).to.equal(1);
     });
+
+    test('can be stopped before is has been started');
+
+    test('waits for outstanding tests to finish after it is stopped');
 
     test('emits a run event when it is time to start a new test');
 }
