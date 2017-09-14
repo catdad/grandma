@@ -55,7 +55,62 @@ function sharedTests(getOpts) {
         // TODO test params too?
     });
 
-    test('can be paused and resumed');
+    test('can be paused and resumed', function(clock) {
+        var ITERATION_COUNT = 10;
+        var ITERATION_SECS = 10;
+        var opts = getOpts();
+        opts.options.duration = ITERATION_SECS * 1000;
+        opts.options.concurrent && (opts.options.concurrent = ITERATION_COUNT);
+        opts.options.rate && (opts.options.rate = ITERATION_COUNT);
+
+        var api = lib(opts);
+        var runSpy = sinon.spy();
+        var doneSpy = sinon.spy();
+
+        api._start({}, doneSpy);
+        api.on(api.EVENTS.RUN, runSpy);
+
+        function iterate(secs) {
+            clock.tick(1000 * (secs || 1));
+
+            // make sure that any tests waiting to finish are finished
+            // at this point
+            if (api.runningCount) {
+                var count = api.runningCount;
+
+                while (count--) {
+                    api.emit(api.EVENTS.COMPLETE);
+                }
+            }
+        }
+
+        expect(runSpy.callCount).to.equal(0);
+
+        iterate(1);
+
+        // expect 1x progress, since we did one iteration
+        expect(runSpy.callCount).to.equal(ITERATION_COUNT);
+
+        api.pause();
+
+        iterate(4);
+
+        // expect that no progress was made while paused
+        expect(runSpy.callCount).to.equal(ITERATION_COUNT);
+
+        api.resume();
+
+        iterate(1);
+
+        // expect 2x progress, since we resumed and did one
+        // more iteration
+        expect(runSpy.callCount).to.equal(ITERATION_COUNT * 2);
+
+        // finish up the remaining time
+        clock.tick(1000 * ITERATION_SECS);
+
+        expect(doneSpy.callCount).to.equal(1);
+    });
 
     test('can be stopped', function(clock) {
         var opts = getOpts();
