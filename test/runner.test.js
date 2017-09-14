@@ -193,6 +193,18 @@ describe('[runner]', function() {
             expect(count).to.equal(ITERATIONS * opts.options.rate);
         });
 
+        test('runs a new test at the expected interval', function(clock) {
+            this.skip();
+
+            // TODO
+
+            // do one iteration
+            // check that a spy was called once
+
+            // do two iterations
+            // check that a spy was called twice
+        });
+
         sharedTests(getOpts);
     });
 });
