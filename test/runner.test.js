@@ -125,12 +125,22 @@ function sharedTests(getOpts) {
         var doneSpy = sinon.spy();
 
         api._start({}, doneSpy);
-
         api.stop();
+
         expect(doneSpy.callCount).to.equal(1);
     });
 
-    test('can be stopped before is has been started');
+    test('can be stopped before is has been started', function(clock) {
+        var opts = getOpts();
+
+        var api = lib(opts);
+        var doneSpy = sinon.spy();
+
+        api.stop();
+        api._start({}, doneSpy);
+
+        expect(doneSpy.callCount).to.equal(1);
+    });
 
     test('waits for outstanding tests to finish after it is stopped');
 
