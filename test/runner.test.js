@@ -57,7 +57,17 @@ function sharedTests(getOpts) {
 
     test('can be paused and resumed');
 
-    test('can be stopped');
+    test('can be stopped', function(clock) {
+        var opts = getOpts();
+
+        var api = lib(opts);
+        var doneSpy = sinon.spy();
+
+        api._start({}, doneSpy);
+
+        api.stop();
+        expect(doneSpy.callCount).to.equal(1);
+    });
 
     test('emits a run event when it is time to start a new test');
 }
