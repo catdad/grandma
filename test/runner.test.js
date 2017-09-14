@@ -60,8 +60,14 @@ function sharedTests(getOpts) {
         var ITERATION_SECS = 10;
         var opts = getOpts();
         opts.options.duration = ITERATION_SECS * 1000;
-        opts.options.concurrent && (opts.options.concurrent = ITERATION_COUNT);
-        opts.options.rate && (opts.options.rate = ITERATION_COUNT);
+
+        if (opts.options.concurrent) {
+            opts.options.concurrent = ITERATION_COUNT;
+        }
+
+        if (opts.options.rate) {
+            opts.options.rate = ITERATION_COUNT;
+        }
 
         var api = lib(opts);
         var runSpy = sinon.spy();
