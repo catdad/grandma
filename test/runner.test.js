@@ -134,6 +134,8 @@ describe('[runner]', function() {
             expect(count).to.equal(ITERATIONS * opts.options.concurrent);
         });
 
+        test('replaces each finished test with a new one');
+
         sharedTests(getOpts);
     });
 
