@@ -12,6 +12,8 @@ function fakeTimeTest(name, testFunc, itFunc) {
     var isAsync = testFunc.length > 1;
 
     itFunc(name, function(done) {
+        var context = this;
+
         if (clock) {
             clock.restore();
             clock = null;
@@ -27,11 +29,11 @@ function fakeTimeTest(name, testFunc, itFunc) {
         }
 
         if (isAsync) {
-            return testFunc(clock, onDone);
+            return testFunc.call(context, clock, onDone);
         }
 
         try {
-            testFunc(clock);
+            testFunc.call(context, clock);
         } catch(e) {
             return onDone(e);
         }
