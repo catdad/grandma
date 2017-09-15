@@ -337,6 +337,8 @@ describe('[runner]', function() {
             expect(doneSpy.callCount).to.equal(1);
         });
 
+        test('can have `concurrent` changed at runtime');
+
         sharedTests(getOpts);
     });
 
@@ -427,6 +429,8 @@ describe('[runner]', function() {
 
             expect(doneSpy.callCount).to.equal(1);
         });
+
+        test('can have `rate` changed at runtime');
 
         sharedTests(getOpts);
     });
