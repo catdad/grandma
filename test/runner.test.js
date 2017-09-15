@@ -287,7 +287,43 @@ describe('[runner]', function() {
             expect(count).to.equal(ITERATIONS * opts.options.concurrent);
         });
 
-        test('replaces each finished test with a new one');
+        test('replaces each finished test with a new one', function(clock) {
+            var CONCURRENT = 2;
+            var opts = getOpts();
+            opts.options.concurrent = CONCURRENT;
+
+            var api = lib(opts);
+            var runSpy = sinon.spy();
+            var doneSpy = sinon.spy();
+
+            api.on(api.EVENTS.RUN, runSpy);
+            api._start({}, doneSpy);
+
+            // we always call the first set immediately
+            expect(runSpy.callCount).to.equal(CONCURRENT);
+
+            var temp = 10;
+            var count = CONCURRENT;
+
+            while (temp--) {
+                count += 1;
+
+                // finish a test
+                api.emit(api.EVENTS.COMPLETE);
+
+                // finishing a test immediately starts a new one
+                expect(runSpy.callCount).to.equal(count);
+
+                // make sure there are still the expected number
+                // of total tests running
+                expect(api.runningCount).to.equal(CONCURRENT);
+            }
+
+            clock.tick(opts.options.duration);
+            finish(api);
+
+            expect(doneSpy.callCount).to.equal(1);
+        });
 
         sharedTests(getOpts);
     });
