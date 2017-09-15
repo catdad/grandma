@@ -223,8 +223,6 @@ function sharedTests(getOpts) {
         expect(api.runningCount).to.equal(0);
         expect(doneSpy.callCount).to.equal(1);
     });
-
-    test('exposes the count of tests currently running');
 }
 
 describe('[runner]', function() {
