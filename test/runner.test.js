@@ -7,31 +7,31 @@ var test = require('./_util/timeTest.js');
 
 var lib = require('../lib/runner.js');
 
+function equalize(opts, num) {
+    if (opts.options.concurrent) {
+        opts.options.concurrent = num;
+    }
+
+    if (opts.options.rate) {
+        opts.options.rate = num;
+    }
+
+    return opts;
+}
+
+function finish(api, onEach) {
+    var count = api.runningCount;
+
+    while (count--) {
+        api.emit(api.EVENTS.COMPLETE);
+
+        if (onEach) {
+            onEach(count);
+        }
+    }
+}
+
 function sharedTests(getOpts) {
-    function equalize(opts, num) {
-        if (opts.options.concurrent) {
-            opts.options.concurrent = num;
-        }
-
-        if (opts.options.rate) {
-            opts.options.rate = num;
-        }
-
-        return opts;
-    }
-
-    function finish(api, onEach) {
-        var count = api.runningCount;
-
-        while (count--) {
-            api.emit(api.EVENTS.COMPLETE);
-
-            if (onEach) {
-                onEach(count);
-            }
-        }
-    }
-
     test('does not run anything until _start is called');
 
     test('writes a header once _start is called', function(clock) {
@@ -351,15 +351,35 @@ describe('[runner]', function() {
         });
 
         test('runs a new test at the expected interval', function(clock) {
-            this.skip();
+            var COUNT = 4;
+            var SINGLE_TIME = 1000 / COUNT;
 
-            // TODO
+            var opts = getOpts();
+            opts.options.rate = 4;
+            opts.options.duration = 5000;
 
-            // do one iteration
-            // check that a spy was called once
+            var total = COUNT * (opts.options.duration / 1000);
+            var ticks = 0;
 
-            // do two iterations
-            // check that a spy was called twice
+            var api = lib(opts);
+            var runSpy = sinon.spy();
+            var doneSpy = sinon.spy();
+
+            api.on(api.EVENTS.RUN, runSpy);
+            api._start({}, doneSpy);
+
+            expect(runSpy.callCount).to.equal(0);
+
+            while (runSpy.callCount < total) {
+                clock.tick(SINGLE_TIME);
+                ticks += 1;
+
+                expect(runSpy.callCount).to.equal(ticks);
+            }
+
+            finish(api);
+
+            expect(doneSpy.callCount).to.equal(1);
         });
 
         sharedTests(getOpts);
