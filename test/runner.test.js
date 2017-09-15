@@ -224,8 +224,6 @@ function sharedTests(getOpts) {
         expect(doneSpy.callCount).to.equal(1);
     });
 
-    test('emits a run event when it is time to start a new test');
-
     test('exposes the count of tests currently running');
 }
 
