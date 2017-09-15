@@ -42,7 +42,7 @@ describe('[run-mode-concurrent]', function() {
             }
         }));
         
-        task._start({}, function() {
+        task._startX({}, function() {
             expect(run.callCount).to.equal(4);
             done();
         });
@@ -62,7 +62,7 @@ describe('[run-mode-concurrent]', function() {
         
         var task = rmc(opts);
         
-        task._start({}, function() {
+        task._startX({}, function() {
             expect(count).to.equal(5);
             done();
         });
@@ -94,7 +94,7 @@ describe('[run-mode-concurrent]', function() {
         
         var count = 0;
         
-        task._start({}, function() {
+        task._startX({}, function() {
             expect(count).to.equal(5);
             done();
         });

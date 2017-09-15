@@ -44,7 +44,7 @@ describe('[run-mode-rate]', function() {
         
         var count = 0;
         
-        task._start({}, function() {
+        task._startX({}, function() {
             expect(count).to.equal(5);
             done();
         });
