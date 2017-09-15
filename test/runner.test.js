@@ -8,6 +8,18 @@ var test = require('./_util/timeTest.js');
 var lib = require('../lib/runner.js');
 
 function sharedTests(getOpts) {
+    function equalize(opts, num) {
+        if (opts.options.concurrent) {
+            opts.options.concurrent = num;
+        }
+
+        if (opts.options.rate) {
+            opts.options.rate = num;
+        }
+
+        return opts;
+    }
+
     test('does not run anything until _start is called');
 
     test('writes a header once _start is called', function(clock) {
@@ -58,16 +70,8 @@ function sharedTests(getOpts) {
     test('can be paused and resumed', function(clock) {
         var ITERATION_COUNT = 10;
         var ITERATION_SECS = 10;
-        var opts = getOpts();
+        var opts = equalize(getOpts(), ITERATION_COUNT);
         opts.options.duration = ITERATION_SECS * 1000;
-
-        if (opts.options.concurrent) {
-            opts.options.concurrent = ITERATION_COUNT;
-        }
-
-        if (opts.options.rate) {
-            opts.options.rate = ITERATION_COUNT;
-        }
 
         var api = lib(opts);
         var runSpy = sinon.spy();
