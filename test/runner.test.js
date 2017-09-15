@@ -89,8 +89,11 @@ function sharedTests(getOpts) {
         var runSpy = sinon.spy();
         var doneSpy = sinon.spy();
 
-        api._start({}, doneSpy);
         api.on(api.EVENTS.RUN, runSpy);
+
+        expect(runSpy.callCount).to.equal(0);
+
+        api._start({}, doneSpy);
 
         function iterate(secs) {
             clock.tick(1000 * (secs || 1));
@@ -100,6 +103,15 @@ function sharedTests(getOpts) {
             if (api.runningCount) {
                 finish(api);
             }
+        }
+
+        if (opts.mode === 'concurrent') {
+            // concurrent runs tests immediately, while rate
+            // runs tests at the tail end of the interval,
+            // so to keep this test the same as possible, we will
+            // reset the spy here
+            expect(runSpy.callCount).to.equal(ITERATION_COUNT);
+            runSpy.reset();
         }
 
         expect(runSpy.callCount).to.equal(0);
