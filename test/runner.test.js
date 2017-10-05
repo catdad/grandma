@@ -490,7 +490,49 @@ describe('[runner]', function() {
             expect(doneSpy.callCount).to.equal(1);
         });
 
-        test('can have `rate` changed at runtime');
+        test('can have `rate` changed at runtime', function(clock) {
+            var actual = 0;
+            var opts = getOpts();
+            opts.options.rate = 1;
+            opts.options.duration = 50 * 1000;
+
+            var api = lib(opts);
+
+            function onRun() {
+                actual += 1;
+            }
+
+            function tick() {
+                clock.tick(1000);
+            }
+
+            api.on(api.EVENTS.RUN, onRun);
+            api._start({}, sinon.spy());
+
+            function testNumber(c) {
+                api.rate = c;
+
+                // on the first tick, we will have a mixture of the
+                // old rate and the new rate, since the rate will take
+                // effect on the next iteration after the change, so
+                // we will ignore the first tick numbers for simplicity
+                // in the test
+                tick();
+                actual = 0;
+
+                tick();
+                tick();
+                tick();
+
+                expect(actual).to.equal(3 * c);
+                expect(api.rate).to.equal(c);
+            }
+
+            [1, 2, 4, 6, 8, 12, 30].forEach(testNumber);
+
+            finish(api);
+
+        });
 
         sharedTests(getOpts);
     });
