@@ -32,7 +32,25 @@ function finish(api, onEach) {
 }
 
 function sharedTests(getOpts) {
-    test('does not run anything until _start is called');
+    test('does not run anything until _start is called', function(clock) {
+        var opts = getOpts();
+        var runSpy = sinon.spy();
+
+        var api = lib(opts);
+        api.on(api.EVENTS.RUN, runSpy);
+
+        expect(runSpy.callCount).and.to.equal(0);
+
+        clock.tick(opts.options.duration);
+
+        expect(runSpy.callCount).and.to.equal(0);
+
+        api._start({}, sinon.spy());
+
+        clock.tick(opts.options.duration);
+
+        expect(runSpy.callCount).and.to.be.above(0);
+    });
 
     test('writes a header once _start is called', function(clock) {
         var opts = getOpts();
