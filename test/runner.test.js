@@ -531,7 +531,6 @@ describe('[runner]', function() {
             [1, 2, 4, 6, 8, 12, 30].forEach(testNumber);
 
             finish(api);
-
         });
 
         sharedTests(getOpts);
