@@ -355,7 +355,49 @@ describe('[runner]', function() {
             expect(doneSpy.callCount).to.equal(1);
         });
 
-        test('can have `concurrent` changed at runtime');
+        test('can have `concurrent` changed at runtime', function(clock) {
+            var actual = 0;
+            var opts = getOpts();
+            opts.options.concurrent = 1;
+
+            var api = lib(opts);
+
+            function onRun() {
+                actual += 1;
+            }
+
+            function tick() {
+                actual -= 1;
+                api.emit(api.EVENTS.COMPLETE);
+            }
+
+            api.on(api.EVENTS.RUN, onRun);
+            api._start({}, sinon.spy());
+
+            function testNumber(c) {
+                api.concurrent = c;
+
+                expect(actual).to.equal(c);
+                expect(api.concurrent).to.equal(c);
+
+                tick();
+                tick();
+                tick();
+
+                expect(actual).to.equal(c);
+                expect(api.concurrent).to.equal(c);
+            }
+
+            expect(actual).to.equal(1);
+
+            tick();
+
+            expect(actual).to.equal(1);
+
+            [2, 4, 6, 8, 12, 30].forEach(testNumber);
+
+            finish(api);
+        });
 
         sharedTests(getOpts);
     });
