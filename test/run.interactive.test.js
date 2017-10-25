@@ -357,7 +357,7 @@ describe('[run:interactive]', function() {
 
             var output = through.obj();
             var INIT_RATE = 1000 / 10 * 2;
-            var FINAL_RATE = 3000;
+            var FINAL_RATE = 4000;
 
             var opts = {
                 // run for a long time... we'll be stopping
@@ -376,7 +376,7 @@ describe('[run:interactive]', function() {
                 // rate is less scientific, so just make
                 // sure it's more than the small amount previous
                 // tests got
-                expect(count).to.be.at.least(50);
+                expect(count).to.be.at.least(100);
                 expect(task).to.have.property('rate')
                     .and.to.equal(FINAL_RATE);
                 
@@ -391,7 +391,7 @@ describe('[run:interactive]', function() {
                 // manually stop the test so that we run quickly
                 setTimeout(function() {
                     task.stop();
-                }, 100);
+                }, 200);
             });
 
             output.on('data', function(data) {
