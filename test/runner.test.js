@@ -7,255 +7,256 @@ var test = require('./_util/timeTest.js');
 
 var lib = require('../lib/runner.js');
 
-function equalize(opts, num) {
-    if (opts.options.concurrent) {
-        opts.options.concurrent = num;
-    }
+describe('[runner]', function() {
 
-    if (opts.options.rate) {
-        opts.options.rate = num;
-    }
-
-    return opts;
-}
-
-function finish(api, onEach) {
-    var count = api.runningCount;
-
-    while (count--) {
-        api.emit(api.EVENTS.COMPLETE);
-
-        if (onEach) {
-            onEach(count);
-        }
-    }
-}
-
-function sharedTests(getOpts) {
-    test('does not run anything until _start is called', function(clock) {
-        var opts = getOpts();
-        var runSpy = sinon.spy();
-
-        var api = lib(opts);
-        api.on(api.EVENTS.RUN, runSpy);
-
-        expect(runSpy.callCount).and.to.equal(0);
-
-        clock.tick(opts.options.duration);
-
-        expect(runSpy.callCount).and.to.equal(0);
-
-        api._start({}, sinon.spy());
-
-        clock.tick(opts.options.duration);
-
-        expect(runSpy.callCount).and.to.be.above(0);
-    });
-
-    test('writes a header once _start is called', function(clock) {
-        var opts = getOpts();
-        opts.writeOutput = sinon.spy();
-
-        var api = lib(opts);
-
-        expect(opts.writeOutput.callCount).to.equal(0);
-
-        api._start({}, sinon.spy());
-
-        expect(opts.writeOutput.callCount).to.equal(1);
-
-        var args = opts.writeOutput.firstCall.args;
-
-        expect(args).to.be.an('array')
-            .and.to.have.lengthOf(1)
-            .and.to.have.property(0)
-            .and.to.deep.equal({
-                type: 'header',
-                epoch: 0,
-                duration: opts.options.duration,
-                targetCount: opts.mode === 'rate' ?
-                    Math.floor(opts.options.rate * (opts.options.duration / 1000)) :
-                    null,
-                name: null,
-                rate: opts.options.rate || null,
-                concurrent: opts.options.concurrent || null
-            });
-    });
-
-    test('writes to the debug stream with runner info', function(clock) {
-        var opts = getOpts();
-        opts.debug = sinon.spy();
-
-        var api = lib(opts);
-
-        expect(opts.debug.callCount).and.to.equal(0);
-
-        api._start({}, sinon.spy());
-
-        expect(opts.debug.callCount).and.to.equal(1);
-
-        // TODO test params too?
-    });
-
-    test('can be paused and resumed', function(clock) {
-        var ITERATION_COUNT = 10;
-        var ITERATION_SECS = 10;
-        var opts = equalize(getOpts(), ITERATION_COUNT);
-        opts.options.duration = ITERATION_SECS * 1000;
-
-        var api = lib(opts);
-        var runSpy = sinon.spy();
-        var doneSpy = sinon.spy();
-
-        api.on(api.EVENTS.RUN, runSpy);
-
-        expect(runSpy.callCount).to.equal(0);
-
-        api._start({}, doneSpy);
-
-        function iterate(secs) {
-            clock.tick(1000 * (secs || 1));
-
-            // make sure that any tests waiting to finish are finished
-            // at this point
-            if (api.runningCount) {
-                finish(api);
-            }
+    function equalize(opts, num) {
+        if (opts.options.concurrent) {
+            opts.options.concurrent = num;
         }
 
-        if (opts.mode === 'concurrent') {
-            // concurrent runs tests immediately, while rate
-            // runs tests at the tail end of the interval,
-            // so to keep this test the same as possible, we will
-            // reset the spy here
-            expect(runSpy.callCount).to.equal(ITERATION_COUNT);
-            runSpy.reset();
+        if (opts.options.rate) {
+            opts.options.rate = num;
         }
 
-        expect(runSpy.callCount).to.equal(0);
+        return opts;
+    }
 
-        iterate(1);
-
-        // expect 1x progress, since we did one iteration
-        expect(runSpy.callCount).to.equal(ITERATION_COUNT);
-
-        api.pause();
-
-        iterate(4);
-
-        // expect that no progress was made while paused
-        expect(runSpy.callCount).to.equal(ITERATION_COUNT);
-
-        api.resume();
-
-        iterate(1);
-
-        // expect 2x progress, since we resumed and did one
-        // more iteration
-        expect(runSpy.callCount).to.equal(ITERATION_COUNT * 2);
-
-        // finish up the remaining time
-        clock.tick(1000 * ITERATION_SECS);
-        finish(api);
-
-        expect(doneSpy.callCount).to.equal(1);
-    });
-
-    test('can be stopped after it has been started', function(clock) {
-        var opts = getOpts();
-
-        var api = lib(opts);
-        var doneSpy = sinon.spy();
-
-        api._start({}, doneSpy);
-        api.stop();
-
-        finish(api);
-
-        expect(doneSpy.callCount).to.equal(1);
-    });
-
-    test('can be stopped before is has been started', function(clock) {
-        var opts = getOpts();
-
-        var api = lib(opts);
-        var doneSpy = sinon.spy();
-
-        api.stop();
-        api._start({}, doneSpy);
-
-        finish(api);
-
-        expect(doneSpy.callCount).to.equal(1);
-    });
-
-    test('waits for outstanding tests to finish after duration is done', function(clock) {
-        var ITERATION_COUNT = 10;
-        var opts = equalize(getOpts(), ITERATION_COUNT);
-
-        var api = lib(opts);
-        var runSpy = sinon.spy();
-        var doneSpy = sinon.spy();
-
-        api.on(api.EVENTS.RUN, runSpy);
-        api._start({}, doneSpy);
-
-        expect(doneSpy.callCount).to.equal(0);
-
-        clock.tick(opts.options.duration);
-
-        // make sure that all expected test are still running
-        expect(runSpy.callCount).to.equal(ITERATION_COUNT);
-        expect(api.runningCount).to.equal(ITERATION_COUNT);
-        expect(doneSpy.callCount).to.equal(0);
-
-        // finish all the tests
+    function finish(api, onEach) {
         var count = api.runningCount;
+
         while (count--) {
             api.emit(api.EVENTS.COMPLETE);
-            expect(api.runningCount).to.equal(count);
+
+            if (onEach) {
+                onEach(count);
+            }
         }
+    }
 
-        expect(api.runningCount).to.equal(0);
-        expect(doneSpy.callCount).to.equal(1);
-    });
+    function sharedTests(getOpts) {
+        test('does not run anything until _start is called', function(clock) {
+            var opts = getOpts();
+            var runSpy = sinon.spy();
 
-    test('waits for outstanding tests to finish when manually stopped', function(clock) {
-        var ITERATION_COUNT = 10;
-        var opts = equalize(getOpts(), ITERATION_COUNT);
-        opts.options.duration = opts.mode === 'rate' ? 2000 : 1001;
+            var api = lib(opts);
+            api.on(api.EVENTS.RUN, runSpy);
 
-        var api = lib(opts);
-        var runSpy = sinon.spy();
-        var doneSpy = sinon.spy();
+            expect(runSpy.callCount).and.to.equal(0);
 
-        api.on(api.EVENTS.RUN, runSpy);
-        api._start({}, doneSpy);
+            clock.tick(opts.options.duration);
 
-        expect(doneSpy.callCount).to.equal(0);
+            expect(runSpy.callCount).and.to.equal(0);
 
-        clock.tick(1000);
+            api._start({}, sinon.spy());
 
-        // make sure that all expected test are still running
-        expect(runSpy.callCount).to.equal(ITERATION_COUNT);
-        expect(api.runningCount).to.equal(ITERATION_COUNT);
-        expect(doneSpy.callCount).to.equal(0);
+            clock.tick(opts.options.duration);
 
-        api.stop();
-
-        expect(doneSpy.callCount).to.equal(0);
-
-        // finish all the tests
-        finish(api, function(count) {
-            expect(api.runningCount).to.equal(count);
+            expect(runSpy.callCount).and.to.be.above(0);
         });
 
-        expect(api.runningCount).to.equal(0);
-        expect(doneSpy.callCount).to.equal(1);
-    });
-}
+        test('writes a header once _start is called', function(clock) {
+            var opts = getOpts();
+            opts.writeOutput = sinon.spy();
 
-describe('[runner]', function() {
+            var api = lib(opts);
+
+            expect(opts.writeOutput.callCount).to.equal(0);
+
+            api._start({}, sinon.spy());
+
+            expect(opts.writeOutput.callCount).to.equal(1);
+
+            var args = opts.writeOutput.firstCall.args;
+
+            expect(args).to.be.an('array')
+                .and.to.have.lengthOf(1)
+                .and.to.have.property(0)
+                .and.to.deep.equal({
+                    type: 'header',
+                    epoch: 0,
+                    duration: opts.options.duration,
+                    targetCount: opts.mode === 'rate' ?
+                        Math.floor(opts.options.rate * (opts.options.duration / 1000)) :
+                        null,
+                    name: null,
+                    rate: opts.options.rate || null,
+                    concurrent: opts.options.concurrent || null
+                });
+        });
+
+        test('writes to the debug stream with runner info', function(clock) {
+            var opts = getOpts();
+            opts.debug = sinon.spy();
+
+            var api = lib(opts);
+
+            expect(opts.debug.callCount).and.to.equal(0);
+
+            api._start({}, sinon.spy());
+
+            expect(opts.debug.callCount).and.to.equal(1);
+
+            // TODO test params too?
+        });
+
+        test('can be paused and resumed', function(clock) {
+            var ITERATION_COUNT = 10;
+            var ITERATION_SECS = 10;
+            var opts = equalize(getOpts(), ITERATION_COUNT);
+            opts.options.duration = ITERATION_SECS * 1000;
+
+            var api = lib(opts);
+            var runSpy = sinon.spy();
+            var doneSpy = sinon.spy();
+
+            api.on(api.EVENTS.RUN, runSpy);
+
+            expect(runSpy.callCount).to.equal(0);
+
+            api._start({}, doneSpy);
+
+            function iterate(secs) {
+                clock.tick(1000 * (secs || 1));
+
+                // make sure that any tests waiting to finish are finished
+                // at this point
+                if (api.runningCount) {
+                    finish(api);
+                }
+            }
+
+            if (opts.mode === 'concurrent') {
+                // concurrent runs tests immediately, while rate
+                // runs tests at the tail end of the interval,
+                // so to keep this test the same as possible, we will
+                // reset the spy here
+                expect(runSpy.callCount).to.equal(ITERATION_COUNT);
+                runSpy.reset();
+            }
+
+            expect(runSpy.callCount).to.equal(0);
+
+            iterate(1);
+
+            // expect 1x progress, since we did one iteration
+            expect(runSpy.callCount).to.equal(ITERATION_COUNT);
+
+            api.pause();
+
+            iterate(4);
+
+            // expect that no progress was made while paused
+            expect(runSpy.callCount).to.equal(ITERATION_COUNT);
+
+            api.resume();
+
+            iterate(1);
+
+            // expect 2x progress, since we resumed and did one
+            // more iteration
+            expect(runSpy.callCount).to.equal(ITERATION_COUNT * 2);
+
+            // finish up the remaining time
+            clock.tick(1000 * ITERATION_SECS);
+            finish(api);
+
+            expect(doneSpy.callCount).to.equal(1);
+        });
+
+        test('can be stopped after it has been started', function(clock) {
+            var opts = getOpts();
+
+            var api = lib(opts);
+            var doneSpy = sinon.spy();
+
+            api._start({}, doneSpy);
+            api.stop();
+
+            finish(api);
+
+            expect(doneSpy.callCount).to.equal(1);
+        });
+
+        test('can be stopped before is has been started', function(clock) {
+            var opts = getOpts();
+
+            var api = lib(opts);
+            var doneSpy = sinon.spy();
+
+            api.stop();
+            api._start({}, doneSpy);
+
+            finish(api);
+
+            expect(doneSpy.callCount).to.equal(1);
+        });
+
+        test('waits for outstanding tests to finish after duration is done', function(clock) {
+            var ITERATION_COUNT = 10;
+            var opts = equalize(getOpts(), ITERATION_COUNT);
+
+            var api = lib(opts);
+            var runSpy = sinon.spy();
+            var doneSpy = sinon.spy();
+
+            api.on(api.EVENTS.RUN, runSpy);
+            api._start({}, doneSpy);
+
+            expect(doneSpy.callCount).to.equal(0);
+
+            clock.tick(opts.options.duration);
+
+            // make sure that all expected test are still running
+            expect(runSpy.callCount).to.equal(ITERATION_COUNT);
+            expect(api.runningCount).to.equal(ITERATION_COUNT);
+            expect(doneSpy.callCount).to.equal(0);
+
+            // finish all the tests
+            var count = api.runningCount;
+            while (count--) {
+                api.emit(api.EVENTS.COMPLETE);
+                expect(api.runningCount).to.equal(count);
+            }
+
+            expect(api.runningCount).to.equal(0);
+            expect(doneSpy.callCount).to.equal(1);
+        });
+
+        test('waits for outstanding tests to finish when manually stopped', function(clock) {
+            var ITERATION_COUNT = 10;
+            var opts = equalize(getOpts(), ITERATION_COUNT);
+            opts.options.duration = opts.mode === 'rate' ? 2000 : 1001;
+
+            var api = lib(opts);
+            var runSpy = sinon.spy();
+            var doneSpy = sinon.spy();
+
+            api.on(api.EVENTS.RUN, runSpy);
+            api._start({}, doneSpy);
+
+            expect(doneSpy.callCount).to.equal(0);
+
+            clock.tick(1000);
+
+            // make sure that all expected test are still running
+            expect(runSpy.callCount).to.equal(ITERATION_COUNT);
+            expect(api.runningCount).to.equal(ITERATION_COUNT);
+            expect(doneSpy.callCount).to.equal(0);
+
+            api.stop();
+
+            expect(doneSpy.callCount).to.equal(0);
+
+            // finish all the tests
+            finish(api, function(count) {
+                expect(api.runningCount).to.equal(count);
+            });
+
+            expect(api.runningCount).to.equal(0);
+            expect(doneSpy.callCount).to.equal(1);
+        });
+    }
+
     describe('concurrent mode', function() {
         function getOpts() {
             return {
