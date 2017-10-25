@@ -8,7 +8,12 @@ var sinon = require('sinon');
 var _ = require('lodash');
 var async = require('async');
 
-var rmc = require('../lib/run-mode-concurrent.js');
+// TODO temp, while I am updating this API
+// this will need a ton of cleanup
+var helper = require('./run-mode-helper.temp.js');
+var rmc = function(opts) {
+    return helper(require('../lib/run-mode-concurrent.js'))(opts);
+};
 
 function runOpts(opts) {
     var o = _.extend({
@@ -37,7 +42,7 @@ describe('[run-mode-concurrent]', function() {
             }
         }));
         
-        task._start({}, function() {
+        task._startX({}, function() {
             expect(run.callCount).to.equal(4);
             done();
         });
@@ -57,7 +62,7 @@ describe('[run-mode-concurrent]', function() {
         
         var task = rmc(opts);
         
-        task._start({}, function() {
+        task._startX({}, function() {
             expect(count).to.equal(5);
             done();
         });
@@ -89,7 +94,7 @@ describe('[run-mode-concurrent]', function() {
         
         var count = 0;
         
-        task._start({}, function() {
+        task._startX({}, function() {
             expect(count).to.equal(5);
             done();
         });

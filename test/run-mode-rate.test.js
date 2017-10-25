@@ -7,7 +7,12 @@ var expect = require('chai').expect;
 var sinon = require('sinon');
 var _ = require('lodash');
 
-var rmr = require('../lib/run-mode-rate.js');
+// TODO temp, while I am updating this API
+// this will need a ton of cleanup
+var helper = require('./run-mode-helper.temp.js');
+var rmr = function(opts) {
+    return helper(require('../lib/run-mode-rate.js'))(opts);
+};
 
 function runOpts(opts) {
     var o = _.extend({
@@ -39,7 +44,7 @@ describe('[run-mode-rate]', function() {
         
         var count = 0;
         
-        task._start({}, function() {
+        task._startX({}, function() {
             expect(count).to.equal(5);
             done();
         });

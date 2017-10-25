@@ -26,30 +26,27 @@ describe('[run:interactive]', function() {
     
     function pauseResumeTest(task, stream) {
         var isFirstWrite = true;
-        var epoch;
-        var pausedAt;
-        var resumedAt;
+        var isPaused = false;
+        var countAtPause = 0;
 
         function kickoff() {
             setTimeout(function() {
-                pausedAt = Date.now();
+                isPaused = true;
                 task.pause();
-            }, 20);
+            }, 40);
 
             setTimeout(function() {
-                resumedAt = Date.now();
+                isPaused = false;
                 task.resume();
-            }, 50);
+            }, 180);
 
             setTimeout(function() {
                 task.stop();
-            }, 60);
+            }, 200);
         }
 
         stream.on('data', function(data) {
             if (data.type === 'header') {
-                epoch = data.epoch;
-
                 return;
             }
 
@@ -60,15 +57,16 @@ describe('[run:interactive]', function() {
                 return;
             }
 
-            if (pausedAt && !resumedAt) {
-                // this is data during a pause, make sure it
-                // is from a test that started before the pause
-                expect(data.report.fullTest.start + epoch).to.be.below(pausedAt);
+            if (isPaused) {
+                countAtPause += 1;
             }
+        });
 
-            if (resumedAt) {
-                expect(data.report.fullTest.start + epoch).to.not.be.within(pausedAt, resumedAt);
-            }
+        stream.on('end', function() {
+            // without pausing, this number would be ~100,
+            // when paused, it might be as high as 25 for concurrent
+            // but we are well above that in the test
+            expect(countAtPause).to.be.below(50);
         });
     }
     
@@ -355,12 +353,12 @@ describe('[run:interactive]', function() {
 
             var output = through.obj();
             var INIT_RATE = 1000 / 10 * 2;
-            var FINAL_RATE = 3000;
+            var FINAL_RATE = 4000;
 
             var opts = {
-                // we expect this to execute exactly 3 times
-                // without changing the rate at runtime
-                duration: '100ms',
+                // run for a long time... we'll be stopping
+                // it manually anyway
+                duration: '5000ms',
                 rate: INIT_RATE,
                 test: RATE_TEST,
                 output: output
@@ -374,23 +372,28 @@ describe('[run:interactive]', function() {
                 // rate is less scientific, so just make
                 // sure it's more than the small amount previous
                 // tests got
-                expect(count).to.be.at.least(28);
+                expect(count).to.be.at.least(100);
                 expect(task).to.have.property('rate')
                     .and.to.equal(FINAL_RATE);
                 
                 done();
             });
             
-            var increateConcurrent = _.once(function() {
+            var increaseConcurrent = _.once(function() {
                 // a very large number, since we are running
                 // the test for a very short time
                 task.rate = FINAL_RATE;
+
+                // manually stop the test so that we run quickly
+                setTimeout(function() {
+                    task.stop();
+                }, 200);
             });
 
             output.on('data', function(data) {
                 if (data.report) {
                     count += 1;
-                    increateConcurrent();
+                    increaseConcurrent();
                 }
             });
 
