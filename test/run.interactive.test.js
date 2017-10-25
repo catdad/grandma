@@ -26,20 +26,19 @@ describe('[run:interactive]', function() {
     
     function pauseResumeTest(task, stream) {
         var isFirstWrite = true;
-        var epoch;
-        var pausedAt;
-        var resumedAt;
+        var isPaused = false;
+        var countAtPause = 0;
 
         function kickoff() {
             setTimeout(function() {
+                isPaused = true;
                 task.pause();
-                pausedAt = Date.now();
-            }, 50);
+            }, 40);
 
             setTimeout(function() {
-                resumedAt = Date.now();
+                isPaused = false;
                 task.resume();
-            }, 150);
+            }, 180);
 
             setTimeout(function() {
                 task.stop();
@@ -48,8 +47,6 @@ describe('[run:interactive]', function() {
 
         stream.on('data', function(data) {
             if (data.type === 'header') {
-                epoch = data.epoch;
-
                 return;
             }
 
@@ -60,17 +57,16 @@ describe('[run:interactive]', function() {
                 return;
             }
 
-            if (pausedAt && !resumedAt) {
-                // this is data during a pause, make sure it
-                // is from a test that started before the pause
-                expect(data.report.fullTest.start + epoch)
-                    .to.be.below(pausedAt + 5);
+            if (isPaused) {
+                countAtPause += 1;
             }
+        });
 
-            if (resumedAt) {
-                expect(data.report.fullTest.start + epoch)
-                    .to.be.above(resumedAt - 5);
-            }
+        stream.on('end', function() {
+            // without pausing, this number would be ~100,
+            // when paused, it might be as high as 25 for concurrent
+            // but we are well above that in the test
+            expect(countAtPause).to.be.below(50);
         });
     }
     
