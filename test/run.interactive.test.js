@@ -34,16 +34,16 @@ describe('[run:interactive]', function() {
             setTimeout(function() {
                 pausedAt = Date.now();
                 task.pause();
-            }, 20);
+            }, 50);
 
             setTimeout(function() {
                 resumedAt = Date.now();
                 task.resume();
-            }, 50);
+            }, 100);
 
             setTimeout(function() {
                 task.stop();
-            }, 60);
+            }, 150);
         }
 
         stream.on('data', function(data) {
@@ -67,7 +67,8 @@ describe('[run:interactive]', function() {
             }
 
             if (resumedAt) {
-                expect(data.report.fullTest.start + epoch).to.not.be.within(pausedAt, resumedAt);
+                expect(data.report.fullTest.start + epoch)
+                    .to.not.be.within(pausedAt, resumedAt);
             }
         });
     }
