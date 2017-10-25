@@ -69,7 +69,7 @@ describe('[run:interactive]', function() {
 
             if (resumedAt) {
                 expect(data.report.fullTest.start + epoch)
-                    .to.not.be.within(pausedAt, resumedAt);
+                    .to.be.above(resumedAt - 5);
             }
         });
     }
