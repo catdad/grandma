@@ -359,9 +359,9 @@ describe('[run:interactive]', function() {
             var FINAL_RATE = 3000;
 
             var opts = {
-                // we expect this to execute exactly 3 times
-                // without changing the rate at runtime
-                duration: '100ms',
+                // run for a long time... we'll be stopping
+                // it manually anyway
+                duration: '5000ms',
                 rate: INIT_RATE,
                 test: RATE_TEST,
                 output: output
@@ -375,23 +375,28 @@ describe('[run:interactive]', function() {
                 // rate is less scientific, so just make
                 // sure it's more than the small amount previous
                 // tests got
-                expect(count).to.be.at.least(28);
+                expect(count).to.be.at.least(50);
                 expect(task).to.have.property('rate')
                     .and.to.equal(FINAL_RATE);
                 
                 done();
             });
             
-            var increateConcurrent = _.once(function() {
+            var increaseConcurrent = _.once(function() {
                 // a very large number, since we are running
                 // the test for a very short time
                 task.rate = FINAL_RATE;
+
+                // manually stop the test so that we run quickly
+                setTimeout(function() {
+                    task.stop();
+                }, 100);
             });
 
             output.on('data', function(data) {
                 if (data.report) {
                     count += 1;
-                    increateConcurrent();
+                    increaseConcurrent();
                 }
             });
 
