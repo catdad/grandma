@@ -32,18 +32,18 @@ describe('[run:interactive]', function() {
 
         function kickoff() {
             setTimeout(function() {
-                pausedAt = Date.now();
                 task.pause();
+                pausedAt = Date.now();
             }, 50);
 
             setTimeout(function() {
                 resumedAt = Date.now();
                 task.resume();
-            }, 100);
+            }, 150);
 
             setTimeout(function() {
                 task.stop();
-            }, 150);
+            }, 200);
         }
 
         stream.on('data', function(data) {
@@ -63,7 +63,8 @@ describe('[run:interactive]', function() {
             if (pausedAt && !resumedAt) {
                 // this is data during a pause, make sure it
                 // is from a test that started before the pause
-                expect(data.report.fullTest.start + epoch).to.be.below(pausedAt + 5);
+                expect(data.report.fullTest.start + epoch)
+                    .to.be.below(pausedAt + 5);
             }
 
             if (resumedAt) {
