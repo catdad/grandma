@@ -63,7 +63,7 @@ describe('[run:interactive]', function() {
             if (pausedAt && !resumedAt) {
                 // this is data during a pause, make sure it
                 // is from a test that started before the pause
-                expect(data.report.fullTest.start + epoch).to.be.below(pausedAt);
+                expect(data.report.fullTest.start + epoch).to.be.below(pausedAt + 5);
             }
 
             if (resumedAt) {
