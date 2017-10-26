@@ -31,72 +31,72 @@ describe('[report cli]', function() {
             done();
         };
     }
-    
+
     describe('#default', function() {
         it('prints out text to standard out', function(done) {
             grandma('report', data(), textTestAssertions(done));
         });
     });
-    
+
     describe('#text', function() {
         it('prints out text to standard out', function(done) {
             grandma('report --type text', data(), textTestAssertions(done));
         });
     });
-    
+
     describe('#json', function() {
         it('prints out json to standard out', function(done) {
             grandma('report --type json', data(), function(err, stdout, stderr) {
                 if (err) {
                     return done(err);
                 }
-                
+
                 expect(stdout).to.be.a('string')
                     .and.to.have.length.above(1);
-                
+
                 var obj = JSON.parse(stdout);
-                
+
                 expect(obj).to.deep.equal(DATA.results);
-                
+
                 done();
             });
         });
     });
-    
+
     describe('#plot', function() {
         it('prints out an html page to standard out', function(done) {
             grandma('report --type plot', data(), function(err, stdout, stderr) {
                 if (err) {
                     return done(err);
                 }
-                
+
                 expect(stdout.trim())
                     .to.match(/^\<\!DOCTYPE html\>/)
                     .and.to.match(/<html/)
                     .and.to.match(/\<\/html\>$/);
-                
+
                 expect(stderr).to.equal('');
-                
+
                 done();
             });
         });
     });
-    
+
     describe('#box', function() {
         it('prints out a box plot to standard out', function(done) {
             grandma('report --type box', data(), function(err, stdout, stderr) {
                 if (err) {
                     return done(err);
                 }
-                
+
                 // remove the last line inserted by the CLI
                 expectations.box.isValid(stdout.replace(/\n$/, ''));
-                
+
                 expect(stderr).to.equal('');
-                
+
                 done();
             });
         });
     });
-    
+
 });

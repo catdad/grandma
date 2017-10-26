@@ -20,7 +20,7 @@ function runOpts(opts) {
         concurrent: 1,
         duration: 1000
     }, opts ? opts.opts : {});
-    
+
     return _.extend({
         debug: sinon.spy(),
         options: o,
@@ -34,22 +34,22 @@ function runOpts(opts) {
 describe('[run-mode-concurrent]', function() {
     it('starts a defined number of concurrent tests immediately', function(done) {
         var run = sinon.spy();
-        
+
         var task = rmc(runOpts({
             runTest: run,
             opts: {
                 concurrent: 4
             }
         }));
-        
+
         task._startX({}, function() {
             expect(run.callCount).to.equal(4);
             done();
         });
-        
+
         task.stop();
     });
-    
+
     it('starts a new test when the tick event fires', function(done) {
         var opts = runOpts({
             opts: {
@@ -57,64 +57,64 @@ describe('[run-mode-concurrent]', function() {
             },
             getRunningCount: function() { return 0; }
         });
-        
+
         var count = 0;
-        
+
         var task = rmc(opts);
-        
+
         task._startX({}, function() {
             expect(count).to.equal(5);
             done();
         });
-        
+
         opts.runTest.reset();
-        
+
         async.timesSeries(5, function(idx, next) {
             count += 1;
             expect(opts.runTest.callCount).to.equal(0);
-            
+
             setTimeout(function() {
                 opts.repeater.emit('tick');
                 expect(opts.runTest.callCount).to.equal(1);
-                
+
                 opts.runTest.reset();
                 next();
             }, 0);
         }, task.stop);
     });
-    
+
     it('can run indefinitely when using a value of 0', function(done) {
         var opts = runOpts({
             opts: {
                 duration: 0
             }
         });
-        
+
         var task = rmc(opts);
-        
+
         var count = 0;
-        
+
         task._startX({}, function() {
             expect(count).to.equal(5);
             done();
         });
-        
+
         var interval = setInterval(function() {
             if (count === 5) {
                 clearInterval(interval);
                 task.stop();
-                
+
                 return;
             }
-            
+
             count += 1;
             opts.repeater.emit('tick');
         }, 2);
     });
-    
+
     it('waits for all tests to finish running when the duration is reached');
-    
+
     it('calls the debug method with concurrency information');
-    
+
     it('can have concurrency changes at runtime');
 });

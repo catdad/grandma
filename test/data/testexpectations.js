@@ -1,5 +1,6 @@
 /* eslint-env mocha */
 /* eslint-disable no-unused-expressions, max-nested-callbacks, max-len */
+
 var expect = require('chai').expect;
 
 function tableRegex() {
@@ -19,7 +20,7 @@ module.exports = {
             expect(str).to.match(tableRegex('fullTest', '16.298ms', '14.692ms', '19.802ms', '19.802ms', '19.802ms'));
             expect(str).to.match(tableRegex('one', '2.651ms', '2.738ms', '2.750ms', '2.750ms', '2.750ms'));
             expect(str).to.match(tableRegex('two', '4.936ms', '4.256ms', '6.400ms', '6.400ms', '6.400ms'));
-            
+
             expect(str).to.match(tableRegex('Successes:', '3'));
             expect(str).to.match(tableRegex('Failures:', '0'));
         },
@@ -61,7 +62,7 @@ module.exports = {
             var str1 = strArr[1];
             var str2 = strArr[2];
             var str3 = strArr[3];
-            
+
             expect(str0).to.match(/(^Full Test:$)|(^Category:)/);
 
             expect(str1).to.match(/^\s{1,}\+\-{0,}\+\-{0,}\+\s{1,}$/);
