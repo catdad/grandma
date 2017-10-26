@@ -3,22 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <title>Grandma Report</title>
-    
+
     <!-- used for the scatter plot -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/rickshaw/1.6.0/rickshaw.min.css" type="text/css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.3.11/d3.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/rickshaw/1.6.0/rickshaw.min.js"></script>
-    
+
     <!-- used for the line graph -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/buttons.css" type="text/css">
     <script src="http://cdnjs.cloudflare.com/ajax/libs/dygraph/1.1.1/dygraph-combined.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.5.0-beta4/html2canvas.js"></script>
-    
+
     <style>
         /*=include style.css*/
     </style>
-    
+
     <script>
         (function(data, title) {
             window.DATA = data;
@@ -26,7 +26,7 @@
                 if (!memo.includes(val.name)) {
                     memo.push(val.name);
                 }
-                
+
                 return memo;
             }, []);
             window.TITLE = title;
@@ -42,7 +42,7 @@
         <menuitem label="stats" x-for="stats-section">Stats</menuitem>
         <menuitem label="stats" x-for="metadata-section">Metadata</menuitem>
     </menu>
-    
+
     <section id="line-graph-section">
         <div id="line-graph-container">
             <div id="line-graph"></div>
@@ -53,29 +53,29 @@
 
         <a href="" id="line-graph-download"></a>
     </section>
-    
+
     <section id="scatter-plot-section" class="hide">
         <div id="scatter-plot-title"></div>
         <div id="scatter-plot-container">
             <div id="scatter-plot-y-axis"></div>
             <div id="scatter-plot"></div>
         </div>
-        
+
         <div class="scatter-plot-legend-container">
             <div id="legend"></div>
         </div>
 
         <a href="" id="scatter-plot-download"></a>
     </section>
-    
+
     <section id="stats-section" class="hide">
         <pre>{{textStats}}</pre>
     </section>
-    
+
     <section id="metadata-section" class="hide">
         <pre>{{metadata}}</pre>
     </section>
-    
+
     <script>
         //=include scatter-plot.js
     </script>

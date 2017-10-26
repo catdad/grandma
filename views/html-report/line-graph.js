@@ -6,10 +6,10 @@ window.addEventListener('load', function() {
     var plotDiv = document.querySelector('#line-graph');
     var buttons = document.querySelector('#line-graph-buttons');
     var link = document.querySelector('#line-graph-download');
-    
+
     var TEST = 'fullTest';
     var TESTERR = TEST + '_Err';
-    
+
     // initialize the download button
     (function(download) {
         download.innerHTML = 'Download PNG';
@@ -25,7 +25,7 @@ window.addEventListener('load', function() {
 
         buttons.appendChild(download);
     }(document.createElement('button')));
-    
+
     function createChart() {
         var yUnits;
         var yDivisor;
@@ -82,11 +82,11 @@ window.addEventListener('load', function() {
             dataLabels = ['Start', TESTERR].concat(labels.filter(function(name) {
                 return name !== TESTERR;
             }));
-            
+
             function idx(label) {
                 return dataLabels.indexOf(label);
             }
-            
+
             return dirtyData
 
                 // build individual record arrays
@@ -96,7 +96,7 @@ window.addEventListener('load', function() {
                     if ([TEST, TESTERR].includes(val.name)) {
                         memo[val.id][0] = val.x;
                     }
-                
+
                     if (val.name === TEST) {
                         memo[val.id][idx(TESTERR)] = null;
                     } else if (val.name === TESTERR) {
@@ -125,7 +125,7 @@ window.addEventListener('load', function() {
             window.DATA,
             window.LABELS
         ));
-        
+
         var plot = new Dygraph(
             plotDiv,
             data,
@@ -182,9 +182,9 @@ window.addEventListener('load', function() {
         if (createdOnce === true) {
             return;
         }
-        
+
         createdOnce = true;
-        
+
         createChart();
     };
 });
