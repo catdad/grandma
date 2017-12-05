@@ -15,7 +15,7 @@
 [codeclimate-cov.svg]: https://codeclimate.com/github/catdad/grandma/badges/coverage.svg
 [codeclimate-cov]: https://codeclimate.com/github/catdad/grandma/coverage
 
-[codeclimate-gpa.svg]: https://codeclimate.com/github/catdad/grandma/badges/gpa.svg
+[codeclimate-gpa.svg]: https://img.shields.io/codeclimate/maintainability/catdad/grandma.svg
 [codeclimate-gpa]: https://codeclimate.com/github/catdad/grandma
 
 [npm-download.svg]: https://img.shields.io/npm/dm/grandma.svg
