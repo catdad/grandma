@@ -17,6 +17,9 @@ function data(name) {
 }
 
 describe('[report cli]', function() {
+    // CIs can be a bit slow... allow some extra time here
+    this.timeout(4000);
+
     function textTestAssertions(done) {
         return function(err, stdout, stderr) {
             if (err) {
