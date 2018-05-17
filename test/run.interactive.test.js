@@ -19,37 +19,34 @@ describe('[run:interactive]', function() {
         path: path.resolve(__dirname, '../fixtures/test.small.js'),
         name: 'test.small'
     };
-    
+
     function increaseTimeout(that) {
         that.timeout(1000 * 5);
     }
-    
+
     function pauseResumeTest(task, stream) {
         var isFirstWrite = true;
-        var epoch;
-        var pausedAt;
-        var resumedAt;
+        var isPaused = false;
+        var countAtPause = 0;
 
         function kickoff() {
             setTimeout(function() {
-                pausedAt = Date.now();
+                isPaused = true;
                 task.pause();
-            }, 20);
+            }, 40);
 
             setTimeout(function() {
-                resumedAt = Date.now();
+                isPaused = false;
                 task.resume();
-            }, 50);
+            }, 180);
 
             setTimeout(function() {
                 task.stop();
-            }, 60);
+            }, 200);
         }
 
         stream.on('data', function(data) {
             if (data.type === 'header') {
-                epoch = data.epoch;
-
                 return;
             }
 
@@ -60,21 +57,22 @@ describe('[run:interactive]', function() {
                 return;
             }
 
-            if (pausedAt && !resumedAt) {
-                // this is data during a pause, make sure it
-                // is from a test that started before the pause
-                expect(data.report.fullTest.start + epoch).to.be.below(pausedAt);
-            }
-
-            if (resumedAt) {
-                expect(data.report.fullTest.start + epoch).to.not.be.within(pausedAt, resumedAt);
+            if (isPaused) {
+                countAtPause += 1;
             }
         });
+
+        stream.on('end', function() {
+            // without pausing, this number would be ~100,
+            // when paused, it might be as high as 25 for concurrent
+            // but we are well above that in the test
+            expect(countAtPause).to.be.below(50);
+        });
     }
-    
+
     it('runs tests indefinitely with a duration of 0', function(done) {
         increaseTimeout(this);
-        
+
         var output = through.obj();
 
         var opts = {
@@ -111,20 +109,20 @@ describe('[run:interactive]', function() {
             }
         });
     });
-    
+
     it('runs tests indefinitely with a duration string of 0s', function(done) {
         increaseTimeout(this);
-        
+
         var output = through.obj();
         var lines = [];
-        
+
         var opts = {
             duration: '0s',
             concurrent: 2,
             test: CONCURRENT_TEST,
             output: output
         };
-        
+
         var task = run(opts, function(err) {
             if (err) {
                 return done(err);
@@ -150,7 +148,7 @@ describe('[run:interactive]', function() {
             }
         });
     });
-    
+
     describe('concurrent mode', function() {
         it('exposes the correct API', function(done) {
             var api = run({
@@ -162,22 +160,22 @@ describe('[run:interactive]', function() {
                 if (err) {
                     return done(err);
                 }
-                
+
                 expect(api).to.have.all.keys([
                     'concurrent',
                     'stop',
                     'pause',
                     'resume'
                 ]);
-                
+
                 [api.stop, api.resume, api.pause].forEach(function(val) {
                     expect(val).to.be.a('function');
                 });
-                
+
                 done();
             });
         });
-        
+
         it('can have concurrency changed at runtime', function(done) {
             increaseTimeout(this);
 
@@ -198,11 +196,11 @@ describe('[run:interactive]', function() {
                 if (err) {
                     return done(err);
                 }
-                
+
                 expect(count).to.be.at.least(FINAL_C);
                 expect(task).to.have.property('concurrent')
                     .and.to.equal(FINAL_C);
-                
+
                 done();
             });
 
@@ -220,7 +218,7 @@ describe('[run:interactive]', function() {
             expect(task).to.have.property('concurrent')
                 .and.to.equal(INIT_C);
         });
-        
+
         it('can be stopped immediately', function(done) {
             var count = 0;
 
@@ -244,15 +242,15 @@ describe('[run:interactive]', function() {
                 if (err) {
                     return done(err);
                 }
-                
+
                 expect(count).to.equal(0);
                 done();
             });
-            
+
             expect(task).to.have.property('stop').and.to.be.a('function');
             task.stop();
         });
-        
+
         it('can be stopped while running', function(done) {
             var count = 0;
 
@@ -270,14 +268,14 @@ describe('[run:interactive]', function() {
                 if (err) {
                     return done(err);
                 }
-                
+
                 // we are stopping after the first concurrent
                 // run, so we will have exactly the 10 that were
                 // already started
                 expect(count).to.equal(10);
                 done();
             });
-            
+
             var stopOnce = _.once(function() {
                 task.stop();
             });
@@ -303,24 +301,24 @@ describe('[run:interactive]', function() {
             expect(function() {
                 task.concurrent = 3.14;
             }).to.throw(TypeError, 'concurrent must be a positive non-zero integer');
-            
+
             task.stop();
         });
 
         it('can be paused and resumed', function(done) {
             var output = through.obj();
-            
+
             var task = run({
                 duration: 5000,
                 concurrent: 10,
                 test: CONCURRENT_TEST,
                 output: output
             }, done);
-            
+
             pauseResumeTest(task, output);
         });
     });
-    
+
     describe('rate mode', function() {
         it('exposes the correct API', function(done) {
             var api = run({
@@ -332,22 +330,22 @@ describe('[run:interactive]', function() {
                 if (err) {
                     return done(err);
                 }
-                
+
                 expect(api).to.have.all.keys([
                     'rate',
                     'stop',
                     'pause',
                     'resume'
                 ]);
-                
+
                 [api.stop, api.resume, api.pause].forEach(function(val) {
                     expect(val).to.be.a('function');
                 });
-                
+
                 done();
             });
         });
-        
+
         it('can have rate changed at runtime', function(done) {
             increaseTimeout(this);
 
@@ -355,12 +353,12 @@ describe('[run:interactive]', function() {
 
             var output = through.obj();
             var INIT_RATE = 1000 / 10 * 2;
-            var FINAL_RATE = 3000;
+            var FINAL_RATE = 4000;
 
             var opts = {
-                // we expect this to execute exactly 3 times
-                // without changing the rate at runtime
-                duration: '100ms',
+                // run for a long time... we'll be stopping
+                // it manually anyway
+                duration: '5000ms',
                 rate: INIT_RATE,
                 test: RATE_TEST,
                 output: output
@@ -370,34 +368,39 @@ describe('[run:interactive]', function() {
                 if (err) {
                     return done(err);
                 }
-                
+
                 // rate is less scientific, so just make
                 // sure it's more than the small amount previous
                 // tests got
-                expect(count).to.be.at.least(28);
+                expect(count).to.be.at.least(100);
                 expect(task).to.have.property('rate')
                     .and.to.equal(FINAL_RATE);
-                
+
                 done();
             });
-            
-            var increateConcurrent = _.once(function() {
+
+            var increaseConcurrent = _.once(function() {
                 // a very large number, since we are running
                 // the test for a very short time
                 task.rate = FINAL_RATE;
+
+                // manually stop the test so that we run quickly
+                setTimeout(function() {
+                    task.stop();
+                }, 200);
             });
 
             output.on('data', function(data) {
                 if (data.report) {
                     count += 1;
-                    increateConcurrent();
+                    increaseConcurrent();
                 }
             });
 
             expect(task).to.have.property('rate')
                 .and.to.equal(INIT_RATE);
         });
-        
+
         it('can be stopped immediately', function(done) {
             var count = 0;
 
@@ -421,15 +424,15 @@ describe('[run:interactive]', function() {
                 if (err) {
                     return done(err);
                 }
-                
+
                 expect(count).to.equal(0);
                 done();
             });
-            
+
             expect(task).to.have.property('stop').and.to.be.a('function');
             task.stop();
         });
-        
+
         it('can be stopped while running', function(done) {
             var count = 0;
 
@@ -447,7 +450,7 @@ describe('[run:interactive]', function() {
                 if (err) {
                     return done(err);
                 }
-                
+
                 // the test probably started executing a second
                 // time already by the time we get the first
                 // report, so that will complete as well before
@@ -456,7 +459,7 @@ describe('[run:interactive]', function() {
                 expect(count).to.be.at.least(1);
                 done();
             });
-            
+
             var stopOnce = _.once(function() {
                 task.stop();
             });
@@ -468,7 +471,7 @@ describe('[run:interactive]', function() {
                 }
             });
         });
-        
+
         it('throws if the runtime rate value is set to a non-number', function(done) {
             var output = through.obj();
 
@@ -478,27 +481,27 @@ describe('[run:interactive]', function() {
                 test: RATE_TEST,
                 output: output
             }, done);
-            
+
             expect(function() {
                 task.rate = 'pineapples';
             }).to.throw(TypeError, 'rate must be a positive number');
-            
+
             task.stop();
         });
 
         it('can be paused and resumed', function(done) {
             var output = through.obj();
-            
+
             var task = run({
                 duration: 5000,
                 rate: 100,
                 test: RATE_TEST,
                 output: output
             }, done);
-            
+
             pauseResumeTest(task, output);
         });
-        
+
     });
-    
+
 });

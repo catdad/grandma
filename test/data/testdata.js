@@ -14,7 +14,7 @@ var TESTDATACATEGORIES = TESTDATA.map(function(data, idx) {
     if (data.type !== 'report') {
         return data;
     }
-    
+
     return _.merge(_.cloneDeep(data), {
         categories: [(idx % 3).toString()]
     });

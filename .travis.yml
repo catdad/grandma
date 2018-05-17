@@ -13,12 +13,6 @@ node_js:
 script:
   # run tests with the version of node from the matrix
   - npm test
-  # install version 6 in order to perform linting
-  - nvm install 6
-  - nvm use 6
-  - echo "node `node -v`"
-  - echo "npm `npm -v`"
-  - npm run lint
 
 addons:
   code_climate:
@@ -31,7 +25,12 @@ after_script:
 
 jobs:
   include:
+    - stage: lint
+      node_js: '6.9'
+      script: npm run lint
+      after_script: skip
     - stage: npm release
+      if: tag IS present
       node_js: '6.9'
       script: echo "Deploying to npm ..."
       after_script: skip

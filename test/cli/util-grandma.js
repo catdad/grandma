@@ -9,7 +9,7 @@ var unstyle = require('unstyle').string;
 module.exports = function run(command, input, done) {
     var task = util.format('%s "%s" %s', 'node', path.join('bin', 'cli.js'), command);
     var stream = through();
-    
+
     shellton({
         task: task,
         cwd: root,
@@ -21,10 +21,10 @@ module.exports = function run(command, input, done) {
         if (err) {
             return done(err, stdout, stderr);
         }
-        
+
         done(null, unstyle(stdout), unstyle(stderr));
     });
-    
+
     stream.write(input);
     stream.end();
 };
