@@ -137,7 +137,11 @@ describe('[run-utils]', function() {
         }
 
         it('can write existing Buffer data', function(done) {
-            var DATA = new Buffer('stuff and things');
+            var DATA = (function(str) {
+                return Buffer.from ?
+                    Buffer.from(str) :
+                    new Buffer(str);
+            }('stuff and things'));
 
             var streams = getStreams(through());
 
