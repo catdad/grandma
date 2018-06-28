@@ -58,6 +58,20 @@ describe('[run]', function() {
         ]);
     }
 
+    function testReportProps(reports) {
+        expect(reports).to.be.an('array').and.to.have.length.above(0);
+
+        reports.forEach(function(report) {
+            expect(report).to.have.all.keys([
+                'type',
+                'id',
+                'report',
+                'categories',
+                'data'
+            ]);
+        });
+    }
+
     it('runs tests in rate mode, outputting to a stream', function(done) {
         increaseTimeout(this);
 
@@ -89,6 +103,7 @@ describe('[run]', function() {
                 .to.have.property('name')
                 .and.to.equal('test.small');
             testHeaderProps(header);
+            testReportProps(lines);
         }, done);
     });
 
@@ -123,6 +138,7 @@ describe('[run]', function() {
                 .to.have.property('name')
                 .and.to.equal('test.concurrent');
             testHeaderProps(header);
+            testReportProps(lines);
         }, done);
     });
 
@@ -149,6 +165,7 @@ describe('[run]', function() {
             var header = lines.shift();
             expect(header).to.have.property('type').and.to.equal('header');
             testHeaderProps(header);
+            testReportProps(lines);
 
             var threadCounts = lines.reduce(function(a, b) {
                 a[b.id] += 1;
