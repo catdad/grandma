@@ -372,6 +372,55 @@ describe('[run]', function() {
         });
     });
 
+    it('reports data assigned to the data bucket during tests', function(done) {
+        increaseTimeout(this);
+
+        var output = through.obj();
+        var ended = false;
+
+        var opts = {
+            duration: 10,
+            concurrent: 1,
+            test: {
+                path: path.resolve(__dirname, '../fixtures/data.js'),
+                name: 'test.concurrent'
+            },
+            output: output
+        };
+
+        output.on('end', function() {
+            ended = true;
+        });
+
+        output.on('data', function(data) {
+            expect(data).to.be.an('object');
+
+            if (data.type !== 'report') {
+                return;
+            }
+
+            // test a prop to make sure it's tere
+            expect(data)
+                .to.have.property('data')
+                .and.to.deep.equal({
+                    beforeAll: 1,
+                    beforeEach: 2,
+                    test: 3,
+                    afterEach: 4,
+                    str: 'string value'
+                });
+        });
+
+        run(opts, function(err) {
+            if (err) {
+                return done(err);
+            }
+
+            expect(ended).to.equal(true);
+            done();
+        });
+    });
+
     it('errors if the test file does not exist', function(done) {
         var FILE = 'non-existent-test-file-' + Math.random().toString().replace(/\./g, '') + '.js';
 
