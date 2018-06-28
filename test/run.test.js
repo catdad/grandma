@@ -58,6 +58,20 @@ describe('[run]', function() {
         ]);
     }
 
+    function testReportProps(reports) {
+        expect(reports).to.be.an('array').and.to.have.length.above(0);
+
+        reports.forEach(function(report) {
+            expect(report).to.have.all.keys([
+                'type',
+                'id',
+                'report',
+                'categories',
+                'data'
+            ]);
+        });
+    }
+
     it('runs tests in rate mode, outputting to a stream', function(done) {
         increaseTimeout(this);
 
@@ -89,6 +103,7 @@ describe('[run]', function() {
                 .to.have.property('name')
                 .and.to.equal('test.small');
             testHeaderProps(header);
+            testReportProps(lines);
         }, done);
     });
 
@@ -123,6 +138,7 @@ describe('[run]', function() {
                 .to.have.property('name')
                 .and.to.equal('test.concurrent');
             testHeaderProps(header);
+            testReportProps(lines);
         }, done);
     });
 
@@ -149,6 +165,7 @@ describe('[run]', function() {
             var header = lines.shift();
             expect(header).to.have.property('type').and.to.equal('header');
             testHeaderProps(header);
+            testReportProps(lines);
 
             var threadCounts = lines.reduce(function(a, b) {
                 a[b.id] += 1;
@@ -360,6 +377,55 @@ describe('[run]', function() {
             expect(data)
                 .to.have.property('categories')
                 .and.to.deep.equal(['one', 'two', 'three', 'four', 'five']);
+        });
+
+        run(opts, function(err) {
+            if (err) {
+                return done(err);
+            }
+
+            expect(ended).to.equal(true);
+            done();
+        });
+    });
+
+    it('reports data assigned to the data bucket during tests', function(done) {
+        increaseTimeout(this);
+
+        var output = through.obj();
+        var ended = false;
+
+        var opts = {
+            duration: 10,
+            concurrent: 1,
+            test: {
+                path: path.resolve(__dirname, '../fixtures/data.js'),
+                name: 'test.concurrent'
+            },
+            output: output
+        };
+
+        output.on('end', function() {
+            ended = true;
+        });
+
+        output.on('data', function(data) {
+            expect(data).to.be.an('object');
+
+            if (data.type !== 'report') {
+                return;
+            }
+
+            // test a prop to make sure it's tere
+            expect(data)
+                .to.have.property('data')
+                .and.to.deep.equal({
+                    beforeAll: 1,
+                    beforeEach: 2,
+                    test: 3,
+                    afterEach: 4,
+                    str: 'string value'
+                });
         });
 
         run(opts, function(err) {
