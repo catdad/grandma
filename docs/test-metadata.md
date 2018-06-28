@@ -2,7 +2,7 @@
 
 >  [Table of Contents](readme.md)
 
-For the advanced users, you may choose to use `grandma` reports for more robust statistical calculations (parse at your own risk). In those cases, you may wish to have additional metadata output in each report entry. You can do that using the `data` object in the test context. Here is an example:
+For the advanced users, you may choose to use `grandma` reports for more robust statistical calculations (parse at your own risk). In those cases, you may wish to have additional metadata output in each report entry. You can do that using the `data` object in the test context. Anything stored in `data` will be output to the final report line in the test output. Here is an example:
 
 ```javascript
 module.exports = {
