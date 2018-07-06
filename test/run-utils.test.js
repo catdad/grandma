@@ -6,6 +6,7 @@ var zlib = require('zlib');
 var expect = require('chai').expect;
 var through = require('through2');
 var es = require('event-stream');
+var _ = require('lodash');
 
 // module we are using as a helper
 var isStream = require('../lib/is-stream.js');
@@ -86,6 +87,8 @@ describe('[run-utils]', function() {
         it('triggers the "fullEnd" event when the data ends', function(done) {
             var DATA = 'pineapples';
             var target = through();
+
+            target.on('data', _.noop);
 
             var wrapped = runUtils({
                 output: target
