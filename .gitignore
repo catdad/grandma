@@ -47,3 +47,4 @@ npm-debug.log
 *.cmd
 coverage/
 *.log
+temp/
