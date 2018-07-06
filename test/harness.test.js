@@ -12,6 +12,7 @@ var mkdirp = require('mkdirp');
 var del = require('del');
 
 var testdata = require('./data/testdata.js');
+var expectations = require('./data/testexpectations.js');
 
 describe('[harness]', function() {
     function shell(file, command) {
@@ -119,15 +120,37 @@ describe('[harness]', function() {
             });
         }
 
+        function read(filepath) {
+            return new Promise(function(resolve, reject) {
+                fs.readFile(filepath, 'utf8', function(err, data) {
+                    if (err) {
+                        return reject(err);
+                    }
+
+                    return resolve(data);
+                });
+            });
+        }
+
         beforeEach(mockData);
 
         var template = 'allows the process to correctly exit when generating %s report';
-        ['text', 'plot', 'html', 'json', 'box'].forEach(function(report) {
-            it(util.format(template, report), function() {
-                return shell('api-report.js', '--in temp/testdata.log --out temp/report.' + report)
+        ['text', 'plot', 'html', 'json', 'box'].forEach(function(type) {
+            it(util.format(template, type), function() {
+                var out = 'report.' + type;
+                var args = '--in temp/testdata.log --out temp/' + out + ' --type ' + type;
+
+                return shell('api-report.js', args)
                 .then(function(io) {
                     expect(io.stdout.trim()).to.equal('done');
                     expect(io.stderr.trim()).to.equal('');
+                })
+                .then(function() {
+                    var filepath = path.resolve(root, 'temp', out);
+                    return read(filepath);
+                })
+                .then(function(report) {
+                    expectations[type].test(report.replace(/\n$/, ''));
                 });
             });
         });
