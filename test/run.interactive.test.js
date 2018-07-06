@@ -70,6 +70,13 @@ describe('[run:interactive]', function() {
         });
     }
 
+    function readStream() {
+        var stream = through.obj();
+        stream.on('data', _.noop);
+
+        return stream;
+    }
+
     it('runs tests indefinitely with a duration of 0', function(done) {
         increaseTimeout(this);
 
@@ -155,7 +162,7 @@ describe('[run:interactive]', function() {
                 duration: 1,
                 concurrent: 1,
                 test: CONCURRENT_TEST,
-                output: through.obj()
+                output: readStream()
             }, function(err) {
                 if (err) {
                     return done(err);
@@ -289,13 +296,11 @@ describe('[run:interactive]', function() {
         });
 
         it('throws if the runtime concurrent value is set to a non-integer', function(done) {
-            var output = through.obj();
-
             var task = run({
                 duration: 50,
                 concurrent: 1,
                 test: CONCURRENT_TEST,
-                output: output
+                output: readStream()
             }, done);
 
             expect(function() {
@@ -325,7 +330,7 @@ describe('[run:interactive]', function() {
                 duration: 10,
                 rate: 100,
                 test: RATE_TEST,
-                output: through.obj()
+                output: readStream()
             }, function(err) {
                 if (err) {
                     return done(err);
@@ -473,13 +478,11 @@ describe('[run:interactive]', function() {
         });
 
         it('throws if the runtime rate value is set to a non-number', function(done) {
-            var output = through.obj();
-
             var task = run({
                 duration: '10ms',
                 rate: 2000,
                 test: RATE_TEST,
-                output: output
+                output: readStream()
             }, done);
 
             expect(function() {
