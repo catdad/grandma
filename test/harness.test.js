@@ -3,12 +3,15 @@
 
 var path = require('path');
 var util = require('util');
+var fs = require('fs');
 
 var expect = require('chai').expect;
 var shellton = require('shellton');
 var root = require('rootrequire');
 var mkdirp = require('mkdirp');
 var del = require('del');
+
+var testdata = require('./data/testdata.js');
 
 describe('[harness]', function() {
     function shell(file, command) {
@@ -100,8 +103,33 @@ describe('[harness]', function() {
     });
 
     describe('grandma.report api', function() {
+        var reportPath = path.resolve(root, 'temp/testdata.log');
+
+        function mockData() {
+            return new Promise(function(resolve, reject) {
+                fs.writeFile(reportPath, testdata.test.map(function(data) {
+                    return JSON.stringify(data);
+                }).join('\n'), function(err) {
+                    if (err) {
+                        return reject(err);
+                    }
+
+                    return resolve();
+                });
+            });
+        }
+
+        beforeEach(mockData);
+
+        var template = 'allows the process to correctly exit when generating %s report';
         ['text', 'plot', 'html', 'json', 'box'].forEach(function(report) {
-            it('allows the process to correctly exit when generating ' + report + ' report');
+            it(util.format(template, report), function() {
+                return shell('api-report.js', '--in temp/testdata.log --out temp/report.' + report)
+                .then(function(io) {
+                    expect(io.stdout.trim()).to.equal('done');
+                    expect(io.stderr.trim()).to.equal('');
+                });
+            });
         });
     });
 });
