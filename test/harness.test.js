@@ -88,7 +88,15 @@ describe('[harness]', function() {
             });
         });
 
-        it('allows the process to correctly exit when the test file does not exist');
+        it('allows the process to correctly exit when the test file does not exist', function() {
+            return shell('api-run.js', '--file fixtures/not-a-real-file.js')
+            .then(function(io) {
+                expect(io.stdout.trim()).to.equal('');
+                expect(io.stderr.trim())
+                    .to.match(/Cannot find module/)
+                    .and.to.match(/not-a-real-file\.js/);
+            });
+        });
     });
 
     describe('grandma.report api', function() {
