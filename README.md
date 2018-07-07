@@ -4,7 +4,6 @@
 [![Windows Build][appveyor.svg]][appveyor]
 [![Test Coverage][codeclimate-cov.svg]][codeclimate-cov]
 [![Code Climate][codeclimate-gpa.svg]][codeclimate-gpa]
-[![bitHound Overall Score][bithound.svg]][bithound]
 [![Downloads][npm-download.svg]][npm]
 [![Version][npm-version.svg]][npm]
 [![Dependency Status][daviddm.svg]][daviddm]
@@ -15,7 +14,7 @@
 [codeclimate-cov.svg]: https://codeclimate.com/github/catdad/grandma/badges/coverage.svg
 [codeclimate-cov]: https://codeclimate.com/github/catdad/grandma/coverage
 
-[codeclimate-gpa.svg]: https://img.shields.io/codeclimate/maintainability/catdad/grandma.svg
+[codeclimate-gpa.svg]: https://api.codeclimate.com/v1/badges/f4da9ebe407884c70af6/maintainability
 [codeclimate-gpa]: https://codeclimate.com/github/catdad/grandma
 
 [npm-download.svg]: https://img.shields.io/npm/dm/grandma.svg
@@ -27,9 +26,6 @@
 
 [appveyor.svg]: https://ci.appveyor.com/api/projects/status/github/catdad/grandma?branch=master&svg=true
 [appveyor]: https://ci.appveyor.com/project/catdad/grandma
-
-[bithound.svg]: https://www.bithound.io/github/catdad/grandma/badges/score.svg
-[bithound]: https://www.bithound.io/github/catdad/grandma
 
 This is a load testing library and CLI tool. It is inspired by the good parts of [Vegeta](https://github.com/tsenart/vegeta) and [JMeter](http://jmeter.apache.org/), but hopefully leaves out the bad parts of both.
 
