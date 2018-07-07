@@ -3,7 +3,7 @@
 window.addEventListener('load', function() {
     var menuItems = document.querySelectorAll('menuitem[x-for]');
     var sections = document.querySelectorAll('section[id]');
-    
+
     function disableAllExcept(item) {
         return function(i) {
             if (i === item) {
@@ -14,15 +14,15 @@ window.addEventListener('load', function() {
             i.section.classList.add('hide');
         };
     }
-    
+
     function initItem(item) {
         var initName = item.getAttribute('x-init');
-        
+
         if (initName && window[initName]) {
             window[initName]();
         }
     }
-    
+
     if (menuItems.length && sections.length) {
         sections = [].slice.call(sections);
         menuItems = [].slice.call(menuItems);
@@ -35,7 +35,7 @@ window.addEventListener('load', function() {
 
                 item.classList.add('selected');
                 item.section.classList.remove('hide');
-                
+
                 initItem(item);
             });
 

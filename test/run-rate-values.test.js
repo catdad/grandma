@@ -14,7 +14,7 @@ describe('[run-rate-values]', function() {
             'rate', 'intTime', 'concurrent', 'realRate'
         ]);
     });
-    
+
     function expectAdjustment(rate, estimate) {
         if (estimate.realRate > rate) {
             // for small decimals, the rate will always be
@@ -28,7 +28,7 @@ describe('[run-rate-values]', function() {
             expect(percent).to.be.below(0.05);
         }
     }
-    
+
     function estimateTest(description) {
         return function(val) {
             it(description + ': ' + val, function() {
@@ -37,11 +37,11 @@ describe('[run-rate-values]', function() {
             });
         };
     }
-    
+
     _.map(new Array(20), function(val, idx) {
         return (61 + (idx * 2)) / 60;
     }).concat([2.56, 3.14]).forEach(estimateTest('estimates a close-enough rate for small value'));
-    
+
     _.map(new Array(10), function(val, idx) {
         return (idx + 1) * 9 / 99;
     }).forEach(estimateTest('estimates a decimal less than 1 of value'));
@@ -49,7 +49,7 @@ describe('[run-rate-values]', function() {
     _.map(new Array(30), function(val, idx) {
         return (idx + 1) * 9 / 10;
     }).forEach(estimateTest('estimates larger decimal of value'));
-    
+
     _.map(new Array(20), function(val, idx) {
         return (idx + 1) * 3917;
     }).forEach(estimateTest('estimates very large irregular number of value'));

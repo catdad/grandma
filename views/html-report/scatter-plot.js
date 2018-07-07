@@ -7,7 +7,7 @@ window.addEventListener('load', function() {
     var chartElem = document.querySelector('#scatter-plot');
     var yAxisElem = document.querySelector('#scatter-plot-y-axis');
     var titleElem = document.querySelector('#scatter-plot-title');
-    
+
     titleElem.appendChild(document.createTextNode(window.TITLE));
 
     var formatter = (function() {
@@ -202,15 +202,15 @@ window.addEventListener('load', function() {
             name: key
         };
     });
-    
+
     var createdOnce = false;
     window.SCATTER_PLOT_INIT = function() {
         if (createdOnce === true) {
             return;
         }
-        
+
         createdOnce = true;
-        
+
         makeGraph(series);
     };
 });

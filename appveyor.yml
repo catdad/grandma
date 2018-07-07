@@ -3,15 +3,12 @@ version: '{branch} #{build}'
 environment:
   matrix:
     # node.js
+    - nodejs_version: "10"
     - nodejs_version: "8"
-    - nodejs_version: "7.2"
     - nodejs_version: "6.9"
-    - nodejs_version: "5.12"
     - nodejs_version: "4.4"
     - nodejs_version: "0.12"
-    # io.js
-    - nodejs_version: "1"
-    
+
 # Cache some things so that the build runs faster
 cache:
   - node_modules
@@ -27,7 +24,7 @@ install:
   - npm prune
   # run an upgrade, to update outdated cached libs
   - npm upgrade
-  
+
 # Post-install test scripts.
 test_script:
   # Output useful info for debugging.

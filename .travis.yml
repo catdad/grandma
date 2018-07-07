@@ -2,12 +2,10 @@ language: node_js
 
 node_js:
   - 'node'
+  - '10'
   - '8'
-  - '7.2'
   - '6.9'
-  - '5.10'
   - '4.4'
-  - 'iojs'
   - '0.12'
 
 script:
@@ -29,6 +27,7 @@ jobs:
       script: npm run lint
       after_script: skip
     - stage: npm release
+      if: tag IS present
       node_js: '6.9'
       script: echo "Deploying to npm ..."
       after_script: skip

@@ -7,6 +7,7 @@
   * [test files](test-files.md)
   * [custom metrics in tests](test-custom-metrics.md)
   * [custom categories in a test](test-categories.md)
+  * [custom data in test reports](test-metadata.md)
 * CLI usage
   * [`.grandmarc` file](cli-grandmarc.md)
   * [`grandma list`](cli-grandma-list.md)

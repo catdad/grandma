@@ -15,17 +15,17 @@ describe('[run]', function() {
     function increaseTimeout(that) {
         that.timeout(1000 * 5);
     }
-    
+
     function stringify(val) {
         return JSON.stringify(val) || val.toString();
     }
-    
+
     function runRealTest(opts, runCallback, outputCallback, done) {
         var output = through();
         opts = _.defaultsDeep(opts, {
             output: output
         });
-        
+
         async.parallel([
             function(next) {
                 run(opts, function(err) {
@@ -41,11 +41,11 @@ describe('[run]', function() {
             }
         ], done);
     }
-    
+
     function getLines(data) {
         return data.toString().trim().split('\n').map(JSON.parse);
     }
-    
+
     function testHeaderProps(header) {
         expect(header).to.have.all.keys([
             'type',
@@ -57,10 +57,24 @@ describe('[run]', function() {
             'name'
         ]);
     }
-    
+
+    function testReportProps(reports) {
+        expect(reports).to.be.an('array').and.to.have.length.above(0);
+
+        reports.forEach(function(report) {
+            expect(report).to.have.all.keys([
+                'type',
+                'id',
+                'report',
+                'categories',
+                'data'
+            ]);
+        });
+    }
+
     it('runs tests in rate mode, outputting to a stream', function(done) {
         increaseTimeout(this);
-        
+
         var opts = {
             // we expect this to execute exactly twice
             duration: '10ms',
@@ -70,12 +84,12 @@ describe('[run]', function() {
                 name: 'test.small'
             }
         };
-        
+
         runRealTest(opts, function onRun(err) {
             expect(err).to.not.be.ok;
         }, function onOutput(err, data) {
             expect(err).to.not.be.ok;
-                    
+
             var lines = getLines(data);
 
             expect(lines).to.be.an('array').and.to.have.length.within(2, 4);
@@ -89,12 +103,13 @@ describe('[run]', function() {
                 .to.have.property('name')
                 .and.to.equal('test.small');
             testHeaderProps(header);
+            testReportProps(lines);
         }, done);
     });
-    
+
     it('runs tests in concurrency mode, outputting to a stream', function(done) {
         increaseTimeout(this);
-        
+
         var opts = {
             duration: 80,
             concurrent: 2,
@@ -103,14 +118,14 @@ describe('[run]', function() {
                 name: 'test.concurrent'
             }
         };
-        
+
         runRealTest(opts, function onRun(err) {
             expect(err).to.not.be.ok;
         }, function onOutput(err, data) {
             expect(err).to.not.be.ok;
 
             var lines = getLines(data);
-            
+
             expect(lines).to.be.an('array')
                 .and.to.have.length.within(5, 10);
 
@@ -123,12 +138,13 @@ describe('[run]', function() {
                 .to.have.property('name')
                 .and.to.equal('test.concurrent');
             testHeaderProps(header);
+            testReportProps(lines);
         }, done);
     });
-    
+
     it('runs tests in multiple threads', function(done) {
         increaseTimeout(this);
-        
+
         var opts = {
             duration: '10ms',
             rate: 1000 / 10 * 4,
@@ -138,23 +154,24 @@ describe('[run]', function() {
             },
             threads: 2
         };
-        
+
         runRealTest(opts, function onRun(err) {
             expect(err).to.not.be.ok;
         }, function onOutput(err, data) {
             expect(err).to.not.be.ok;
-                    
+
             var lines = getLines(data);
 
             var header = lines.shift();
             expect(header).to.have.property('type').and.to.equal('header');
             testHeaderProps(header);
-            
+            testReportProps(lines);
+
             var threadCounts = lines.reduce(function(a, b) {
                 a[b.id] += 1;
                 return a;
             }, { '0': 0, '1': 0 });
-            
+
             expect(threadCounts).to.have.all.keys(['0', '1']);
             expect(threadCounts).to.have.property('0')
                 .and.to.be.at.least(2)
@@ -164,10 +181,10 @@ describe('[run]', function() {
                 .and.to.be.at.most(3);
         }, done);
     });
-    
+
     it('does not stop for errors in beforeAll', function(done) {
         increaseTimeout(this);
-        
+
         var opts = {
             duration: 10,
             concurrent: 2,
@@ -176,7 +193,7 @@ describe('[run]', function() {
                 name: 'errInBeforeAll'
             }
         };
-        
+
         runRealTest(opts, function onRun(err) {
             expect(err).to.not.be.ok;
         }, function onOutput(err, data) {
@@ -190,7 +207,7 @@ describe('[run]', function() {
 
     it('does not stop for errors in beforeEach', function(done) {
         increaseTimeout(this);
-        
+
         var opts = {
             duration: 10,
             concurrent: 2,
@@ -199,7 +216,7 @@ describe('[run]', function() {
                 name: 'errInBeforeEach'
             }
         };
-        
+
         runRealTest(opts, function onRun(err) {
             expect(err).to.not.be.ok;
         }, function onOutput(err, data) {
@@ -210,10 +227,10 @@ describe('[run]', function() {
             expect(lines).to.be.an('array').and.to.have.length.of.at.least(2);
         }, done);
     });
-    
+
     it('does not stop for errors in afterEach', function(done) {
         increaseTimeout(this);
-        
+
         var opts = {
             duration: 10,
             concurrent: 2,
@@ -222,7 +239,7 @@ describe('[run]', function() {
                 name: 'errInAfterEach'
             }
         };
-        
+
         runRealTest(opts, function onRun(err) {
             expect(err).to.not.be.ok;
         }, function onOutput(err, data) {
@@ -233,10 +250,10 @@ describe('[run]', function() {
             expect(lines).to.be.an('array').and.to.have.length.of.at.least(2);
         }, done);
     });
-    
+
     it('does not stop for errors in afterAll', function(done) {
         increaseTimeout(this);
-        
+
         var opts = {
             duration: 10,
             concurrent: 2,
@@ -245,7 +262,7 @@ describe('[run]', function() {
                 name: 'errInAfterEach'
             }
         };
-        
+
         runRealTest(opts, function onRun(err) {
             expect(err).to.not.be.ok;
         }, function onOutput(err, data) {
@@ -256,10 +273,10 @@ describe('[run]', function() {
             expect(lines).to.be.an('array').and.to.have.length.of.at.least(2);
         }, done);
     });
-    
+
     it('has an optional timeout value', function(done) {
         increaseTimeout(this);
-        
+
         var opts = {
             duration: 10,
             concurrent: 1,
@@ -269,34 +286,34 @@ describe('[run]', function() {
                 name: 'minute'
             }
         };
-        
+
         runRealTest(opts, function onRun(err) {
             expect(err).to.not.be.ok;
         }, function onOutput(err, data) {
             expect(err).to.not.be.ok;
-            
+
             var lines = getLines(data);
-            
+
             // remove header
             lines.shift();
-            
+
             expect(lines.length).to.be.at.least(1);
-            
+
             lines.forEach(function(line) {
                 expect(line.report.fullTest.status).to.equal('failure');
                 expect(line.report.fullTest.errorCode).to.equal(-1);
             });
-            
+
             done();
         });
     });
-    
+
     it('can run tests and output object to an object stream', function(done) {
         increaseTimeout(this);
-        
+
         var output = through.obj();
         var ended = false;
-        
+
         var opts = {
             duration: 50,
             concurrent: 2,
@@ -306,35 +323,35 @@ describe('[run]', function() {
             },
             output: output
         };
-        
+
         output.on('end', function() {
             ended = true;
         });
-        
+
         output.on('data', function(data) {
             expect(data).to.be.an('object');
             expect(Buffer.isBuffer(data)).to.equal(false);
-            
+
             // test a prop to make sure it's tere
             expect(data).to.have.property('type').and.to.be.a('string');
         });
-        
+
         run(opts, function(err) {
             if (err) {
                 return done(err);
             }
-            
+
             expect(ended).to.equal(true);
             done();
         });
     });
-    
+
     it('reports categories assigned during testing', function(done) {
         increaseTimeout(this);
-        
+
         var output = through.obj();
         var ended = false;
-        
+
         var opts = {
             duration: 10,
             concurrent: 1,
@@ -344,37 +361,86 @@ describe('[run]', function() {
             },
             output: output
         };
-        
+
         output.on('end', function() {
             ended = true;
         });
-        
+
         output.on('data', function(data) {
             expect(data).to.be.an('object');
-            
+
             if (data.type !== 'report') {
                 return;
             }
-            
+
             // test a prop to make sure it's tere
             expect(data)
                 .to.have.property('categories')
                 .and.to.deep.equal(['one', 'two', 'three', 'four', 'five']);
         });
-        
+
         run(opts, function(err) {
             if (err) {
                 return done(err);
             }
-            
+
             expect(ended).to.equal(true);
             done();
         });
     });
-    
+
+    it('reports data assigned to the data bucket during tests', function(done) {
+        increaseTimeout(this);
+
+        var output = through.obj();
+        var ended = false;
+
+        var opts = {
+            duration: 10,
+            concurrent: 1,
+            test: {
+                path: path.resolve(__dirname, '../fixtures/data.js'),
+                name: 'test.concurrent'
+            },
+            output: output
+        };
+
+        output.on('end', function() {
+            ended = true;
+        });
+
+        output.on('data', function(data) {
+            expect(data).to.be.an('object');
+
+            if (data.type !== 'report') {
+                return;
+            }
+
+            // test a prop to make sure it's tere
+            expect(data)
+                .to.have.property('data')
+                .and.to.deep.equal({
+                    beforeAll: 1,
+                    beforeEach: 2,
+                    test: 3,
+                    afterEach: 4,
+                    str: 'string value'
+                });
+        });
+
+        run(opts, function(err) {
+            if (err) {
+                return done(err);
+            }
+
+            expect(ended).to.equal(true);
+            done();
+        });
+    });
+
     it('errors if the test file does not exist', function(done) {
         var FILE = 'non-existent-test-file-' + Math.random().toString().replace(/\./g, '') + '.js';
-        
+
         var opts = {
             duration: 10,
             concurrent: 2,
@@ -383,7 +449,7 @@ describe('[run]', function() {
                 name: 'nonexistent'
             }
         };
-        
+
         runRealTest(opts, function onRun(err) {
             expect(err).to.have.property('message')
                 .and.to.match(/Cannot find module/);
@@ -392,7 +458,7 @@ describe('[run]', function() {
             expect(data.toString()).to.equal('');
         }, done);
     });
-    
+
     it('errors if the test file throws immediately', function(done) {
         var opts = {
             duration: 10,
@@ -402,7 +468,7 @@ describe('[run]', function() {
                 name: 'throwsOnRequire'
             }
         };
-        
+
         runRealTest(opts, function onRun(err) {
             expect(err).to.have.property('message')
                 .and.to.equal('throws on require');
@@ -411,7 +477,7 @@ describe('[run]', function() {
             expect(data.toString()).to.equal('');
         }, done);
     });
-    
+
     it('errors if the test file does not have a "test" method', function(done) {
         var opts = {
             duration: 10,
@@ -421,7 +487,7 @@ describe('[run]', function() {
                 name: 'noTestMethod'
             }
         };
-        
+
         runRealTest(opts, function onRun(err) {
             expect(err).to.have.property('message')
                 .and.to.match(/no test method was found in/);
@@ -430,11 +496,11 @@ describe('[run]', function() {
             expect(data.toString()).to.equal('');
         }, done);
     });
-    
+
     function testError(opts, errorStr, done) {
         // all errors must be returned asynchronously
         var isAsync = false;
-        
+
         run(opts, function(err) {
             expect(err).to.be.instanceof(Error);
             expect(err).to.have.property('message').and.to.equal(errorStr);
@@ -443,10 +509,10 @@ describe('[run]', function() {
 
             done();
         });
-        
+
         isAsync = true;
     }
-    
+
     (function errorCases() {
         var fixtures = {
             test: {
@@ -454,17 +520,17 @@ describe('[run]', function() {
                 name: 'test.small'
             }
         };
-        
+
         it('errors if an output stream is not defined', function(done) {
             testError(fixtures, 'no writable output stream defined', done);
         });
-        
+
         it('errors if the output stream is invalid', function(done) {
             testError(_.defaultsDeep({
                 output: 'a string'
             }, fixtures), 'no writable output stream defined', done);
         });
-        
+
         it('errors if duration is not defined in options', function(done) {
             testError(_.defaultsDeep({
                 output: through(),
@@ -518,5 +584,5 @@ describe('[run]', function() {
             }, fixtures), 'either options.rate or options.concurrent is required', done);
         });
     }());
-    
+
 });

@@ -20,6 +20,7 @@ _config.yml
 fixtures/
 coverage/
 test/
+temp/
 
 # Art and stuff
 assets/

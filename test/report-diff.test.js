@@ -17,33 +17,33 @@ function writeData(stream, data) {
     setImmediate(function() {
         stream.end(_.map(data, JSON.stringify).join('\n'));
     });
-    
+
     return stream;
 }
 
 function writeDataSlow(stream, data) {
     var chunks = data.slice();
-    
+
     function writeToEnd() {
         if (chunks.length) {
             return setTimeout(function() {
                 stream.write(JSON.stringify(chunks.shift()) + '\n');
-                
+
                 writeToEnd();
             }, 1);
         }
-        
+
         stream.end();
     }
-    
+
     writeToEnd();
-    
+
     return stream;
 }
 
 function getReport(streams, options, callback) {
     var cb = _.once(callback);
-    
+
     var output = through();
 
     var opts = _.defaults(options, {
@@ -51,13 +51,13 @@ function getReport(streams, options, callback) {
         mode: 'fastest',
         type: 'text'
     });
-    
+
     diff(streams, opts, function(err) {
         if (err) {
             return cb(err);
         }
     });
-    
+
     // listen to output on the stream inside opts
     opts.output.pipe(es.wait(cb));
 }
@@ -76,16 +76,16 @@ function assertOrder(data, tests) {
     var indices = tests.map(function(name) {
         return data.indexOf(name);
     });
-    
+
     // make sure that all results are above 0
     indices.forEach(function(i) {
         expect(i).to.be.above(0);
     });
-    
+
     var sorted = indices.slice().sort(function(a, b) {
         return a - b;
     });
-    
+
     expect(indices).to.deep.equal(sorted);
 }
 
@@ -98,25 +98,25 @@ describe('[diff]', function() {
             if (err) {
                 return done(err);
             }
-            
+
             data = data.toString();
-            
+
             expect(data).to.be.a('string').and.to.have.length.above(1);
             expect(hasColors(data)).to.equal(false);
-            
+
             done();
         });
     });
-    
+
     it('prints an array of input streams in the same order when reporting', function(done) {
         function namedData(name) {
             var data = _.cloneDeep(DATA.test);
-            
+
             data[0].name = name;
-            
+
             return data;
         }
-        
+
         getReport([
             writeData(through(), namedData('testone')),
             writeDataSlow(through(), namedData('testtwo')),
@@ -125,13 +125,13 @@ describe('[diff]', function() {
             if (err) {
                 return done(err);
             }
-            
+
             assertOrder(data.toString(), ['testone', 'testtwo', 'testthree']);
-            
+
             done();
         });
     });
-    
+
     it('takes an object hash of input streams and writes output', function(done) {
         getReport({
             one: writeData(through(), DATA.test),
@@ -140,16 +140,16 @@ describe('[diff]', function() {
             if (err) {
                 return done(err);
             }
-            
+
             data = data.toString();
-            
+
             expect(data).to.be.a('string').and.to.have.length.above(1);
             expect(hasColors(data)).to.equal(false);
-            
+
             done();
         });
     });
-    
+
     it('prints an object hash of input streams in the same order when reporting', function(done) {
         getReport({
             testone: writeData(through(), DATA.test),
@@ -159,13 +159,13 @@ describe('[diff]', function() {
             if (err) {
                 return done(err);
             }
-            
+
             assertOrder(data.toString(), ['testone', 'testtwo', 'testthree']);
-            
+
             done();
         });
     });
-    
+
     it('can write color output', function(done) {
         getReport([
             writeData(through(), DATA.test),
@@ -176,16 +176,16 @@ describe('[diff]', function() {
             if (err) {
                 return done(err);
             }
-            
+
             data = data.toString();
-            
+
             expect(data).to.be.a('string').and.to.have.length.above(1);
             expect(hasColors(data)).to.equal(true);
-            
+
             done();
         });
     });
-    
+
     it('outputs percentages next to the latesncies of the slower average logs', function(done) {
         getReport([
             writeData(through(), DATA.test),
@@ -194,9 +194,9 @@ describe('[diff]', function() {
             if (err) {
                 return done(err);
             }
-            
+
             data = data.toString();
-            
+
             expect(data).to.be.a('string').and.to.have.length.above(1);
 
             var regex = tableRegex(
@@ -209,11 +209,11 @@ describe('[diff]', function() {
             );
 
             expect(data).to.match(regex);
-            
+
             done();
         });
     });
-    
+
     it('outputs positive percentages if some metrics are faster', function(done) {
         getReport([
             writeData(through(), DATA.test2),
@@ -222,9 +222,9 @@ describe('[diff]', function() {
             if (err) {
                 return done(err);
             }
-            
+
             data = data.toString();
-            
+
             expect(data).to.be.a('string').and.to.have.length.above(1);
 
             var regex = tableRegex(
@@ -237,11 +237,11 @@ describe('[diff]', function() {
             );
 
             expect(data).to.match(regex);
-            
+
             done();
         });
     });
-    
+
     it('can handle some logs having custom metrics that other logs do not have', function(done) {
         getReport([
             writeData(through(), DATA.test2),
@@ -250,15 +250,15 @@ describe('[diff]', function() {
             if (err) {
                 return done(err);
             }
-            
+
             data = data.toString();
-            
+
             expect(data).to.be.a('string').and.to.have.length.above(1);
-            
+
             done();
         });
     });
-    
+
     describe('errors if', function() {
         [{
             description: 'there are less than two streams',
@@ -311,12 +311,12 @@ describe('[diff]', function() {
             it(val.description + ' in an array', function(done) {
                 val.test(objToArr(val.streams), done);
             });
-            
+
             it(val.description + ' in an object', function(done) {
                 val.test(val.streams, done);
             });
         });
-    
+
         it('there is no output stream', function(done) {
             diff([
                 writeData(through(), DATA.test),
@@ -332,7 +332,7 @@ describe('[diff]', function() {
                 done();
             });
         });
-        
+
         it('errors if the output stream is not writable', function(done) {
             diff([
                 writeData(through(), DATA.test),
@@ -348,7 +348,7 @@ describe('[diff]', function() {
                 done();
             });
         });
-        
+
         it('errors if options.mode is not a known value', function(done) {
             getReport([
                 writeData(through(), DATA.test),
@@ -364,7 +364,7 @@ describe('[diff]', function() {
                 done();
             });
         });
-        
+
         it('errors if options.type is not a known value', function(done) {
             getReport([
                 writeData(through(), DATA.test),
