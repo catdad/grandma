@@ -1,4 +1,4 @@
-# [<img title="grandma" src="https://catdad.github.com/grandma/assets/banner.svg" width="100%" alt="grandma" />](https://github.com/catdad/grandma)
+# [<img title="grandma" src="assets/banner.svg" width="100%" alt="grandma" />](https://github.com/catdad/grandma)
 
 [![Linux Build][travis.svg]][travis]
 [![Windows Build][appveyor.svg]][appveyor]
