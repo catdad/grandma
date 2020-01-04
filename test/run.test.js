@@ -67,6 +67,7 @@ describe('[run]', function() {
                 'id',
                 'report',
                 'categories',
+                'metrics',
                 'data'
             ]);
         });

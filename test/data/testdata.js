@@ -102,7 +102,8 @@ var TESTRESULTS = {
             "min": 4.152096999999998
         }
     },
-    "categories": {}
+    "categories": {},
+    "metrics": {}
 };
 
 var TESTERRRESULTS = {
@@ -135,7 +136,8 @@ var TESTERRRESULTS = {
             "min": 0.09281899999999865
         }
     },
-    "categories": {}
+    "categories": {},
+    "metrics": {}
 };
 
 _.forEach({
