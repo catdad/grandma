@@ -357,7 +357,7 @@ describe('[run:interactive]', function() {
             var count = 0;
 
             var output = through.obj();
-            var INIT_RATE = 1000 / 10 * 2;
+            var INIT_RATE = 4;
             var FINAL_RATE = 4000;
 
             var opts = {
@@ -392,7 +392,7 @@ describe('[run:interactive]', function() {
                 // manually stop the test so that we run quickly
                 setTimeout(function() {
                     task.stop();
-                }, 200);
+                }, 400);
             });
 
             output.on('data', function(data) {
