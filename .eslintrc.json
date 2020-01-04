@@ -7,7 +7,7 @@
   "globals": {},
   "rules": {
     "array-callback-return": "error",
-    "complexity": ["error", 8],
+    "complexity": ["error", 10],
     "no-bitwise": "error",
     "camelcase": "off",
     "curly": "error",
@@ -45,7 +45,7 @@
       }
     ],
     "strict": "off",
-    
+
     "max-len": [
       "warn",
       100
@@ -72,7 +72,7 @@
       "error",
       3
     ],
-    
+
     "no-extend-native": "error",
     "semi": [
       "error",
@@ -190,10 +190,10 @@
       "error",
       "always"
     ],
-    
+
     "callback-return": "error",
     "handle-callback-err": "error",
-    
+
     "no-shadow": "error",
     "no-undef": "error",
     "no-undef-init": "error",
