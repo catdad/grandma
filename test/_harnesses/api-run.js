@@ -5,9 +5,9 @@ var path = require('path');
 
 var root = require('rootrequire');
 var argv = require('yargs')
-.option('file', { type: 'string' })
-.option('out', { type: 'string' })
-.argv;
+    .option('file', { type: 'string' })
+    .option('out', { type: 'string' })
+    .argv;
 
 // require the module index
 var grandma = require('../../');
