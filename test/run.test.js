@@ -67,6 +67,7 @@ describe('[run]', function() {
                 'id',
                 'report',
                 'categories',
+                'metrics',
                 'data'
             ]);
         });
@@ -426,6 +427,51 @@ describe('[run]', function() {
                     afterEach: 4,
                     str: 'string value'
                 });
+        });
+
+        run(opts, function(err) {
+            if (err) {
+                return done(err);
+            }
+
+            expect(ended).to.equal(true);
+            done();
+        });
+    });
+
+    it('reports metrics assigned during testing', function(done) {
+        increaseTimeout(this);
+
+        var output = through.obj();
+        var ended = false;
+
+        var opts = {
+            duration: 100,
+            concurrent: 1,
+            test: {
+                path: path.resolve(__dirname, '../fixtures/metrics-numeric.js'),
+                name: 'test.metrics'
+            },
+            output: output
+        };
+
+        output.on('end', function() {
+            ended = true;
+        });
+
+        output.on('data', function(data) {
+            expect(data).to.be.an('object');
+
+            if (data.type !== 'report') {
+                return;
+            }
+
+            // test a prop to make sure it's tere
+            expect(data).to.have.property('metrics')
+                .and.to.keys(['one', 'two', 'three']);
+
+            expect(data).to.have.property('report')
+                .and.to.have.keys(['fullTest', 'four']);
         });
 
         run(opts, function(err) {
