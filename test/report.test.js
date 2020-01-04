@@ -1,5 +1,5 @@
 /* eslint-env mocha */
-/* eslint-disable no-unused-expressions, max-nested-callbacks, max-len */
+/* eslint-disable no-unused-expressions, max-nested-callbacks, max-len, no-useless-escape */
 
 var expect = require('chai').expect;
 var through = require('through2');

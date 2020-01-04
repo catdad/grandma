@@ -75,31 +75,31 @@ describe('[harness]', function() {
     describe('grandma.run api', function() {
         it('allows the process to correctly exit when writing to stdout', function() {
             return shell('api-run.js', '--file fixtures/one.js')
-            .then(function(io) {
-                var stdout = io.stdout.trim().split('\n');
+                .then(function(io) {
+                    var stdout = io.stdout.trim().split('\n');
 
-                expect(stdout).to.have.length.above(1);
-                expect(stdout.pop()).to.equal('done');
-                expect(io.stderr.trim()).to.equal('');
-            });
+                    expect(stdout).to.have.length.above(1);
+                    expect(stdout.pop()).to.equal('done');
+                    expect(io.stderr.trim()).to.equal('');
+                });
         });
 
         it('allows the process to correctly exit when writing to a file stream', function() {
             return shell('api-run.js', '--file fixtures/one.js --out temp/api-run.txt')
-            .then(function(io) {
-                expect(io.stdout.trim()).to.equal('done');
-                expect(io.stderr.trim()).to.equal('');
-            });
+                .then(function(io) {
+                    expect(io.stdout.trim()).to.equal('done');
+                    expect(io.stderr.trim()).to.equal('');
+                });
         });
 
         it('allows the process to correctly exit when the test file does not exist', function() {
             return shell('api-run.js', '--file fixtures/not-a-real-file.js')
-            .then(function(io) {
-                expect(io.stdout.trim()).to.equal('');
-                expect(io.stderr.trim())
-                    .to.match(/Cannot find module/)
-                    .and.to.match(/not-a-real-file\.js/);
-            });
+                .then(function(io) {
+                    expect(io.stdout.trim()).to.equal('');
+                    expect(io.stderr.trim())
+                        .to.match(/Cannot find module/)
+                        .and.to.match(/not-a-real-file\.js/);
+                });
         });
     });
 
@@ -141,17 +141,17 @@ describe('[harness]', function() {
                 var args = '--in temp/testdata.log --out temp/' + out + ' --type ' + type;
 
                 return shell('api-report.js', args)
-                .then(function(io) {
-                    expect(io.stdout.trim()).to.equal('done');
-                    expect(io.stderr.trim()).to.equal('');
-                })
-                .then(function() {
-                    var filepath = path.resolve(root, 'temp', out);
-                    return read(filepath);
-                })
-                .then(function(report) {
-                    expectations[type].test(report.replace(/\n$/, ''));
-                });
+                    .then(function(io) {
+                        expect(io.stdout.trim()).to.equal('done');
+                        expect(io.stderr.trim()).to.equal('');
+                    })
+                    .then(function() {
+                        var filepath = path.resolve(root, 'temp', out);
+                        return read(filepath);
+                    })
+                    .then(function(report) {
+                        expectations[type].test(report.replace(/\n$/, ''));
+                    });
             });
         });
     });
