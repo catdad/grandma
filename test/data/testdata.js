@@ -55,6 +55,15 @@ var TESTDATA_FUNNY_METRICS = [
     {"type":"report","report":{"fullTest":{"start":72.847962,"end":91.556966,"duration":18.709004000000007,"status":"success"},"one-timer":{"start":72.874224,"end":76.463646,"duration":3.589421999999999,"status":"success"},"two-timer#()":{"start":72.899279,"end":79.465345,"duration":6.566065999999992,"status":"success"}},"categories":[],"id":0}
 ];
 
+// Test data using numeric metrics
+var TESTDATA_NUMERIC_METRICS = [
+    {"type":"header","epoch":1578163594374,"duration":30,"rate":null,"concurrent":1,"targetCount":null,"name":"metrics-numeric"},
+    {"type":"report","report":{"fullTest":{"start":32.873099,"end":35.6375,"duration":2.7644009999999994,"status":"success"},"four":{"start":34.057399,"end":35.5429,"duration":1.4855010000000064,"status":"success"}},"categories":["a"],"metrics":{"one":6,"two":387,"three":93},"data":{},"id":0},
+    {"type":"report","report":{"fullTest":{"start":40.781199,"end":42.418499,"duration":1.6372999999999962,"status":"success"},"four":{"start":40.824499,"end":42.4099,"duration":1.5854009999999974,"status":"success"}},"categories":["b"],"metrics":{"one":7,"two":490,"three":92},"data":{},"id":0},
+    {"type":"report","report":{"fullTest":{"start":45.350899,"end":50.459899,"duration":5.109000000000002,"status":"success"},"four":{"start":45.3895,"end":50.4485,"duration":5.059000000000005,"status":"success"}},"categories":["a"],"metrics":{"one":10,"two":420,"three":79},"data":{},"id":0},
+    {"type":"report","report":{"fullTest":{"start":53.5671,"end":59.4295,"duration":5.862399999999994,"status":"success"},"four":{"start":53.590999,"end":59.4244,"duration":5.833401000000002,"status":"success"}},"categories":["b"],"metrics":{"one":6,"two":417,"three":47},"data":{},"id":0}
+];
+
 var TESTRESULTS = {
     "info": {
         "count": 3,
@@ -146,6 +155,7 @@ _.forEach({
     test2: TESTDATA2,
     test_outlier: TESTDATA_OUTLIER,
     test_funny_metrics: TESTDATA_FUNNY_METRICS,
+    test_metrics: TESTDATA_NUMERIC_METRICS,
     testerr: TESTERRDATA,
     results: TESTRESULTS,
     resultserr: TESTERRRESULTS

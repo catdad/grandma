@@ -324,7 +324,7 @@ describe('[report]', function() {
 
                 expect(categories).to.have.all.keys(['0', '1', '2']);
 
-                _.forEach(function(category) {
+                _.forEach(categories, function(category) {
                     expect(category).to.have.all.keys(['info', 'latencies']);
                     expect(category.info)
                         .to.be.an('object')
@@ -337,6 +337,44 @@ describe('[report]', function() {
 
                     _.forEach(category.latencies, function(val, name) {
                         expect(val).to.have.all.keys(_.keys(rootLatencies[name]));
+                    });
+                });
+
+                done();
+            });
+        });
+
+        it('provides metrics data, split up my category, when present in the input', function(done) {
+            getReport({
+                type: 'json'
+            }, DATA.test_metrics, function(err, content) {
+                expect(err).to.not.be.ok;
+                expect(content).to.be.ok;
+
+                var jsonData = JSON.parse(content.toString());
+
+                expect(jsonData).to.have.property('metrics')
+                    .and.to.be.an('object');
+                expect(jsonData).to.have.property('categories')
+                    .and.to.be.an('object')
+                    .and.to.have.keys(['a', 'b']);
+
+                expect(jsonData.categories.a).to.have.property('metrics');
+                expect(jsonData.categories.b).to.have.property('metrics');
+
+                var statProps = ['25', '50', '75', '95', '99', 'mean', 'median', 'min', 'max'];
+
+                [
+                    jsonData.metrics,
+                    jsonData.categories.a.metrics,
+                    jsonData.categories.b.metrics
+                ].forEach(function(metrics) {
+                    _.forEach(metrics, function(metric) {
+                        expect(metric).to.have.all.keys(statProps);
+
+                        statProps.forEach(function(name) {
+                            expect(metric[name]).to.be.a('number').and.to.be.above(0);
+                        });
                     });
                 });
 
