@@ -439,6 +439,51 @@ describe('[run]', function() {
         });
     });
 
+    it('reports metrics assigned during testing', function(done) {
+        increaseTimeout(this);
+
+        var output = through.obj();
+        var ended = false;
+
+        var opts = {
+            duration: 100,
+            concurrent: 1,
+            test: {
+                path: path.resolve(__dirname, '../fixtures/metrics-numeric.js'),
+                name: 'test.metrics'
+            },
+            output: output
+        };
+
+        output.on('end', function() {
+            ended = true;
+        });
+
+        output.on('data', function(data) {
+            expect(data).to.be.an('object');
+
+            if (data.type !== 'report') {
+                return;
+            }
+
+            // test a prop to make sure it's tere
+            expect(data).to.have.property('metrics')
+                .and.to.keys(['one', 'two', 'three']);
+
+            expect(data).to.have.property('report')
+                .and.to.have.keys(['fullTest', 'four']);
+        });
+
+        run(opts, function(err) {
+            if (err) {
+                return done(err);
+            }
+
+            expect(ended).to.equal(true);
+            done();
+        });
+    });
+
     it('errors if the test file does not exist', function(done) {
         var FILE = 'non-existent-test-file-' + Math.random().toString().replace(/\./g, '') + '.js';
 
