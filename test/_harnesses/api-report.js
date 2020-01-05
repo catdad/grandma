@@ -5,10 +5,10 @@ var path = require('path');
 
 var root = require('rootrequire');
 var argv = require('yargs')
-.option('in', { type: 'string' })
-.option('out', { type: 'string' })
-.options('type', { type: 'string' })
-.argv;
+    .option('in', { type: 'string' })
+    .option('out', { type: 'string' })
+    .options('type', { type: 'string' })
+    .argv;
 
 // require the module index
 var grandma = require('../../');
