@@ -95,7 +95,7 @@ The following options are available as flags (some are only relevant for the `ru
 
 #### [`grandma list`][cli-list]
 
-Lists all the tests in your test suite. You can use these names in `grandma run` to run the test. See more information bout it in the [`granda list` CLI page][cli-list].
+Lists all the tests in your test suite. You can use these names in `grandma run` to run the test. See more information about it in the [`grandma list` CLI page][cli-list].
 
 #### [`grandma run`][cli-run]
 
