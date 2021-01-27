@@ -7,7 +7,7 @@ Test files are written in JavaScript, and should be placed inside the folder def
 A test will export a single object, consisting of the following methods (in order or execution):
 * `beforeAll` - runs first, before any tests are started. This function will run only once.
 * `beforeEach` - runs before each execution of a test. It will run for the same amount of iterations as the test. It is not reflected in the time reported for the test.
-* `test` - the actual code being tested, and is the only require function in the test file. This is the only function that accounts for the time when genearting reports. The test function context also has special methods that allow for [reporting custom metrics](test-custom-metrics.md).
+* `test` - the actual code being tested, and is the only require function in the test file. This is the only function that accounts for the time when generating reports. The test function context also has special methods that allow for [reporting custom metrics](test-custom-metrics.md).
 * `afterEach` - runs after each execution of a test. It will run for the same amount of iterations as the test. It will always run, even if the test is failed. It is not reflected in the time reported for the test.
 * `afterAll` - runs once, after all tests have completed.
 
